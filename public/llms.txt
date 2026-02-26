@@ -1,0 +1,42 @@
+# FyPlus Dental Clinic
+
+> Premium diş kliniği - İstanbul, Türkiye
+
+## About
+FyPlus Dental Clinic, İstanbul'da bulunan premium bir diş kliniğidir. İmplant, zirkonyum kaplama, diş beyazlatma, ortodonti, gülüş tasarımı (Hollywood Smile) ve daha birçok alanda uzman hekim kadrosuyla hizmet vermektedir.
+
+## Services
+- İmplant Tedavisi: /hizmetler/implant-tedavisi
+- Zirkonyum Kaplama: /hizmetler/zirkonyum-kaplama
+- Diş Beyazlatma: /hizmetler/dis-beyazlatma
+- Gülüş Tasarımı (Hollywood Smile): /hizmetler/gulus-tasarimi
+- Ortodonti: /hizmetler/ortodonti
+- Şeffaf Plak (Invisalign): /hizmetler/seffaf-plak
+- Kanal Tedavisi: /hizmetler/kanal-tedavisi
+- Diş Eti Tedavisi: /hizmetler/dis-eti-tedavisi
+- Pedodonti (Çocuk Diş Hekimliği): /hizmetler/pedodonti
+- Protez Diş: /hizmetler/protez-dis
+- Estetik Diş Hekimliği: /hizmetler/estetik-dis-hekimligi
+- Dijital Diş Hekimliği: /hizmetler/dijital-dis-hekimligi
+
+## Pages
+- Ana Sayfa: /
+- Hakkımızda: /hakkimizda
+- Hizmetlerimiz: /hizmetler
+- Doktorlarımız: /doktorlarimiz
+- Galeri: /galeri
+- Blog: /blog
+- Sık Sorulan Sorular: /sss
+- İletişim: /iletisim
+- Gizlilik Politikası: /gizlilik-politikasi
+
+## Contact
+- Phone: +90 212 000 00 00
+- Email: info@fyplus.com.tr
+- Location: İstanbul, Türkiye
+- Website: https://fyplus.com.tr
+
+## Working Hours
+- Monday - Friday: 09:00 - 19:00
+- Saturday: 10:00 - 16:00
+- Sunday: Closed

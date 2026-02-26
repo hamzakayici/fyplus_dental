@@ -1,0 +1,12 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "FyPlus Dental Clinic",
+  "name_for_model": "fyplus_dental",
+  "description_for_human": "FyPlus Dental Clinic - İstanbul'da premium diş kliniği. İmplant, zirkonyum, gülüş tasarımı ve daha fazlası.",
+  "description_for_model": "FyPlus Dental Clinic is a premium dental clinic in Istanbul, Turkey offering implant surgery, zirconium crowns, teeth whitening, orthodontics, Hollywood Smile design, root canal treatment, pediatric dentistry, and digital dentistry services. The clinic operates Monday-Friday 09:00-19:00 and Saturday 10:00-16:00.",
+  "auth": { "type": "none" },
+  "api": { "type": "openapi", "url": "https://fyplus.com.tr/api/openapi.json" },
+  "logo_url": "https://fyplus.com.tr/images/logo.png",
+  "contact_email": "info@fyplus.com.tr",
+  "legal_info_url": "https://fyplus.com.tr/gizlilik-politikasi"
+}
