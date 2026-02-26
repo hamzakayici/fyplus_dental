@@ -1,17 +1,22 @@
-'use client';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { allServices } from '@/app/data/services';
-import { ChevronRight, Check, ArrowRight, Phone } from 'lucide-react';
-import * as LucideIcons from 'lucide-react';
+"use client";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { allServices } from "@/app/data/services";
+import { ChevronRight, Check, ArrowRight, Phone } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 
 export default function ServiceDetailPage() {
   const { slug } = useParams();
-  const service = allServices.find(s => s.slug === slug);
-  if (!service) return <div className="container section"><h1>Hizmet Bulunamadı</h1></div>;
+  const service = allServices.find((s) => s.slug === slug);
+  if (!service)
+    return (
+      <div className="container section">
+        <h1>Hizmet Bulunamadı</h1>
+      </div>
+    );
 
   const Icon = LucideIcons[service.iconName] || LucideIcons.Stethoscope;
-  const otherServices = allServices.filter(s => s.slug !== slug).slice(0, 5);
+  const otherServices = allServices.filter((s) => s.slug !== slug).slice(0, 5);
 
   return (
     <>
@@ -24,8 +29,28 @@ export default function ServiceDetailPage() {
             <ChevronRight size={14} />
             <span>{service.title}</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
-            <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-md)', background: 'rgba(27,143,206,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--blue)' }}><Icon size={26} /></div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "16px",
+              marginBottom: "16px",
+            }}
+          >
+            <div
+              style={{
+                width: "52px",
+                height: "52px",
+                borderRadius: "var(--radius-md)",
+                background: "rgba(27,143,206,0.12)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "var(--blue)",
+              }}
+            >
+              <Icon size={26} />
+            </div>
             <h1 style={{ margin: 0 }}>{service.title}</h1>
           </div>
           <p className="hero-subtitle">{service.shortDesc}</p>
@@ -45,7 +70,9 @@ export default function ServiceDetailPage() {
                 <h2>Avantajları</h2>
                 <div className="sd-benefits">
                   {service.benefits.map((b, i) => (
-                    <div key={i} className="sd-benefit"><Check size={18} /> <span>{b}</span></div>
+                    <div key={i} className="sd-benefit">
+                      <Check size={18} /> <span>{b}</span>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -83,21 +110,41 @@ export default function ServiceDetailPage() {
           <aside className="sd-sidebar">
             <div className="sd-info-card">
               <h4>Tedavi Bilgileri</h4>
-              <div className="sd-info-row"><span>Süre</span><strong>{service.duration}</strong></div>
-              <div style={{ marginTop: '16px' }}>
-                <Link href="/iletisim" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>Randevu Al <ArrowRight size={15} /></Link>
+              <div className="sd-info-row">
+                <span>Süre</span>
+                <strong>{service.duration}</strong>
               </div>
-              <div style={{ marginTop: '8px' }}>
-                <a href="tel:+902120000000" className="btn btn-outline" style={{ width: '100%', justifyContent: 'center' }}><Phone size={15} /> Hemen Ara</a>
+              <div style={{ marginTop: "16px" }}>
+                <Link
+                  href="/iletisim"
+                  className="btn btn-primary"
+                  style={{ width: "100%", justifyContent: "center" }}
+                >
+                  Randevu Al <ArrowRight size={15} />
+                </Link>
+              </div>
+              <div style={{ marginTop: "8px" }}>
+                <a
+                  href="tel:+902120000000"
+                  className="btn btn-outline"
+                  style={{ width: "100%", justifyContent: "center" }}
+                >
+                  <Phone size={15} /> Hemen Ara
+                </a>
               </div>
             </div>
             <div className="sd-info-card">
               <h4>Diğer Hizmetler</h4>
               <ul className="sd-other">
                 {otherServices.map((os, i) => {
-                  const OIcon = LucideIcons[os.iconName] || LucideIcons.Stethoscope;
+                  const OIcon =
+                    LucideIcons[os.iconName] || LucideIcons.Stethoscope;
                   return (
-                    <li key={i}><Link href={`/hizmetler/${os.slug}`}><OIcon size={18} /> {os.title}</Link></li>
+                    <li key={i}>
+                      <Link href={`/hizmetler/${os.slug}`}>
+                        <OIcon size={18} /> {os.title}
+                      </Link>
+                    </li>
                   );
                 })}
               </ul>
@@ -107,10 +154,23 @@ export default function ServiceDetailPage() {
       </section>
 
       <section className="cta-section">
-        <div className="container" style={{ textAlign: 'center' }}>
-          <h2 style={{ color: 'var(--white)', marginBottom: '16px' }}>Bahçeşehir&apos;de {service.title}</h2>
-          <p style={{ color: 'var(--gray-400)', maxWidth: '460px', margin: '0 auto 32px', fontSize: '0.95rem' }}>Ücretsiz muayene için hemen randevu alın.</p>
-          <Link href="/iletisim" className="btn btn-primary">Randevu Al <ArrowRight size={16} /></Link>
+        <div className="container" style={{ textAlign: "center" }}>
+          <h2 style={{ color: "var(--white)", marginBottom: "16px" }}>
+            Bahçeşehir&apos;de {service.title}
+          </h2>
+          <p
+            style={{
+              color: "var(--gray-400)",
+              maxWidth: "460px",
+              margin: "0 auto 32px",
+              fontSize: "0.95rem",
+            }}
+          >
+            Ücretsiz muayene için hemen randevu alın.
+          </p>
+          <Link href="/iletisim" className="btn btn-primary">
+            Randevu Al <ArrowRight size={16} />
+          </Link>
         </div>
       </section>
     </>
