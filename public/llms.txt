@@ -1,42 +1,41 @@
-# FyPlus Dental Clinic
+# FyPlus Dental Clinic — Bahçeşehir, İstanbul
 
-> Premium diş kliniği - İstanbul, Türkiye
+> Premium dental clinic in Bahçeşehir, Istanbul, Turkey
 
 ## About
-FyPlus Dental Clinic, İstanbul'da bulunan premium bir diş kliniğidir. İmplant, zirkonyum kaplama, diş beyazlatma, ortodonti, gülüş tasarımı (Hollywood Smile) ve daha birçok alanda uzman hekim kadrosuyla hizmet vermektedir.
+FyPlus Dental Clinic is a premium dental clinic located in Bahçeşehir, Başakşehir, Istanbul, Turkey. We provide expert dental care in implantology, cosmetic dentistry, orthodontics, Hollywood Smile (smile design), teeth whitening, pediatric dentistry, endodontics, periodontology, and digital dentistry. Serving Bahçeşehir, Başakşehir, Esenyurt, Küçükçekmece and Beylikdüzü areas.
 
 ## Services
-- İmplant Tedavisi: /hizmetler/implant-tedavisi
-- Zirkonyum Kaplama: /hizmetler/zirkonyum-kaplama
-- Diş Beyazlatma: /hizmetler/dis-beyazlatma
-- Gülüş Tasarımı (Hollywood Smile): /hizmetler/gulus-tasarimi
-- Ortodonti: /hizmetler/ortodonti
-- Şeffaf Plak (Invisalign): /hizmetler/seffaf-plak
-- Kanal Tedavisi: /hizmetler/kanal-tedavisi
-- Diş Eti Tedavisi: /hizmetler/dis-eti-tedavisi
-- Pedodonti (Çocuk Diş Hekimliği): /hizmetler/pedodonti
-- Protez Diş: /hizmetler/protez-dis
-- Estetik Diş Hekimliği: /hizmetler/estetik-dis-hekimligi
-- Dijital Diş Hekimliği: /hizmetler/dijital-dis-hekimligi
+- Dental Implants (İmplant Tedavisi) — Bahçeşehir implant
+- Zirconia Crowns (Zirkonyum Kaplama) — Bahçeşehir zirkonyum
+- Teeth Whitening (Diş Beyazlatma) — Bahçeşehir diş beyazlatma
+- Hollywood Smile / Smile Design (Gülüş Tasarımı) — Bahçeşehir gülüş tasarımı
+- Orthodontics (Ortodonti) — Bahçeşehir ortodonti
+- Clear Aligners (Şeffaf Plak / Invisalign) — Bahçeşehir şeffaf plak
+- Root Canal Treatment (Kanal Tedavisi) — Bahçeşehir kanal tedavisi
+- Gum Treatment / Periodontology (Diş Eti Tedavisi) — Bahçeşehir periodontoloji
+- Pediatric Dentistry (Pedodonti) — Bahçeşehir çocuk diş hekimi
+- Dental Prosthetics (Protez Diş)
+- Cosmetic Dentistry (Estetik Diş Hekimliği)
+- Digital Dentistry (Dijital Diş Hekimliği)
 
 ## Pages
-- Ana Sayfa: /
-- Hakkımızda: /hakkimizda
-- Hizmetlerimiz: /hizmetler
-- Doktorlarımız: /doktorlarimiz
-- Galeri: /galeri
-- Blog: /blog
-- Sık Sorulan Sorular: /sss
-- İletişim: /iletisim
-- Gizlilik Politikası: /gizlilik-politikasi
+- Home: https://fyplus.com.tr
+- Services: https://fyplus.com.tr/hizmetler
+- About: https://fyplus.com.tr/hakkimizda
+- Doctors: https://fyplus.com.tr/doktorlarimiz
+- Gallery: https://fyplus.com.tr/galeri
+- Blog: https://fyplus.com.tr/blog
+- FAQ: https://fyplus.com.tr/sss
+- Contact: https://fyplus.com.tr/iletisim
+- Privacy: https://fyplus.com.tr/gizlilik-politikasi
 
 ## Contact
+- Address: Bahçeşehir 1. Kısım Mah., Başakşehir / İstanbul, Turkey
 - Phone: +90 212 000 00 00
 - Email: info@fyplus.com.tr
-- Location: İstanbul, Türkiye
-- Website: https://fyplus.com.tr
+- Hours: Mon-Fri 09:00-19:00, Sat 10:00-16:00
+- Web: https://fyplus.com.tr
 
-## Working Hours
-- Monday - Friday: 09:00 - 19:00
-- Saturday: 10:00 - 16:00
-- Sunday: Closed
+## Keywords
+bahçeşehir diş kliniği, bahçeşehir diş hekimi, implant bahçeşehir, zirkonyum bahçeşehir, diş beyazlatma bahçeşehir, ortodonti bahçeşehir, gülüş tasarımı bahçeşehir, hollywood smile bahçeşehir, çocuk diş hekimi bahçeşehir, başakşehir diş kliniği, estetik diş hekimliği bahçeşehir, acil dişçi bahçeşehir, bahçeşehir en iyi diş kliniği

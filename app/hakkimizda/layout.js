@@ -1,2 +1,7 @@
-export const metadata = { title: 'Hakkımızda', description: 'FyPlus Dental Clinic hakkında bilgi edinin. Misyonumuz, vizyonumuz ve uzman kadromuz.' };
-export default function L({ children }) { return children; }
+export const metadata = {
+  title: 'Hakkımızda',
+  description: 'Bahçeşehir FyPlus Dental Clinic hakkında. Misyonumuz, vizyonumuz, uzman kadromuz ve son teknoloji kliniğimiz.',
+  alternates: { canonical: 'https://fyplus.com.tr/hakkimizda' },
+  keywords: ['bahçeşehir diş kliniği hakkında', 'fyplus dental', 'bahçeşehir başakşehir diş hekimi'],
+};
+export default function Layout({ children }) { return children; }

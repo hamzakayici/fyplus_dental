@@ -1,2 +1,6 @@
-export const metadata = { title: 'Galeri', description: 'FyPlus Dental Clinic galeri - klinik, tedavi sonuçları ve modern ekipmanlar.' };
-export default function L({ children }) { return children; }
+export const metadata = {
+  title: 'Galeri',
+  description: 'Bahçeşehir FyPlus Dental Clinic galeri. Kliniğimiz, tedavi öncesi/sonrası ve modern ekipmanlarımız.',
+  alternates: { canonical: 'https://fyplus.com.tr/galeri' },
+};
+export default function Layout({ children }) { return children; }
