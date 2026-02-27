@@ -110,12 +110,28 @@ export default function Footer() {
                   <span>
                     Bahçeşehir 1. Kısım Mah.
                     <br />
-                    Başakşehir / İstanbul
+                    Vali Recep Yazıcıoğlu Cad.
+                    <br />
+                    No:50 BG, Başakşehir / İstanbul
                   </span>
                 </div>
                 <div>
                   <Phone size={16} />{" "}
-                  <a href="tel:+902120000000">+90 212 000 00 00</a>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "4px",
+                    }}
+                  >
+                    <a href="tel:+905335165134">+90 533 516 51 34</a>
+                    <a
+                      href="tel:+902129995134"
+                      style={{ fontSize: "0.8rem", opacity: 0.8 }}
+                    >
+                      +90 212 999 51 34
+                    </a>
+                  </div>
                 </div>
                 <div>
                   <Mail size={16} />{" "}

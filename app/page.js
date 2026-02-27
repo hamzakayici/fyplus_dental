@@ -131,8 +131,8 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero-bg">
           <Image
-            src="/images/hero-clinic.png"
-            alt="FyPlus Dental Clinic Bahçeşehir Modern Diş Kliniği"
+            src="/images/real/lobby.png"
+            alt="FyPlus Dental Clinic Bahçeşehir Modern Diş Kliniği Lobi"
             fill
             style={{ objectFit: "cover", objectPosition: "center" }}
             priority
@@ -157,8 +157,8 @@ export default function HomePage() {
               <Link href="/iletisim" className="btn btn-primary">
                 Ücretsiz Muayene <ArrowRight size={16} />
               </Link>
-              <a href="tel:+902120000000" className="btn btn-glass">
-                <Phone size={16} /> Hemen Arayın
+              <a href="tel:+905335165134" className="btn btn-glass">
+                <Phone size={16} /> 0533 516 51 34
               </a>
             </div>
           </div>
@@ -263,15 +263,15 @@ export default function HomePage() {
             <div className="about-images">
               <div className="about-img-main">
                 <Image
-                  src="/images/about-clinic.png"
-                  alt="FyPlus Dental Clinic Bahçeşehir İç Mekan"
+                  src="/images/real/exterior.png"
+                  alt="FyPlus Dental Clinic Bahçeşehir Dış Cephe"
                   fill
                   style={{ objectFit: "cover" }}
                 />
               </div>
               <div className="about-img-small">
                 <Image
-                  src="/images/treatment.png"
+                  src="/images/real/treatment.png"
                   alt="FyPlus Dental Modern Tedavi Odası"
                   fill
                   style={{ objectFit: "cover" }}
@@ -486,8 +486,8 @@ export default function HomePage() {
               <Link href="/iletisim" className="btn btn-primary">
                 Online Randevu <ArrowRight size={16} />
               </Link>
-              <a href="tel:+902120000000" className="btn btn-white">
-                <Phone size={16} /> +90 212 000 00 00
+              <a href="tel:+905335165134" className="btn btn-white">
+                <Phone size={16} /> 0533 516 51 34
               </a>
             </div>
           </div>

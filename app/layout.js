@@ -77,11 +77,12 @@ export default function RootLayout({ children }) {
     image: "https://fyplus.com.tr/images/clinic.jpg",
     description:
       "Bahçeşehir diş kliniği. İmplant, zirkonyum kaplama, diş beyazlatma, ortodonti, gülüş tasarımı ve estetik diş hekimliği alanlarında uzman kadromuzla premium diş sağlığı hizmeti.",
-    telephone: "+90 212 000 00 00",
+    telephone: "+90 533 516 51 34",
     email: "info@fyplus.com.tr",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Bahçeşehir 1. Kısım Mah.",
+      streetAddress:
+        "Bahçeşehir 1. Kısım Mah. Vali Recep Yazıcıoğlu Cad. No:50 BG",
       addressLocality: "Başakşehir",
       addressRegion: "İstanbul",
       postalCode: "34488",

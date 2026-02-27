@@ -70,13 +70,13 @@ export default function IletisimPage() {
                 {
                   icon: MapPin,
                   title: "Adres",
-                  text: "Bahçeşehir 1. Kısım Mah.\nBaşakşehir / İstanbul",
+                  text: "Bahçeşehir 1. Kısım Mah. Vali Recep Yazıcıoğlu Cad. No:50 BG\nBaşakşehir / İstanbul",
                 },
                 {
                   icon: Phone,
                   title: "Telefon",
-                  text: "+90 212 000 00 00",
-                  href: "tel:+902120000000",
+                  text: "+90 533 516 51 34\n+90 212 999 51 34",
+                  href: "tel:+905335165134",
                 },
                 {
                   icon: Mail,
