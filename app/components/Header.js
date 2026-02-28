@@ -93,7 +93,7 @@ export default function Header() {
         <div className="container header-inner">
           <Link href="/" className="logo">
             <img
-              src="/images/logo.png"
+              src="/images/header_logo.svg"
               alt="FyPlus Dental Clinic Bahçeşehir"
               width={140}
               height={40}
@@ -190,7 +190,7 @@ export default function Header() {
         >
           <div className="mobile-panel-header">
             <img
-              src="/images/logo.png"
+              src="/images/header_logo.svg"
               alt="FyPlus"
               width={120}
               height={34}

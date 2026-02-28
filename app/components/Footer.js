@@ -37,7 +37,7 @@ export default function Footer() {
           <div className="footer-grid">
             <div className="footer-col footer-brand">
               <img
-                src="/images/logo.png"
+                src="/images/footer_logo.svg"
                 alt="FyPlus Dental Bahçeşehir"
                 width={130}
                 height={36}
