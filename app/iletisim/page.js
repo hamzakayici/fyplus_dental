@@ -192,7 +192,7 @@ export default function IletisimPage() {
                     width: "64px",
                     height: "64px",
                     borderRadius: "50%",
-                    background: "var(--green)",
+                    background: "var(--blue)",
                     color: "var(--white)",
                     display: "flex",
                     alignItems: "center",

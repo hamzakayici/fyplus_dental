@@ -185,9 +185,9 @@ export default function Footer() {
           transition: var(--transition);
         }
         .footer-socials a:hover {
-          border-color: var(--gold);
-          color: var(--gold);
-          background: rgba(200, 169, 126, 0.06);
+          border-color: var(--blue);
+          color: var(--blue);
+          background: rgba(43, 124, 173, 0.08);
         }
         .footer-col h4 {
           font-family: var(--font-heading);
@@ -237,7 +237,7 @@ export default function Footer() {
         .footer-contact svg {
           flex-shrink: 0;
           margin-top: 2px;
-          color: var(--gold);
+          color: var(--blue);
           opacity: 0.7;
         }
         .footer-bottom {

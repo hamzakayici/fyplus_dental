@@ -313,7 +313,7 @@ export default function Header() {
           letter-spacing: 0.01em;
         }
         .top-bar-item:hover {
-          color: var(--gold);
+          color: var(--blue);
         }
         .top-bar-divider {
           width: 1px;
@@ -452,7 +452,7 @@ export default function Header() {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: var(--gold);
+          background: var(--blue);
           flex-shrink: 0;
           margin-top: 6px;
           opacity: 0.6;

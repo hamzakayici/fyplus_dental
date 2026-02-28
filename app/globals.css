@@ -5,28 +5,24 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap");
 
 :root {
-  /* Brand Colors — Sofistike Palet */
+  /* Kurumsal Renkler — FyPlus Logo Renkleri */
   --navy: #0a1628;
   --navy-light: #111d32;
   --navy-mid: #1a2942;
   --blue: #2b7cad;
   --blue-soft: #3d9bd4;
   --blue-light: #edf6fc;
+  --blue-dark: #1f6591;
   --coral: #d4634b;
   --coral-dark: #b8503c;
   --coral-light: #fdf0ee;
-  --gold: #c8a97e;
-  --gold-dark: #a8895e;
-  --gold-light: #f8f2e8;
-  --green: #34b06d;
-  --green-light: #eaf7f0;
 
-  /* Neutrals — Daha Sıcak Tonlar */
+  /* Neutrals */
   --white: #ffffff;
-  --off-white: #fafbfc;
-  --gray-25: #f7f8fa;
-  --gray-50: #f1f3f6;
-  --gray-100: #e6e9ef;
+  --off-white: #f8fafb;
+  --gray-25: #f5f7f9;
+  --gray-50: #eef1f5;
+  --gray-100: #e2e6ec;
   --gray-200: #d0d5de;
   --gray-300: #b3bac7;
   --gray-400: #8891a0;
@@ -49,7 +45,7 @@
   --radius-2xl: 28px;
   --radius-full: 9999px;
 
-  /* Shadows — Daha Yumuşak */
+  /* Shadows */
   --shadow-xs: 0 1px 2px rgba(10, 22, 40, 0.03);
   --shadow-sm: 0 2px 8px rgba(10, 22, 40, 0.04);
   --shadow-md: 0 4px 20px rgba(10, 22, 40, 0.06);
@@ -58,7 +54,6 @@
   --shadow-2xl: 0 24px 64px rgba(10, 22, 40, 0.14);
   --shadow-glow-blue: 0 8px 28px rgba(43, 124, 173, 0.18);
   --shadow-glow-coral: 0 8px 28px rgba(212, 99, 75, 0.18);
-  --shadow-glow-gold: 0 8px 28px rgba(200, 169, 126, 0.2);
 
   /* Transition */
   --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -153,14 +148,14 @@ ol {
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--blue);
   margin-bottom: 16px;
 }
 .section-label::before {
   content: "";
   width: 32px;
   height: 1.5px;
-  background: linear-gradient(90deg, var(--gold), transparent);
+  background: linear-gradient(90deg, var(--blue), transparent);
   border-radius: 2px;
 }
 .section-title {
@@ -272,13 +267,14 @@ ol {
   background: var(--coral-light);
   color: var(--coral);
 }
-.icon-box-gold {
-  background: var(--gold-light);
-  color: var(--gold-dark);
+.icon-box-gold,
+.icon-box-blue-alt {
+  background: var(--blue-light);
+  color: var(--blue);
 }
 .icon-box-green {
-  background: var(--green-light);
-  color: var(--green);
+  background: var(--blue-light);
+  color: var(--blue-dark);
 }
 
 /* ═══ PAGE HERO ═══ */
@@ -297,7 +293,7 @@ ol {
   height: 100%;
   background: radial-gradient(
     ellipse at center right,
-    rgba(200, 169, 126, 0.04),
+    rgba(43, 124, 173, 0.06),
     transparent 70%
   );
 }
@@ -311,7 +307,7 @@ ol {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(200, 169, 126, 0.2),
+    rgba(43, 124, 173, 0.15),
     transparent
   );
 }
@@ -338,7 +334,7 @@ ol {
   color: var(--gray-400);
 }
 .breadcrumb a:hover {
-  color: var(--gold);
+  color: var(--blue);
 }
 
 /* ═══ CTA SECTION ═══ */
@@ -355,12 +351,12 @@ ol {
   background:
     radial-gradient(
       ellipse at 20% 50%,
-      rgba(200, 169, 126, 0.06),
+      rgba(43, 124, 173, 0.08),
       transparent 50%
     ),
     radial-gradient(
       ellipse at 80% 50%,
-      rgba(43, 124, 173, 0.06),
+      rgba(212, 99, 75, 0.06),
       transparent 50%
     );
 }
@@ -409,7 +405,7 @@ ol {
   padding: 8px 0;
 }
 .sd-benefit svg {
-  color: var(--green);
+  color: var(--blue);
   flex-shrink: 0;
 }
 .sd-steps {

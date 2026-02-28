@@ -25,7 +25,7 @@ const values = [
     icon: Award,
     title: "Uzmanlık",
     desc: "Alanında uzman hekim kadrosu.",
-    accent: "gold",
+    accent: "blue",
   },
   {
     icon: Heart,

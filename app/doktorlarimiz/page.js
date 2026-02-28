@@ -115,7 +115,7 @@ export default function DoktorlarimizPage() {
                     </h3>
                     <span
                       style={{
-                        color: "var(--gold)",
+                        color: "var(--blue-soft)",
                         fontSize: "0.82rem",
                         fontWeight: 600,
                       }}

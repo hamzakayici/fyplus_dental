@@ -33,7 +33,7 @@ export default function HizmetlerPage() {
           >
             {allServices.map((s, i) => {
               const Icon = LucideIcons[s.iconName] || LucideIcons.Stethoscope;
-              const accents = ["blue", "gold", "coral"];
+              const accents = ["blue", "coral", "blue"];
               const accent = accents[i % 3];
               return (
                 <Link
@@ -61,7 +61,7 @@ export default function HizmetlerPage() {
                         width: "100%",
                         height: "3px",
                         background:
-                          "linear-gradient(90deg, var(--blue), var(--gold))",
+                          "linear-gradient(90deg, var(--blue), var(--coral))",
                         opacity: 0,
                         transition: "var(--transition)",
                       }}

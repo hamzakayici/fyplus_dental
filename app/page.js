@@ -37,7 +37,7 @@ const featuredServices = [
     title: "Zirkonyum Kaplama",
     desc: "Metal-free zirkonyum ile doğal diş estetiği sunuyoruz.",
     slug: "zirkonyum-kaplama",
-    color: "gold",
+    color: "coral",
     image: "/images/svc-zirconia.png",
   },
   {
@@ -53,7 +53,7 @@ const featuredServices = [
     title: "Gülüş Tasarımı",
     desc: "Hollywood Smile ile hayalinizdeki gülüşe kavuşun.",
     slug: "gulus-tasarimi",
-    color: "green",
+    color: "blue",
     image: "/images/smile.png",
   },
   {
@@ -69,7 +69,7 @@ const featuredServices = [
     title: "Pedodonti",
     desc: "Çocuklara özel korkusuz tedavi deneyimi.",
     slug: "pedodonti",
-    color: "gold",
+    color: "blue",
     image: "/images/svc-pedodontics.png",
   },
 ];
@@ -179,7 +179,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="hero-feature-card">
-              <div className="hfc-icon hfc-gold">
+              <div className="hfc-icon hfc-coral">
                 <Award size={20} />
               </div>
               <div>
@@ -343,7 +343,7 @@ export default function HomePage() {
         <div className="container">
           <div className="smile-layout">
             <div className="smile-content">
-              <div className="section-label" style={{ color: "var(--gold)" }}>Gülüş Tasarımı</div>
+              <div className="section-label" style={{ color: "rgba(255,255,255,0.7)" }}>Gülüş Tasarımı</div>
               <h2 className="section-title" style={{ color: "var(--white)" }}>
                 Hayalinizdeki Gülüşe
                 <br />
@@ -556,12 +556,12 @@ export default function HomePage() {
           gap: 7px;
           padding: 8px 20px;
           border-radius: var(--radius-full);
-          background: rgba(200, 169, 126, 0.1);
-          color: var(--gold);
+          background: rgba(43, 124, 173, 0.12);
+          color: var(--blue);
           font-size: 0.78rem;
           font-weight: 600;
           margin-bottom: 24px;
-          border: 1px solid rgba(200, 169, 126, 0.15);
+          border: 1px solid rgba(43, 124, 173, 0.18);
         }
         .hero-content h1 {
           color: var(--white);
@@ -571,7 +571,7 @@ export default function HomePage() {
           letter-spacing: -0.03em;
         }
         .hero-accent {
-          background: linear-gradient(135deg, var(--gold), #dbb87a);
+          background: linear-gradient(135deg, var(--coral), #e07a65);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -624,8 +624,8 @@ export default function HomePage() {
           flex-shrink: 0;
         }
         .hfc-gold {
-          background: rgba(200, 169, 126, 0.14);
-          color: var(--gold);
+          background: rgba(212, 99, 75, 0.14);
+          color: var(--coral);
         }
         .hfc-coral {
           background: rgba(212, 99, 75, 0.14);
@@ -830,13 +830,13 @@ export default function HomePage() {
           position: absolute;
           bottom: 40%;
           left: 58%;
-          background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+          background: linear-gradient(135deg, var(--blue), var(--blue-dark));
           color: var(--white);
           padding: 16px 20px;
           border-radius: var(--radius-lg);
           text-align: center;
           z-index: 2;
-          box-shadow: var(--shadow-glow-gold);
+          box-shadow: var(--shadow-glow-blue);
         }
         .about-badge strong {
           display: block;
@@ -868,7 +868,7 @@ export default function HomePage() {
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: var(--green);
+          background: var(--blue);
           color: var(--white);
           display: flex;
           align-items: center;
@@ -932,7 +932,7 @@ export default function HomePage() {
           left: 0;
           width: 100%;
           height: 2px;
-          background: linear-gradient(90deg, var(--blue), var(--gold));
+          background: linear-gradient(90deg, var(--blue), var(--coral));
           opacity: 0;
           transition: var(--transition);
         }
@@ -1007,9 +1007,9 @@ export default function HomePage() {
           transition: var(--transition);
         }
         .doctor-tag:hover {
-          border-color: var(--gold);
-          color: var(--gold-dark);
-          background: var(--gold-light);
+          border-color: var(--blue);
+          color: var(--blue-dark);
+          background: var(--blue-light);
         }
 
         /* ═══ TESTIMONIALS ═══ */
