@@ -35,14 +35,14 @@ export default function Footer() {
       <footer className="footer">
         <div className="container">
           <div className="footer-grid">
-            <div className="footer-col">
+            <div className="footer-col footer-brand">
               <img
                 src="/images/logo.png"
                 alt="FyPlus Dental Bahçeşehir"
                 width={130}
                 height={36}
                 style={{
-                  marginBottom: "16px",
+                  marginBottom: "18px",
                   filter: "brightness(0) invert(1)",
                   opacity: 0.9,
                 }}
@@ -58,7 +58,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   aria-label="Instagram"
                 >
-                  <Instagram size={18} />
+                  <Instagram size={17} />
                 </a>
                 <a
                   href="https://facebook.com/fyplusdental"
@@ -66,7 +66,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   aria-label="Facebook"
                 >
-                  <Facebook size={18} />
+                  <Facebook size={17} />
                 </a>
                 <a
                   href="https://twitter.com/fyplusdental"
@@ -74,7 +74,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   aria-label="Twitter"
                 >
-                  <Twitter size={18} />
+                  <Twitter size={17} />
                 </a>
               </div>
             </div>
@@ -84,7 +84,7 @@ export default function Footer() {
                 {services.map((s) => (
                   <li key={s.href}>
                     <Link href={s.href}>
-                      <ChevronRight size={14} /> {s.label}
+                      <ChevronRight size={13} /> {s.label}
                     </Link>
                   </li>
                 ))}
@@ -96,7 +96,7 @@ export default function Footer() {
                 {quickLinks.map((l) => (
                   <li key={l.href}>
                     <Link href={l.href}>
-                      <ChevronRight size={14} /> {l.label}
+                      <ChevronRight size={13} /> {l.label}
                     </Link>
                   </li>
                 ))}
@@ -106,7 +106,7 @@ export default function Footer() {
               <h4>İletişim</h4>
               <div className="footer-contact">
                 <div>
-                  <MapPin size={16} />{" "}
+                  <MapPin size={15} />
                   <span>
                     Bahçeşehir 1. Kısım Mah.
                     <br />
@@ -116,29 +116,20 @@ export default function Footer() {
                   </span>
                 </div>
                 <div>
-                  <Phone size={16} />{" "}
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "4px",
-                    }}
-                  >
+                  <Phone size={15} />
+                  <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
                     <a href="tel:+905335165134">+90 533 516 51 34</a>
-                    <a
-                      href="tel:+902129995134"
-                      style={{ fontSize: "0.8rem", opacity: 0.8 }}
-                    >
+                    <a href="tel:+902129995134" style={{ fontSize: "0.8rem", opacity: 0.7 }}>
                       +90 212 999 51 34
                     </a>
                   </div>
                 </div>
                 <div>
-                  <Mail size={16} />{" "}
+                  <Mail size={15} />
                   <a href="mailto:info@fyplus.com.tr">info@fyplus.com.tr</a>
                 </div>
                 <div>
-                  <Clock size={16} />{" "}
+                  <Clock size={15} />
                   <span>
                     Pzt-Cum: 09:00-19:00
                     <br />
@@ -166,16 +157,17 @@ export default function Footer() {
         }
         .footer-grid {
           display: grid;
-          grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+          grid-template-columns: 1.4fr 1fr 1fr 1.3fr;
           gap: 40px;
           padding-bottom: 48px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         .footer-about {
           font-size: 0.88rem;
-          line-height: 1.7;
+          line-height: 1.75;
           margin-bottom: 20px;
           max-width: 280px;
+          color: var(--gray-400);
         }
         .footer-socials {
           display: flex;
@@ -185,49 +177,54 @@ export default function Footer() {
           width: 36px;
           height: 36px;
           border-radius: var(--radius-sm);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.08);
           display: flex;
           align-items: center;
           justify-content: center;
+          color: var(--gray-400);
           transition: var(--transition);
         }
         .footer-socials a:hover {
-          border-color: var(--blue);
-          color: var(--blue);
+          border-color: var(--gold);
+          color: var(--gold);
+          background: rgba(200, 169, 126, 0.06);
         }
         .footer-col h4 {
           font-family: var(--font-heading);
           color: var(--white);
-          font-size: 0.95rem;
-          font-weight: 700;
+          font-size: 0.92rem;
+          font-weight: 600;
           margin-bottom: 20px;
+          letter-spacing: -0.01em;
         }
         .footer-col ul {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 6px;
         }
         .footer-col ul li a {
           display: flex;
           align-items: center;
           gap: 6px;
-          font-size: 0.85rem;
+          font-size: 0.84rem;
           color: var(--gray-400);
           transition: var(--transition);
+          padding: 3px 0;
         }
         .footer-col ul li a:hover {
           color: var(--white);
+          padding-left: 4px;
         }
         .footer-contact {
           display: flex;
           flex-direction: column;
           gap: 14px;
         }
-        .footer-contact div {
+        .footer-contact > div {
           display: flex;
           gap: 10px;
-          font-size: 0.85rem;
-          line-height: 1.6;
+          font-size: 0.84rem;
+          line-height: 1.65;
           align-items: flex-start;
         }
         .footer-contact a {
@@ -240,14 +237,15 @@ export default function Footer() {
         .footer-contact svg {
           flex-shrink: 0;
           margin-top: 2px;
-          color: var(--blue);
+          color: var(--gold);
+          opacity: 0.7;
         }
         .footer-bottom {
           display: flex;
           justify-content: space-between;
           align-items: center;
           padding: 24px 0;
-          font-size: 0.8rem;
+          font-size: 0.78rem;
           color: var(--gray-500);
         }
         @media (max-width: 1024px) {

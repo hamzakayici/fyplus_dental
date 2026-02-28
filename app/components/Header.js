@@ -1,20 +1,28 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  Phone,
-  Mail,
-  Clock,
-  Menu,
-  X,
-  ChevronRight,
-  ChevronDown,
-} from "lucide-react";
+import { Phone, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+
+const servicesLinks = [
+  { label: "İmplant Tedavisi", href: "/hizmetler/implant-tedavisi" },
+  { label: "Zirkonyum Kaplama", href: "/hizmetler/zirkonyum-kaplama" },
+  { label: "Diş Beyazlatma", href: "/hizmetler/dis-beyazlatma" },
+  { label: "Gülüş Tasarımı", href: "/hizmetler/gulus-tasarimi" },
+  { label: "Ortodonti", href: "/hizmetler/ortodonti" },
+  { label: "Kanal Tedavisi", href: "/hizmetler/kanal-tedavisi" },
+];
+
+const corporateLinks = [
+  { label: "Doktorlarımız", href: "/doktorlarimiz" },
+  { label: "Galeri", href: "/galeri" },
+  { label: "Blog", href: "/blog" },
+  { label: "Sık Sorulan Sorular", href: "/sss" },
+];
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const [mobileDropdown, setMobileDropdown] = useState(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -22,31 +30,23 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const toggleDropdown = (name) => {
-    if (openDropdown === name) setOpenDropdown(null);
-    else setOpenDropdown(name);
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const toggleMobileDropdown = (name) => {
+    setMobileDropdown(mobileDropdown === name ? null : name);
   };
 
   return (
     <>
-      <div className="topbar">
-        <div className="container topbar-inner">
-          <div className="topbar-left">
-            <a href="tel:+905335165134">
-              <Phone size={13} /> +90 533 516 51 34
-            </a>
-            <a href="mailto:info@fyplus.com.tr">
-              <Mail size={13} /> info@fyplus.com.tr
-            </a>
-          </div>
-          <div className="topbar-right">
-            <span>
-              <Clock size={13} /> Pzt-Cum: 09:00-19:00 | Cmt: 10:00-16:00
-            </span>
-          </div>
-        </div>
-      </div>
-
       <header className={`header ${scrolled ? "header--scrolled" : ""}`}>
         <div className="container header-inner">
           <Link href="/" className="logo">
@@ -57,6 +57,7 @@ export default function Header() {
               height={40}
             />
           </Link>
+
           <nav className="nav-desktop">
             <Link href="/" className="nav-link">
               Ana Sayfa
@@ -65,34 +66,37 @@ export default function Header() {
               Hakkımızda
             </Link>
 
-            <div className="nav-item-dropdown">
-              <span className="nav-link">
+            <div className="nav-dropdown">
+              <button className="nav-link" type="button">
                 Hizmetlerimiz <ChevronDown size={14} />
-              </span>
-              <div className="dropdown-menu">
-                <Link href="/hizmetler/implant-tedavisi">İmplant Tedavisi</Link>
-                <Link href="/hizmetler/zirkonyum-kaplama">
-                  Zirkonyum Kaplama
-                </Link>
-                <Link href="/hizmetler/dis-beyazlatma">Diş Beyazlatma</Link>
-                <Link href="/hizmetler/gulus-tasarimi">Gülüş Tasarımı</Link>
-                <Link href="/hizmetler/ortodonti">Ortodonti</Link>
-                <Link href="/hizmetler/kanal-tedavisi">Kanal Tedavisi</Link>
-                <Link href="/hizmetler" className="view-all">
-                  Tüm Hizmetler &rarr;
-                </Link>
+              </button>
+              <div className="dropdown-panel">
+                <div className="dropdown-content">
+                  {servicesLinks.map((s) => (
+                    <Link key={s.href} href={s.href} className="dropdown-item">
+                      {s.label}
+                    </Link>
+                  ))}
+                  <div className="dropdown-divider" />
+                  <Link href="/hizmetler" className="dropdown-item dropdown-all">
+                    Tüm Hizmetler <ArrowRight size={13} />
+                  </Link>
+                </div>
               </div>
             </div>
 
-            <div className="nav-item-dropdown">
-              <span className="nav-link">
+            <div className="nav-dropdown">
+              <button className="nav-link" type="button">
                 Kurumsal <ChevronDown size={14} />
-              </span>
-              <div className="dropdown-menu">
-                <Link href="/doktorlarimiz">Doktorlarımız</Link>
-                <Link href="/galeri">Galeri</Link>
-                <Link href="/blog">Blog</Link>
-                <Link href="/sss">Sık Sorulan Sorular</Link>
+              </button>
+              <div className="dropdown-panel">
+                <div className="dropdown-content">
+                  {corporateLinks.map((c) => (
+                    <Link key={c.href} href={c.href} className="dropdown-item">
+                      {c.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -104,13 +108,13 @@ export default function Header() {
           <div className="header-actions">
             <a
               href="tel:+905335165134"
-              className="btn btn-outline btn-sm desktop-only"
-              style={{ borderColor: "var(--navy)", color: "var(--navy)" }}
+              className="header-phone"
             >
-              <Phone size={14} /> Hemen Ara
+              <Phone size={15} />
+              <span>0533 516 51 34</span>
             </a>
             <Link href="/iletisim" className="btn btn-primary btn-sm">
-              Randevu Al <ChevronRight size={15} />
+              Randevu Al
             </Link>
             <button
               className="mobile-toggle"
@@ -123,156 +127,97 @@ export default function Header() {
         </div>
       </header>
 
+      {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="mobile-menu" onClick={() => setMobileOpen(false)}>
+        <div className="mobile-overlay" onClick={() => setMobileOpen(false)}>
           <div
-            className="mobile-menu-inner"
+            className="mobile-panel"
             onClick={(e) => e.stopPropagation()}
           >
-            <Link
-              href="/"
-              className="mobile-link"
-              onClick={() => setMobileOpen(false)}
-            >
-              Ana Sayfa
-            </Link>
-            <Link
-              href="/hakkimizda"
-              className="mobile-link"
-              onClick={() => setMobileOpen(false)}
-            >
-              Hakkımızda
-            </Link>
-
-            <div className="mobile-dropdown">
-              <button
-                className="mobile-link"
-                onClick={() => toggleDropdown("hizmetler")}
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  border: "none",
-                  background: "none",
-                }}
-              >
-                Hizmetlerimiz{" "}
-                <ChevronDown
-                  size={16}
-                  style={{
-                    transform:
-                      openDropdown === "hizmetler" ? "rotate(180deg)" : "none",
-                    transition: "0.3s",
-                  }}
-                />
+            <div className="mobile-panel-header">
+              <img
+                src="/images/logo.png"
+                alt="FyPlus"
+                width={120}
+                height={34}
+              />
+              <button onClick={() => setMobileOpen(false)} aria-label="Kapat">
+                <X size={20} />
               </button>
-              {openDropdown === "hizmetler" && (
-                <div className="mobile-sublinks">
-                  <Link
-                    href="/hizmetler/implant-tedavisi"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    İmplant Tedavisi
-                  </Link>
-                  <Link
-                    href="/hizmetler/zirkonyum-kaplama"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    Zirkonyum Kaplama
-                  </Link>
-                  <Link
-                    href="/hizmetler/dis-beyazlatma"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    Diş Beyazlatma
-                  </Link>
-                  <Link
-                    href="/hizmetler/gulus-tasarimi"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    Gülüş Tasarımı
-                  </Link>
-                  <Link
-                    href="/hizmetler"
-                    onClick={() => setMobileOpen(false)}
-                    style={{ color: "var(--coral)", fontWeight: 600 }}
-                  >
-                    Tüm Hizmetler
-                  </Link>
-                </div>
-              )}
             </div>
 
-            <div className="mobile-dropdown">
-              <button
-                className="mobile-link"
-                onClick={() => toggleDropdown("kurumsal")}
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  border: "none",
-                  background: "none",
-                }}
-              >
-                Kurumsal{" "}
-                <ChevronDown
-                  size={16}
-                  style={{
-                    transform:
-                      openDropdown === "kurumsal" ? "rotate(180deg)" : "none",
-                    transition: "0.3s",
-                  }}
-                />
-              </button>
-              {openDropdown === "kurumsal" && (
-                <div className="mobile-sublinks">
-                  <Link
-                    href="/doktorlarimiz"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    Doktorlarımız
-                  </Link>
-                  <Link href="/galeri" onClick={() => setMobileOpen(false)}>
-                    Galeri
-                  </Link>
-                  <Link href="/blog" onClick={() => setMobileOpen(false)}>
-                    Blog
-                  </Link>
-                  <Link href="/sss" onClick={() => setMobileOpen(false)}>
-                    Sık Sorulan Sorular
-                  </Link>
-                </div>
-              )}
-            </div>
+            <nav className="mobile-nav">
+              <Link href="/" className="mobile-link" onClick={() => setMobileOpen(false)}>
+                Ana Sayfa
+              </Link>
+              <Link href="/hakkimizda" className="mobile-link" onClick={() => setMobileOpen(false)}>
+                Hakkımızda
+              </Link>
 
-            <Link
-              href="/iletisim"
-              className="mobile-link"
-              onClick={() => setMobileOpen(false)}
-            >
-              İletişim
-            </Link>
+              <div className="mobile-accordion">
+                <button
+                  className="mobile-link mobile-accordion-trigger"
+                  onClick={() => toggleMobileDropdown("hizmetler")}
+                >
+                  <span>Hizmetlerimiz</span>
+                  <ChevronDown
+                    size={16}
+                    className={`mobile-chevron ${mobileDropdown === "hizmetler" ? "mobile-chevron--open" : ""}`}
+                  />
+                </button>
+                {mobileDropdown === "hizmetler" && (
+                  <div className="mobile-subnav">
+                    {servicesLinks.map((s) => (
+                      <Link key={s.href} href={s.href} onClick={() => setMobileOpen(false)}>
+                        {s.label}
+                      </Link>
+                    ))}
+                    <Link
+                      href="/hizmetler"
+                      onClick={() => setMobileOpen(false)}
+                      className="mobile-subnav-all"
+                    >
+                      Tüm Hizmetler
+                    </Link>
+                  </div>
+                )}
+              </div>
 
-            <div
-              style={{
-                marginTop: "auto",
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-              }}
-            >
-              <a
-                href="tel:+905335165134"
-                className="btn btn-outline"
-                style={{ justifyContent: "center" }}
-              >
+              <div className="mobile-accordion">
+                <button
+                  className="mobile-link mobile-accordion-trigger"
+                  onClick={() => toggleMobileDropdown("kurumsal")}
+                >
+                  <span>Kurumsal</span>
+                  <ChevronDown
+                    size={16}
+                    className={`mobile-chevron ${mobileDropdown === "kurumsal" ? "mobile-chevron--open" : ""}`}
+                  />
+                </button>
+                {mobileDropdown === "kurumsal" && (
+                  <div className="mobile-subnav">
+                    {corporateLinks.map((c) => (
+                      <Link key={c.href} href={c.href} onClick={() => setMobileOpen(false)}>
+                        {c.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <Link href="/iletisim" className="mobile-link" onClick={() => setMobileOpen(false)}>
+                İletişim
+              </Link>
+            </nav>
+
+            <div className="mobile-panel-footer">
+              <a href="tel:+905335165134" className="btn btn-outline" style={{ width: "100%", justifyContent: "center" }}>
                 <Phone size={16} /> 0533 516 51 34
               </a>
               <Link
                 href="/iletisim"
                 className="btn btn-primary"
-                style={{ justifyContent: "center" }}
+                style={{ width: "100%", justifyContent: "center" }}
                 onClick={() => setMobileOpen(false)}
               >
                 Randevu Al
@@ -283,134 +228,137 @@ export default function Header() {
       )}
 
       <style jsx>{`
-        .topbar {
-          background: var(--navy);
-          color: var(--gray-400);
-          font-size: 0.78rem;
-          padding: 8px 0;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        .topbar-inner {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-        .topbar-left,
-        .topbar-right {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-        }
-        .topbar a,
-        .topbar span {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          color: var(--gray-400);
-          transition: var(--transition);
-        }
-        .topbar a:hover {
-          color: var(--white);
-        }
+        /* ═══ HEADER ═══ */
         .header {
           position: fixed;
-          top: 38px;
+          top: 0;
           left: 0;
           right: 0;
           z-index: 100;
-          background: rgba(255, 255, 255, 0.92);
-          backdrop-filter: blur(16px);
-          border-bottom: 1px solid var(--gray-200);
+          background: rgba(255, 255, 255, 0.96);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-bottom: 1px solid transparent;
           transition: var(--transition);
+          height: 72px;
         }
         .header--scrolled {
-          top: 0;
-          box-shadow: var(--shadow-sm);
+          border-bottom-color: var(--gray-100);
+          box-shadow: 0 1px 12px rgba(10, 22, 40, 0.04);
         }
         .header-inner {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          height: 64px;
+          height: 72px;
         }
         .logo img {
           height: 36px;
           width: auto;
         }
+
+        /* ═══ DESKTOP NAV ═══ */
         .nav-desktop {
           display: flex;
           align-items: center;
-          gap: 4px;
+          gap: 2px;
         }
         .nav-link {
-          padding: 8px 14px;
-          font-size: 0.88rem;
+          padding: 8px 16px;
+          font-size: 0.875rem;
           font-weight: 500;
           color: var(--gray-600);
           border-radius: var(--radius-sm);
           transition: var(--transition);
           display: inline-flex;
           align-items: center;
-          gap: 4px;
+          gap: 5px;
           cursor: pointer;
+          background: none;
+          border: none;
+          font-family: var(--font-body);
         }
         .nav-link:hover {
           color: var(--navy);
           background: var(--gray-50);
         }
 
-        /* Dropdown Styles */
-        .nav-item-dropdown {
+        /* ═══ DROPDOWN ═══ */
+        .nav-dropdown {
           position: relative;
         }
-        .dropdown-menu {
+        .dropdown-panel {
           position: absolute;
-          top: 100%;
-          left: 0;
-          min-width: 200px;
+          top: calc(100% + 8px);
+          left: 50%;
+          transform: translateX(-50%) translateY(8px);
+          min-width: 220px;
           background: var(--white);
-          border: 1px solid var(--gray-200);
-          border-radius: var(--radius-md);
-          box-shadow: var(--shadow-md);
-          padding: 8px 0;
+          border: 1px solid var(--gray-100);
+          border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-xl);
+          padding: 8px;
           opacity: 0;
           visibility: hidden;
-          transform: translateY(10px);
           transition: var(--transition);
+          pointer-events: none;
+          z-index: 200;
+        }
+        .nav-dropdown:hover .dropdown-panel {
+          opacity: 1;
+          visibility: visible;
+          transform: translateX(-50%) translateY(0);
+          pointer-events: auto;
+        }
+        .dropdown-content {
           display: flex;
           flex-direction: column;
         }
-        .nav-item-dropdown:hover .dropdown-menu {
-          opacity: 1;
-          visibility: visible;
-          transform: translateY(0);
-        }
-        .dropdown-menu a {
-          padding: 10px 16px;
-          font-size: 0.85rem;
+        .dropdown-item {
+          padding: 10px 14px;
+          font-size: 0.86rem;
           color: var(--gray-600);
+          border-radius: var(--radius-sm);
           transition: var(--transition);
+          display: flex;
+          align-items: center;
+          gap: 6px;
         }
-        .dropdown-menu a:hover {
+        .dropdown-item:hover {
           background: var(--gray-50);
           color: var(--navy);
         }
-        .dropdown-menu .view-all {
-          border-top: 1px solid var(--gray-100);
-          margin-top: 4px;
-          padding-top: 10px;
+        .dropdown-divider {
+          height: 1px;
+          background: var(--gray-100);
+          margin: 4px 0;
+        }
+        .dropdown-all {
           color: var(--blue);
           font-weight: 600;
         }
 
+        /* ═══ HEADER ACTIONS ═══ */
         .header-actions {
           display: flex;
           align-items: center;
           gap: 12px;
         }
-        .btn-sm {
-          padding: 10px 20px;
+        .header-phone {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 16px;
           font-size: 0.84rem;
+          font-weight: 600;
+          color: var(--navy);
+          border: 1.5px solid var(--gray-200);
+          border-radius: var(--radius-full);
+          transition: var(--transition);
+        }
+        .header-phone:hover {
+          border-color: var(--navy);
+          box-shadow: var(--shadow-sm);
         }
         .mobile-toggle {
           display: none;
@@ -420,68 +368,133 @@ export default function Header() {
           color: var(--navy);
           padding: 8px;
         }
-        .mobile-menu {
+
+        /* ═══ MOBILE OVERLAY ═══ */
+        .mobile-overlay {
           position: fixed;
           inset: 0;
-          z-index: 200;
-          background: rgba(10, 22, 40, 0.5);
+          z-index: 300;
+          background: rgba(10, 22, 40, 0.4);
           backdrop-filter: blur(4px);
         }
-        .mobile-menu-inner {
+        .mobile-panel {
           position: absolute;
           top: 0;
           right: 0;
-          width: 300px;
+          width: 320px;
+          max-width: 85vw;
           height: 100%;
           background: var(--white);
-          padding: 80px 24px 24px;
           display: flex;
           flex-direction: column;
-          gap: 4px;
+          animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+          from { transform: translateX(100%); }
+          to { transform: translateX(0); }
+        }
+        .mobile-panel-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 20px 24px;
+          border-bottom: 1px solid var(--gray-100);
+        }
+        .mobile-panel-header button {
+          width: 36px;
+          height: 36px;
+          border-radius: var(--radius-sm);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--gray-500);
+          transition: var(--transition);
+        }
+        .mobile-panel-header button:hover {
+          background: var(--gray-50);
+          color: var(--navy);
+        }
+        .mobile-nav {
+          flex: 1;
           overflow-y: auto;
+          padding: 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
         }
         .mobile-link {
           padding: 14px 16px;
-          font-size: 0.95rem;
+          font-size: 0.92rem;
           font-weight: 500;
           color: var(--navy);
           border-radius: var(--radius-sm);
           transition: var(--transition);
           text-align: left;
+          display: block;
         }
         .mobile-link:hover {
           background: var(--gray-50);
           color: var(--blue);
         }
-        .mobile-sublinks {
+        .mobile-accordion-trigger {
+          display: flex !important;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-family: var(--font-body);
+        }
+        .mobile-chevron {
+          transition: transform 0.25s ease;
+        }
+        .mobile-chevron--open {
+          transform: rotate(180deg);
+        }
+        .mobile-subnav {
           display: flex;
           flex-direction: column;
-          padding-left: 20px;
-          border-left: 2px solid var(--gray-100);
+          padding-left: 16px;
           margin-left: 16px;
+          border-left: 2px solid var(--gray-100);
           margin-bottom: 8px;
         }
-        .mobile-sublinks a {
-          padding: 10px 0;
-          font-size: 0.88rem;
-          color: var(--gray-600);
+        .mobile-subnav a {
+          padding: 10px 14px;
+          font-size: 0.86rem;
+          color: var(--gray-500);
+          transition: var(--transition);
+          border-radius: var(--radius-xs);
+        }
+        .mobile-subnav a:hover {
+          color: var(--navy);
+          background: var(--gray-50);
+        }
+        .mobile-subnav-all {
+          color: var(--coral) !important;
+          font-weight: 600;
+        }
+        .mobile-panel-footer {
+          padding: 16px 24px 24px;
+          border-top: 1px solid var(--gray-100);
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
         }
 
+        /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
-          .topbar {
-            display: none;
-          }
-          .header {
-            top: 0;
-          }
           .nav-desktop {
             display: none;
           }
-          .desktop-only {
-            display: none !important;
+          .header-phone {
+            display: none;
           }
           .mobile-toggle {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
         }
       `}</style>

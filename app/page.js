@@ -20,7 +20,6 @@ import {
   MapPin,
   Stethoscope,
   CalendarCheck,
-  Play,
   Zap,
 } from "lucide-react";
 
@@ -30,42 +29,42 @@ const featuredServices = [
     title: "İmplant Tedavisi",
     desc: "Eksik dişlerinizi kalıcı, doğal görünümlü titanyum implantlarla tamamlıyoruz.",
     slug: "implant-tedavisi",
-    accent: "blue",
+    color: "blue",
   },
   {
     icon: Crown,
     title: "Zirkonyum Kaplama",
     desc: "Metal-free zirkonyum ile doğal diş estetiği sunuyoruz.",
     slug: "zirkonyum-kaplama",
-    accent: "gold",
+    color: "gold",
   },
   {
     icon: Sparkles,
     title: "Diş Beyazlatma",
     desc: "Profesyonel whitening ile 8 tona kadar beyazlatma.",
     slug: "dis-beyazlatma",
-    accent: "coral",
+    color: "coral",
   },
   {
     icon: Smile,
     title: "Gülüş Tasarımı",
     desc: "Hollywood Smile ile hayalinizdeki gülüşe kavuşun.",
     slug: "gulus-tasarimi",
-    accent: "blue",
+    color: "green",
   },
   {
     icon: AlignHorizontalDistributeCenter,
     title: "Ortodonti",
     desc: "Şeffaf plak ve modern braketlerle düzgün dişler.",
     slug: "ortodonti",
-    accent: "gold",
+    color: "blue",
   },
   {
     icon: Baby,
     title: "Pedodonti",
     desc: "Çocuklara özel korkusuz tedavi deneyimi.",
     slug: "pedodonti",
-    accent: "coral",
+    color: "gold",
   },
 ];
 
@@ -131,15 +130,16 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero-bg">
           <Image
-            src="/images/real/lobby.png"
-            alt="FyPlus Dental Clinic Bahçeşehir Modern Diş Kliniği Lobi"
+            src="/images/hero-clinic.png"
+            alt="FyPlus Dental Clinic Bahçeşehir Modern Diş Kliniği"
             fill
             style={{ objectFit: "cover", objectPosition: "center" }}
             priority
+            quality={90}
           />
           <div className="hero-overlay" />
         </div>
-        <div className="container hero-inner">
+        <div className="container hero-grid">
           <div className="hero-content">
             <div className="hero-badge">
               <MapPin size={14} /> Bahçeşehir, İstanbul
@@ -147,7 +147,7 @@ export default function HomePage() {
             <h1>
               Sağlıklı ve Güzel
               <br />
-              <span>Gülüşler</span> Tasarlıyoruz
+              <span className="hero-accent">Gülüşler</span> Tasarlıyoruz
             </h1>
             <p className="hero-desc">
               Son teknoloji ekipmanlarımız ve uzman hekim kadromuzla,
@@ -162,28 +162,28 @@ export default function HomePage() {
               </a>
             </div>
           </div>
-          <div className="hero-cards">
-            <div className="hero-float-card">
+          <div className="hero-visual">
+            <div className="hero-feature-card">
               <div className="hfc-icon">
-                <Shield size={22} />
+                <Shield size={20} />
               </div>
               <div>
                 <strong>Garantili Tedavi</strong>
                 <span>Yazılı garanti belgesi</span>
               </div>
             </div>
-            <div className="hero-float-card">
+            <div className="hero-feature-card">
               <div className="hfc-icon hfc-gold">
-                <Award size={22} />
+                <Award size={20} />
               </div>
               <div>
                 <strong>15+ Yıl Tecrübe</strong>
                 <span>6 uzman hekim</span>
               </div>
             </div>
-            <div className="hero-float-card">
+            <div className="hero-feature-card">
               <div className="hfc-icon hfc-coral">
-                <Zap size={22} />
+                <Zap size={20} />
               </div>
               <div>
                 <strong>Son Teknoloji</strong>
@@ -194,20 +194,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ STATS BAR ═══ */}
-      <section className="stats-bar">
+      {/* ═══ STATS ═══ */}
+      <section className="stats-section">
         <div className="container">
-          <div className="stats-grid">
+          <div className="stats-row">
             {stats.map((s, i) => {
               const Icon = s.icon;
               return (
-                <div key={i} className="stat-item">
-                  <div className="stat-icon">
+                <div key={i} className="stat-card">
+                  <div className="stat-icon-wrap">
                     <Icon size={20} />
                   </div>
                   <div>
-                    <strong>{s.value}</strong>
-                    <span>{s.label}</span>
+                    <strong className="stat-value">{s.value}</strong>
+                    <span className="stat-label">{s.label}</span>
                   </div>
                 </div>
               );
@@ -219,7 +219,7 @@ export default function HomePage() {
       {/* ═══ HİZMETLER ═══ */}
       <section className="section" id="hizmetler">
         <div className="container">
-          <div className="section-header-center">
+          <div className="section-center">
             <div className="section-label">Hizmetlerimiz</div>
             <h2 className="section-title">Uzman Tedavi Hizmetleri</h2>
             <p className="section-desc" style={{ margin: "0 auto" }}>
@@ -234,15 +234,15 @@ export default function HomePage() {
                 <Link
                   key={i}
                   href={`/hizmetler/${s.slug}`}
-                  className="service-card"
+                  className="svc-card"
                 >
-                  <div className={`icon-box icon-box-${s.accent}`}>
-                    <Icon size={24} />
+                  <div className={`icon-box icon-box-${s.color}`}>
+                    <Icon size={22} />
                   </div>
                   <h3>{s.title}</h3>
                   <p>{s.desc}</p>
-                  <span className="service-link">
-                    Detaylı Bilgi <ArrowRight size={14} />
+                  <span className="svc-link">
+                    Detaylı Bilgi <ArrowRight size={13} />
                   </span>
                 </Link>
               );
@@ -259,25 +259,25 @@ export default function HomePage() {
       {/* ═══ HAKKIMIZDA ═══ */}
       <section className="section about-section">
         <div className="container">
-          <div className="about-grid">
+          <div className="about-layout">
             <div className="about-images">
               <div className="about-img-main">
                 <Image
-                  src="/images/real/exterior.png"
-                  alt="FyPlus Dental Clinic Bahçeşehir Dış Cephe"
+                  src="/images/about-clinic.png"
+                  alt="FyPlus Dental Bahçeşehir Premium Klinik Lobby"
                   fill
                   style={{ objectFit: "cover" }}
                 />
               </div>
-              <div className="about-img-small">
+              <div className="about-img-secondary">
                 <Image
-                  src="/images/real/treatment.png"
+                  src="/images/treatment.png"
                   alt="FyPlus Dental Modern Tedavi Odası"
                   fill
                   style={{ objectFit: "cover" }}
                 />
               </div>
-              <div className="about-exp-badge">
+              <div className="about-badge">
                 <strong>15+</strong>
                 <span>Yıl</span>
               </div>
@@ -294,16 +294,16 @@ export default function HomePage() {
                 odaklı yaklaşımımızla Bahçeşehir, Başakşehir ve çevre bölgelere
                 kaliteli diş sağlığı hizmeti sunuyoruz.
               </p>
-              <div className="about-features">
+              <div className="about-checklist">
                 {[
                   "Son teknoloji 3D tarayıcı ve dijital röntgen",
                   "Avrupa standartlarında sterilizasyon",
                   "Anlaşmalı sigorta ve taksit imkanı",
                   "Ücretsiz ilk muayene ve konsültasyon",
                 ].map((f, i) => (
-                  <div key={i} className="about-feature">
-                    <div className="af-check">
-                      <Check size={14} />
+                  <div key={i} className="about-check-item">
+                    <div className="about-check-circle">
+                      <Check size={13} />
                     </div>
                     <span>{f}</span>
                   </div>
@@ -321,33 +321,30 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ BEFORE/AFTER SMILE ═══ */}
+      {/* ═══ GÜLÜŞ TASARIMI ═══ */}
       <section className="smile-section">
         <div className="container">
-          <div className="smile-grid">
+          <div className="smile-layout">
             <div className="smile-content">
-              <div className="section-label">Gülüş Tasarımı</div>
+              <div className="section-label" style={{ color: "var(--gold)" }}>Gülüş Tasarımı</div>
               <h2 className="section-title" style={{ color: "var(--white)" }}>
                 Hayalinizdeki Gülüşe
                 <br />
                 Kavuşmanız İçin Buradayız
               </h2>
-              <p style={{ color: "var(--gray-400)", marginBottom: "32px" }}>
+              <p style={{ color: "var(--gray-400)", marginBottom: "32px", lineHeight: "1.85" }}>
                 Dijital gülüş tasarımı ile tedavi öncesi sonucu görün. Laminate
                 veneer, zirkonyum kaplama ve beyazlatma seçenekleriyle mükemmel
                 gülüşe ulaşın.
               </p>
-              <Link
-                href="/hizmetler/gulus-tasarimi"
-                className="btn btn-primary"
-              >
+              <Link href="/hizmetler/gulus-tasarimi" className="btn btn-primary">
                 Hollywood Smile <ArrowRight size={16} />
               </Link>
             </div>
-            <div className="smile-image">
+            <div className="smile-image-wrap">
               <Image
                 src="/images/smile.png"
-                alt="FyPlus Dental Gülüş Tasarımı Hollywood Smile Sonucu"
+                alt="FyPlus Dental Gülüş Tasarımı Hollywood Smile"
                 fill
                 style={{ objectFit: "cover" }}
               />
@@ -359,20 +356,20 @@ export default function HomePage() {
       {/* ═══ TEDAVİ SÜRECİ ═══ */}
       <section className="section">
         <div className="container">
-          <div className="section-header-center">
+          <div className="section-center">
             <div className="section-label">Tedavi Süreci</div>
             <h2 className="section-title">4 Adımda Tedavi</h2>
             <p className="section-desc" style={{ margin: "0 auto" }}>
               Randevunuzdan sonuç almanıza kadar her adımda yanınızdayız.
             </p>
           </div>
-          <div className="process-grid">
+          <div className="process-row">
             {processSteps.map((s, i) => {
               const Icon = s.icon;
               return (
-                <div key={i} className="process-card">
-                  <div className="process-num">{s.num}</div>
-                  <div className="icon-box">
+                <div key={i} className="step-card">
+                  <div className="step-num">{s.num}</div>
+                  <div className="step-icon-wrap">
                     <Icon size={22} />
                   </div>
                   <h3>{s.title}</h3>
@@ -387,8 +384,8 @@ export default function HomePage() {
       {/* ═══ DOKTOR ═══ */}
       <section className="section doctor-section">
         <div className="container">
-          <div className="doctor-grid">
-            <div className="doctor-image">
+          <div className="doctor-layout">
+            <div className="doctor-portrait">
               <Image
                 src="/images/doctor.png"
                 alt="FyPlus Dental Bahçeşehir Uzman Diş Hekimi"
@@ -408,7 +405,7 @@ export default function HomePage() {
                 periodontoloji ve pedodonti alanlarında uzmanlaşmış 6 deneyimli
                 hekimimiz sizlere hizmet vermektedir.
               </p>
-              <div className="doctor-specs">
+              <div className="doctor-tags">
                 {[
                   "İmplantoloji",
                   "Ortodonti",
@@ -417,7 +414,7 @@ export default function HomePage() {
                   "Periodontoloji",
                   "Pedodonti",
                 ].map((s, i) => (
-                  <span key={i} className="doctor-spec">
+                  <span key={i} className="doctor-tag">
                     {s}
                   </span>
                 ))}
@@ -425,7 +422,7 @@ export default function HomePage() {
               <Link
                 href="/doktorlarimiz"
                 className="btn btn-outline"
-                style={{ marginTop: "32px" }}
+                style={{ marginTop: "28px" }}
               >
                 Hekimlerimizi Tanıyın <ArrowRight size={14} />
               </Link>
@@ -437,21 +434,21 @@ export default function HomePage() {
       {/* ═══ YORUMLAR ═══ */}
       <section className="section">
         <div className="container">
-          <div className="section-header-center">
+          <div className="section-center">
             <div className="section-label">Hasta Yorumları</div>
             <h2 className="section-title">Hastalarımız Ne Diyor?</h2>
           </div>
-          <div className="testimonials-grid">
+          <div className="testimonials-row">
             {testimonials.map((t, i) => (
-              <div key={i} className="testimonial-card card">
-                <div className="t-stars">
+              <div key={i} className="review-card">
+                <div className="review-stars">
                   {Array.from({ length: t.rating }, (_, j) => (
-                    <Star key={j} size={16} fill="currentColor" />
+                    <Star key={j} size={15} fill="currentColor" />
                   ))}
                 </div>
-                <p>&ldquo;{t.text}&rdquo;</p>
-                <div className="t-footer">
-                  <div className="t-avatar">{t.name[0]}</div>
+                <p className="review-text">&ldquo;{t.text}&rdquo;</p>
+                <div className="review-footer">
+                  <div className="review-avatar">{t.name[0]}</div>
                   <div>
                     <strong>{t.name}</strong>
                     <span>{t.treatment}</span>
@@ -465,9 +462,9 @@ export default function HomePage() {
 
       {/* ═══ CTA ═══ */}
       <section className="cta-section">
-        <div className="container cta-inner">
-          <div className="cta-content">
-            <h2 style={{ color: "var(--white)", marginBottom: "12px" }}>
+        <div className="container cta-layout">
+          <div className="cta-text">
+            <h2 style={{ color: "var(--white)", marginBottom: "14px" }}>
               Ücretsiz Muayene İçin
               <br />
               Randevu Alın
@@ -475,12 +472,13 @@ export default function HomePage() {
             <p
               style={{
                 color: "var(--gray-400)",
-                marginBottom: "32px",
-                maxWidth: "400px",
+                marginBottom: "28px",
+                maxWidth: "420px",
+                lineHeight: "1.85",
               }}
             >
-              Bahçeşehir kliniğimizde uzman hekimlerimizle ücretsiz
-              konsültasyon.
+              Bahçeşehir kliniğimizde uzman hekimlerimizle ücretsiz konsültasyon
+              randevusu oluşturun.
             </p>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <Link href="/iletisim" className="btn btn-primary">
@@ -491,7 +489,7 @@ export default function HomePage() {
               </a>
             </div>
           </div>
-          <div className="cta-image">
+          <div className="cta-img-wrap">
             <Image
               src="/images/patient-happy.png"
               alt="Mutlu Hasta FyPlus Dental Bahçeşehir"
@@ -503,10 +501,10 @@ export default function HomePage() {
       </section>
 
       <style jsx>{`
-        /* HERO */
+        /* ═══ HERO ═══ */
         .hero {
           position: relative;
-          min-height: 90vh;
+          min-height: 92vh;
           display: flex;
           align-items: center;
           overflow: hidden;
@@ -521,49 +519,51 @@ export default function HomePage() {
           inset: 0;
           background: linear-gradient(
             135deg,
-            rgba(11, 29, 46, 0.92) 0%,
-            rgba(11, 29, 46, 0.75) 50%,
-            rgba(11, 29, 46, 0.5) 100%
+            rgba(10, 22, 40, 0.88) 0%,
+            rgba(10, 22, 40, 0.72) 45%,
+            rgba(10, 22, 40, 0.45) 100%
           );
         }
-        .hero-inner {
+        .hero-grid {
           position: relative;
           z-index: 1;
           display: grid;
-          grid-template-columns: 1fr auto;
+          grid-template-columns: 1.1fr 0.9fr;
           gap: 48px;
           align-items: center;
-          padding-top: 80px;
+          padding-top: 72px;
         }
         .hero-badge {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          gap: 7px;
           padding: 8px 20px;
-          border-radius: 100px;
-          background: rgba(201, 169, 110, 0.12);
+          border-radius: var(--radius-full);
+          background: rgba(200, 169, 126, 0.1);
           color: var(--gold);
-          font-size: 0.8rem;
+          font-size: 0.78rem;
           font-weight: 600;
-          margin-bottom: 28px;
-          border: 1px solid rgba(201, 169, 110, 0.2);
+          margin-bottom: 24px;
+          border: 1px solid rgba(200, 169, 126, 0.15);
         }
         .hero-content h1 {
           color: var(--white);
-          font-size: clamp(2.5rem, 5vw, 3.8rem);
+          font-size: clamp(2.6rem, 5vw, 4rem);
           margin-bottom: 20px;
-          line-height: 1.1;
+          line-height: 1.08;
+          letter-spacing: -0.03em;
         }
-        .hero-content h1 span {
-          background: linear-gradient(135deg, var(--gold), #e8b458);
+        .hero-accent {
+          background: linear-gradient(135deg, var(--gold), #dbb87a);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
         .hero-desc {
           color: var(--gray-300);
           font-size: 1.05rem;
-          line-height: 1.75;
-          max-width: 500px;
+          line-height: 1.8;
+          max-width: 480px;
           margin-bottom: 36px;
         }
         .hero-actions {
@@ -571,89 +571,81 @@ export default function HomePage() {
           gap: 12px;
           flex-wrap: wrap;
         }
-        .hero-cards {
+        .hero-visual {
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 14px;
+          align-items: flex-end;
         }
-        .hero-float-card {
+        .hero-feature-card {
           display: flex;
           align-items: center;
           gap: 14px;
           padding: 18px 24px;
           background: rgba(255, 255, 255, 0.06);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+          border: 1px solid rgba(255, 255, 255, 0.07);
           border-radius: var(--radius-lg);
           color: var(--white);
-          min-width: 240px;
-          animation: float 6s ease-in-out infinite;
+          min-width: 260px;
+          transition: var(--transition);
         }
-        .hero-float-card:nth-child(2) {
-          animation-delay: 2s;
-        }
-        .hero-float-card:nth-child(3) {
-          animation-delay: 4s;
+        .hero-feature-card:hover {
+          background: rgba(255, 255, 255, 0.1);
+          transform: translateX(-4px);
         }
         .hfc-icon {
           width: 44px;
           height: 44px;
           border-radius: var(--radius-md);
-          background: rgba(27, 143, 206, 0.15);
+          background: rgba(43, 124, 173, 0.14);
           display: flex;
           align-items: center;
           justify-content: center;
-          color: var(--blue);
+          color: var(--blue-soft);
           flex-shrink: 0;
         }
         .hfc-gold {
-          background: rgba(201, 169, 110, 0.15);
+          background: rgba(200, 169, 126, 0.14);
           color: var(--gold);
         }
         .hfc-coral {
-          background: rgba(232, 81, 61, 0.15);
+          background: rgba(212, 99, 75, 0.14);
           color: var(--coral);
         }
-        .hero-float-card strong {
+        .hero-feature-card strong {
           display: block;
-          font-size: 0.9rem;
+          font-size: 0.88rem;
           margin-bottom: 2px;
+          font-weight: 600;
         }
-        .hero-float-card span {
-          font-size: 0.76rem;
+        .hero-feature-card span {
+          font-size: 0.75rem;
           color: var(--gray-400);
         }
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-6px);
-          }
-        }
 
-        /* STATS BAR */
-        .stats-bar {
+        /* ═══ STATS ═══ */
+        .stats-section {
           background: var(--white);
           border-bottom: 1px solid var(--gray-100);
           padding: 0;
         }
-        .stats-grid {
+        .stats-row {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
         }
-        .stat-item {
+        .stat-card {
           display: flex;
           align-items: center;
           gap: 14px;
-          padding: 32px 24px;
+          padding: 32px 28px;
           border-right: 1px solid var(--gray-100);
         }
-        .stat-item:last-child {
+        .stat-card:last-child {
           border-right: none;
         }
-        .stat-icon {
+        .stat-icon-wrap {
           width: 44px;
           height: 44px;
           border-radius: var(--radius-md);
@@ -664,41 +656,42 @@ export default function HomePage() {
           justify-content: center;
           flex-shrink: 0;
         }
-        .stat-item strong {
+        .stat-value {
           display: block;
           font-family: var(--font-heading);
           font-size: 1.5rem;
           font-weight: 800;
           color: var(--navy);
+          line-height: 1.1;
         }
-        .stat-item span {
+        .stat-label {
           font-size: 0.78rem;
           color: var(--gray-500);
         }
 
-        /* SECTION HEADER CENTER */
-        .section-header-center {
+        /* ═══ SECTION CENTER ═══ */
+        .section-center {
           text-align: center;
           margin-bottom: 56px;
         }
-        .section-header-center .section-label {
+        .section-center .section-label {
           justify-content: center;
         }
-        .section-header-center .section-label::before {
+        .section-center .section-label::before {
           display: none;
         }
 
-        /* SERVICES */
+        /* ═══ SERVICES ═══ */
         .services-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
+          gap: 20px;
         }
-        .service-card {
+        .svc-card {
           display: flex;
           flex-direction: column;
           gap: 14px;
-          padding: 36px;
+          padding: 32px;
           background: var(--white);
           border: 1px solid var(--gray-100);
           border-radius: var(--radius-xl);
@@ -707,35 +700,35 @@ export default function HomePage() {
           position: relative;
           overflow: hidden;
         }
-        .service-card::before {
+        .svc-card::after {
           content: "";
           position: absolute;
-          top: 0;
+          bottom: 0;
           left: 0;
           width: 100%;
-          height: 3px;
+          height: 2px;
           background: linear-gradient(90deg, var(--blue), var(--gold));
           opacity: 0;
           transition: var(--transition);
         }
-        .service-card:hover {
-          box-shadow: var(--shadow-xl);
-          transform: translateY(-6px);
+        .svc-card:hover {
+          box-shadow: var(--shadow-lg);
+          transform: translateY(-5px);
           border-color: transparent;
         }
-        .service-card:hover::before {
+        .svc-card:hover::after {
           opacity: 1;
         }
-        .service-card h3 {
-          font-size: 1.1rem;
+        .svc-card h3 {
+          font-size: 1.05rem;
         }
-        .service-card p {
+        .svc-card p {
           color: var(--gray-500);
           font-size: 0.88rem;
-          line-height: 1.65;
+          line-height: 1.7;
           flex: 1;
         }
-        .service-link {
+        .svc-link {
           display: flex;
           align-items: center;
           gap: 6px;
@@ -745,41 +738,46 @@ export default function HomePage() {
           margin-top: 4px;
         }
 
-        /* ABOUT */
+        /* ═══ ABOUT ═══ */
         .about-section {
-          background: var(--gray-25);
+          background: var(--off-white);
         }
-        .about-grid {
+        .about-layout {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 80px;
+          gap: 72px;
           align-items: center;
         }
         .about-images {
           position: relative;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
-          height: 500px;
+          height: 520px;
         }
         .about-img-main {
-          position: relative;
-          border-radius: var(--radius-xl);
-          overflow: hidden;
-          grid-row: 1/3;
-        }
-        .about-img-small {
-          position: relative;
-          border-radius: var(--radius-xl);
-          overflow: hidden;
-          align-self: end;
-        }
-        .about-exp-badge {
           position: absolute;
-          bottom: 24px;
-          left: 50%;
-          transform: translateX(-50%);
-          background: linear-gradient(135deg, var(--gold), #e8b458);
+          top: 0;
+          left: 0;
+          width: 70%;
+          height: 85%;
+          border-radius: var(--radius-2xl);
+          overflow: hidden;
+          box-shadow: var(--shadow-xl);
+        }
+        .about-img-secondary {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 55%;
+          height: 55%;
+          border-radius: var(--radius-xl);
+          overflow: hidden;
+          box-shadow: var(--shadow-xl);
+          border: 4px solid var(--white);
+        }
+        .about-badge {
+          position: absolute;
+          bottom: 40%;
+          left: 58%;
+          background: linear-gradient(135deg, var(--gold), var(--gold-dark));
           color: var(--white);
           padding: 16px 20px;
           border-radius: var(--radius-lg);
@@ -787,33 +785,33 @@ export default function HomePage() {
           z-index: 2;
           box-shadow: var(--shadow-glow-gold);
         }
-        .about-exp-badge strong {
+        .about-badge strong {
           display: block;
           font-family: var(--font-heading);
           font-size: 2rem;
           font-weight: 800;
           line-height: 1;
         }
-        .about-exp-badge span {
-          font-size: 0.72rem;
+        .about-badge span {
+          font-size: 0.7rem;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.1em;
         }
-        .about-features {
+        .about-checklist {
           display: flex;
           flex-direction: column;
           gap: 14px;
           margin-top: 28px;
         }
-        .about-feature {
+        .about-check-item {
           display: flex;
           align-items: center;
           gap: 12px;
           font-size: 0.92rem;
           color: var(--gray-700);
         }
-        .af-check {
+        .about-check-circle {
           width: 24px;
           height: 24px;
           border-radius: 50%;
@@ -825,7 +823,7 @@ export default function HomePage() {
           flex-shrink: 0;
         }
 
-        /* SMILE */
+        /* ═══ SMILE ═══ */
         .smile-section {
           background: var(--navy);
           padding: 100px 0;
@@ -838,33 +836,35 @@ export default function HomePage() {
           inset: 0;
           background: radial-gradient(
             ellipse at 20% 50%,
-            rgba(201, 169, 110, 0.05),
+            rgba(200, 169, 126, 0.04),
             transparent 60%
           );
         }
-        .smile-grid {
+        .smile-layout {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 64px;
+          gap: 56px;
           align-items: center;
+          position: relative;
+          z-index: 1;
         }
-        .smile-image {
+        .smile-image-wrap {
           position: relative;
           border-radius: var(--radius-2xl);
           overflow: hidden;
           aspect-ratio: 4/3;
-          box-shadow: var(--shadow-xl);
+          box-shadow: var(--shadow-2xl);
         }
 
-        /* PROCESS */
-        .process-grid {
+        /* ═══ PROCESS ═══ */
+        .process-row {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
+          gap: 20px;
         }
-        .process-card {
+        .step-card {
           text-align: center;
-          padding: 40px 24px;
+          padding: 36px 24px;
           border-radius: var(--radius-xl);
           border: 1px solid var(--gray-100);
           position: relative;
@@ -872,72 +872,80 @@ export default function HomePage() {
           transition: var(--transition);
           overflow: hidden;
         }
-        .process-card::before {
+        .step-card::after {
           content: "";
           position: absolute;
           bottom: 0;
           left: 0;
           width: 100%;
-          height: 3px;
+          height: 2px;
           background: linear-gradient(90deg, var(--blue), var(--gold));
           opacity: 0;
           transition: var(--transition);
         }
-        .process-card:hover {
+        .step-card:hover {
           box-shadow: var(--shadow-lg);
           transform: translateY(-4px);
         }
-        .process-card:hover::before {
+        .step-card:hover::after {
           opacity: 1;
         }
-        .process-num {
+        .step-num {
           position: absolute;
           top: 12px;
           right: 16px;
           font-family: var(--font-heading);
-          font-size: 3rem;
+          font-size: 2.8rem;
           font-weight: 900;
           color: var(--gray-50);
           line-height: 1;
         }
-        .process-card .icon-box {
+        .step-icon-wrap {
+          width: 52px;
+          height: 52px;
+          border-radius: var(--radius-md);
+          background: var(--blue-light);
+          color: var(--blue);
+          display: flex;
+          align-items: center;
+          justify-content: center;
           margin: 0 auto 16px;
         }
-        .process-card h3 {
+        .step-card h3 {
           margin-bottom: 8px;
         }
-        .process-card p {
+        .step-card p {
           color: var(--gray-500);
           font-size: 0.84rem;
-          line-height: 1.6;
+          line-height: 1.65;
         }
 
-        /* DOCTOR */
+        /* ═══ DOCTOR ═══ */
         .doctor-section {
-          background: var(--gray-25);
+          background: var(--off-white);
         }
-        .doctor-grid {
+        .doctor-layout {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 80px;
+          gap: 72px;
           align-items: center;
         }
-        .doctor-image {
+        .doctor-portrait {
           position: relative;
           border-radius: var(--radius-2xl);
           overflow: hidden;
           aspect-ratio: 3/4;
           box-shadow: var(--shadow-xl);
         }
-        .doctor-specs {
+        .doctor-tags {
           display: flex;
           flex-wrap: wrap;
           gap: 8px;
           margin-top: 24px;
         }
-        .doctor-spec {
+        .doctor-tag {
           padding: 8px 18px;
-          border-radius: 100px;
+          border-radius: var(--radius-full);
           background: var(--white);
           border: 1px solid var(--gray-200);
           font-size: 0.82rem;
@@ -945,44 +953,55 @@ export default function HomePage() {
           color: var(--gray-600);
           transition: var(--transition);
         }
-        .doctor-spec:hover {
+        .doctor-tag:hover {
           border-color: var(--gold);
-          color: var(--gold);
+          color: var(--gold-dark);
+          background: var(--gold-light);
         }
 
-        /* TESTIMONIALS */
-        .testimonials-grid {
+        /* ═══ TESTIMONIALS ═══ */
+        .testimonials-row {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
+          gap: 20px;
         }
-        .testimonial-card {
+        .review-card {
+          background: var(--white);
+          border: 1px solid var(--gray-100);
+          border-radius: var(--radius-xl);
+          padding: 32px;
           display: flex;
           flex-direction: column;
           gap: 16px;
+          transition: var(--transition);
         }
-        .t-stars {
+        .review-card:hover {
+          box-shadow: var(--shadow-lg);
+          transform: translateY(-4px);
+          border-color: transparent;
+        }
+        .review-stars {
           display: flex;
           gap: 2px;
-          color: #f59e0b;
+          color: #e8a832;
         }
-        .testimonial-card p {
+        .review-text {
           color: var(--gray-600);
           font-size: 0.92rem;
-          line-height: 1.75;
+          line-height: 1.8;
           flex: 1;
           font-style: italic;
         }
-        .t-footer {
+        .review-footer {
           display: flex;
           align-items: center;
           gap: 12px;
         }
-        .t-avatar {
+        .review-avatar {
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background: linear-gradient(135deg, var(--navy), var(--blue-dark));
+          background: var(--navy);
           color: var(--white);
           display: flex;
           align-items: center;
@@ -990,17 +1009,18 @@ export default function HomePage() {
           font-size: 0.85rem;
           font-weight: 700;
         }
-        .t-footer strong {
+        .review-footer strong {
           display: block;
-          font-size: 0.9rem;
+          font-size: 0.88rem;
+          color: var(--navy);
         }
-        .t-footer span {
-          font-size: 0.78rem;
+        .review-footer span {
+          font-size: 0.76rem;
           color: var(--gray-500);
         }
 
-        /* CTA */
-        .cta-inner {
+        /* ═══ CTA ═══ */
+        .cta-layout {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 48px;
@@ -1008,73 +1028,80 @@ export default function HomePage() {
           position: relative;
           z-index: 1;
         }
-        .cta-image {
+        .cta-img-wrap {
           position: relative;
           border-radius: var(--radius-2xl);
           overflow: hidden;
           aspect-ratio: 4/3;
-          box-shadow: var(--shadow-xl);
+          box-shadow: var(--shadow-2xl);
         }
 
+        /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
-          .hero-inner {
+          .hero-grid {
             grid-template-columns: 1fr;
+            padding-top: 100px;
           }
-          .hero-cards {
+          .hero-visual {
             display: none;
           }
           .services-grid,
-          .testimonials-grid {
+          .testimonials-row {
             grid-template-columns: repeat(2, 1fr);
           }
-          .about-grid,
-          .smile-grid,
-          .doctor-grid,
-          .cta-inner {
+          .about-layout,
+          .smile-layout,
+          .doctor-layout,
+          .cta-layout {
             grid-template-columns: 1fr;
+            gap: 40px;
           }
           .about-images {
-            height: 360px;
+            height: 380px;
           }
-          .smile-image,
-          .doctor-image,
-          .cta-image {
-            display: none;
+          .smile-image-wrap,
+          .doctor-portrait,
+          .cta-img-wrap {
+            max-height: 400px;
           }
-          .process-grid {
+          .process-row {
             grid-template-columns: repeat(2, 1fr);
           }
-          .stats-grid {
+          .stats-row {
             grid-template-columns: repeat(2, 1fr);
           }
-          .stat-item:nth-child(2) {
+          .stat-card:nth-child(2) {
             border-right: none;
           }
         }
         @media (max-width: 600px) {
+          .hero-content h1 {
+            font-size: 2.2rem;
+          }
           .services-grid,
-          .process-grid {
+          .process-row,
+          .testimonials-row {
             grid-template-columns: 1fr;
           }
-          .testimonials-grid {
+          .stats-row {
             grid-template-columns: 1fr;
           }
-          .stats-grid {
-            grid-template-columns: 1fr;
-          }
-          .stat-item {
+          .stat-card {
             border-right: none;
             border-bottom: 1px solid var(--gray-100);
           }
-          .stat-item:last-child {
+          .stat-card:last-child {
             border-bottom: none;
           }
           .about-images {
-            height: 280px;
-            grid-template-columns: 1fr;
+            height: 300px;
           }
-          .about-img-small {
+          .about-img-secondary {
             display: none;
+          }
+          .about-img-main {
+            width: 100%;
+            height: 100%;
           }
         }
       `}</style>
