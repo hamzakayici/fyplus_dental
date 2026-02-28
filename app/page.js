@@ -30,6 +30,7 @@ const featuredServices = [
     desc: "Eksik dişlerinizi kalıcı, doğal görünümlü titanyum implantlarla tamamlıyoruz.",
     slug: "implant-tedavisi",
     color: "blue",
+    image: "/images/svc-implant.png",
   },
   {
     icon: Crown,
@@ -37,6 +38,7 @@ const featuredServices = [
     desc: "Metal-free zirkonyum ile doğal diş estetiği sunuyoruz.",
     slug: "zirkonyum-kaplama",
     color: "gold",
+    image: "/images/svc-zirconia.png",
   },
   {
     icon: Sparkles,
@@ -44,6 +46,7 @@ const featuredServices = [
     desc: "Profesyonel whitening ile 8 tona kadar beyazlatma.",
     slug: "dis-beyazlatma",
     color: "coral",
+    image: "/images/svc-whitening.png",
   },
   {
     icon: Smile,
@@ -51,6 +54,7 @@ const featuredServices = [
     desc: "Hollywood Smile ile hayalinizdeki gülüşe kavuşun.",
     slug: "gulus-tasarimi",
     color: "green",
+    image: "/images/smile.png",
   },
   {
     icon: AlignHorizontalDistributeCenter,
@@ -58,6 +62,7 @@ const featuredServices = [
     desc: "Şeffaf plak ve modern braketlerle düzgün dişler.",
     slug: "ortodonti",
     color: "blue",
+    image: "/images/svc-orthodontics.png",
   },
   {
     icon: Baby,
@@ -65,6 +70,7 @@ const featuredServices = [
     desc: "Çocuklara özel korkusuz tedavi deneyimi.",
     slug: "pedodonti",
     color: "gold",
+    image: "/images/svc-pedodontics.png",
   },
 ];
 
@@ -236,14 +242,25 @@ export default function HomePage() {
                   href={`/hizmetler/${s.slug}`}
                   className="svc-card"
                 >
-                  <div className={`icon-box icon-box-${s.color}`}>
-                    <Icon size={22} />
+                  <div className="svc-card-image">
+                    <Image
+                      src={s.image}
+                      alt={s.title}
+                      fill
+                      style={{ objectFit: "cover" }}
+                    />
+                    <div className="svc-card-overlay" />
+                    <div className={`svc-card-icon icon-box-${s.color}`}>
+                      <Icon size={20} />
+                    </div>
                   </div>
-                  <h3>{s.title}</h3>
-                  <p>{s.desc}</p>
-                  <span className="svc-link">
-                    Detaylı Bilgi <ArrowRight size={13} />
-                  </span>
+                  <div className="svc-card-body">
+                    <h3>{s.title}</h3>
+                    <p>{s.desc}</p>
+                    <span className="svc-link">
+                      Detaylı Bilgi <ArrowRight size={14} />
+                    </span>
+                  </div>
                 </Link>
               );
             })}
@@ -685,46 +702,78 @@ export default function HomePage() {
         .services-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
+          gap: 24px;
         }
         .svc-card {
           display: flex;
           flex-direction: column;
-          gap: 14px;
-          padding: 32px;
           background: var(--white);
           border: 1px solid var(--gray-100);
           border-radius: var(--radius-xl);
-          transition: var(--transition);
+          transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
           cursor: pointer;
           position: relative;
           overflow: hidden;
         }
-        .svc-card::after {
-          content: "";
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 2px;
-          background: linear-gradient(90deg, var(--blue), var(--gold));
-          opacity: 0;
-          transition: var(--transition);
-        }
         .svc-card:hover {
-          box-shadow: var(--shadow-lg);
-          transform: translateY(-5px);
+          box-shadow: 0 20px 50px rgba(10, 22, 40, 0.1);
+          transform: translateY(-6px);
           border-color: transparent;
         }
-        .svc-card:hover::after {
-          opacity: 1;
+        .svc-card-image {
+          position: relative;
+          height: 200px;
+          overflow: hidden;
+        }
+        .svc-card-image img {
+          transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+        }
+        .svc-card:hover .svc-card-image img {
+          transform: scale(1.08);
+        }
+        .svc-card-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, transparent 30%, rgba(10,22,40,0.15) 100%);
+          transition: var(--transition);
+        }
+        .svc-card:hover .svc-card-overlay {
+          background: linear-gradient(180deg, transparent 40%, rgba(10,22,40,0.25) 100%);
+        }
+        .svc-card-icon {
+          position: absolute;
+          top: 14px;
+          right: 14px;
+          width: 42px;
+          height: 42px;
+          border-radius: var(--radius-md);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          background: rgba(255,255,255,0.85);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+          transition: var(--transition);
+        }
+        .svc-card:hover .svc-card-icon {
+          transform: scale(1.05);
+        }
+        .svc-card-body {
+          padding: 24px 28px 28px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          flex: 1;
         }
         .svc-card h3 {
-          font-size: 1.05rem;
+          font-size: 1.08rem;
+          font-weight: 650;
+          letter-spacing: -0.01em;
         }
         .svc-card p {
           color: var(--gray-500);
-          font-size: 0.88rem;
+          font-size: 0.86rem;
           line-height: 1.7;
           flex: 1;
         }
@@ -735,7 +784,11 @@ export default function HomePage() {
           color: var(--coral);
           font-size: 0.82rem;
           font-weight: 600;
-          margin-top: 4px;
+          margin-top: 6px;
+          transition: gap 0.3s ease;
+        }
+        .svc-card:hover .svc-link {
+          gap: 10px;
         }
 
         /* ═══ ABOUT ═══ */
