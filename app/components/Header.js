@@ -665,24 +665,29 @@ export default function Header() {
         .hdr__cta-btn {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
-          padding: 8px 12px;
-          font-size: 0.95rem;
-          font-weight: 500;
-          color: #434c5a;
-          background: transparent;
-          transition: all 0.25s ease;
+          gap: 8px;
+          padding: 11px 24px;
+          font-size: 0.88rem;
+          font-weight: 600;
+          color: #fff;
+          background: linear-gradient(135deg, #d4634b 0%, #b8503c 100%);
+          border-radius: 10px;
+          box-shadow: 0 4px 16px rgba(212,99,75,.25);
+          transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+          letter-spacing: 0.01em;
         }
         .hdr__cta-arrow {
-          color: #5f6877;
+          color: rgba(255,255,255,.8);
           transition: transform 0.25s ease;
         }
         .hdr__cta-btn:hover {
-          color: #2b7cad;
+          color: #fff;
+          box-shadow: 0 6px 24px rgba(212,99,75,.35);
+          transform: translateY(-1px);
         }
         .hdr__cta-btn:hover .hdr__cta-arrow {
           transform: translateX(4px);
-          color: #2b7cad;
+          color: #fff;
         }
         .hdr__burger {
           display: none;
