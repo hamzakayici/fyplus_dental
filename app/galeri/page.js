@@ -1,79 +1,47 @@
-"use client";
 import Link from "next/link";
-import { ChevronRight, Camera, ArrowRight } from "lucide-react";
 
-const categories = [
-  { title: "Klinik Görünüm", count: 8 },
-  { title: "Tedavi Öncesi-Sonrası", count: 12 },
-  { title: "Ekipman ve Teknoloji", count: 6 },
-  { title: "Ekibimiz", count: 4 },
+export const metadata = {
+  title: "Galeri",
+  description: "FyPlus Dental Clinic Bahçeşehir — Kliniğimizden kareler.",
+};
+
+const images = [
+  { src: "/images/real/lobby.png", alt: "FyPlus Dental Lobi" },
+  { src: "/images/real/treatment.png", alt: "Tedavi Odası" },
+  { src: "/images/real/exterior.png", alt: "Klinik Dış Görünüm" },
+  { src: "/images/hero-clinic.png", alt: "Klinik İç Mekan" },
+  { src: "/images/about-clinic.png", alt: "Klinik Hakkında" },
+  { src: "/images/treatment.png", alt: "Tedavi Süreci" },
 ];
 
 export default function GaleriPage() {
   return (
     <>
-      <section className="page-hero">
+      <div className="page-hero">
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Ana Sayfa</Link>
-            <ChevronRight size={14} />
-            <span>Galeri</span>
+            <Link href="/">Ana Sayfa</Link> / <span>Galeri</span>
           </div>
           <h1>Galeri</h1>
-          <p className="hero-subtitle">
-            Bahçeşehir FyPlus Dental Clinic kliniğimiz, tedavi sonuçlarımız ve
-            modern ekipmanlarımız.
-          </p>
+          <p className="hero-subtitle">Kliniğimizden kareler ve tedavi öncesi-sonrası görseller.</p>
         </div>
-      </section>
+      </div>
 
       <section className="section">
         <div className="container">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, 1fr)",
-              gap: "20px",
-            }}
-          >
-            {categories.map((c, i) => (
-              <div
-                key={i}
-                className="card"
-                style={{ padding: 0, overflow: "hidden", cursor: "pointer" }}
-              >
-                <div
-                  style={{
-                    height: "240px",
-                    background: `linear-gradient(135deg, var(--navy), hsl(${200 + i * 15}, 60%, ${30 + i * 5}%))`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Camera
-                    size={40}
-                    style={{ color: "rgba(255,255,255,0.2)" }}
-                  />
-                </div>
-                <div
-                  style={{
-                    padding: "24px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <div>
-                    <h3>{c.title}</h3>
-                    <span
-                      style={{ color: "var(--gray-500)", fontSize: "0.85rem" }}
-                    >
-                      {c.count} fotoğraf
-                    </span>
-                  </div>
-                  <ArrowRight size={18} style={{ color: "var(--gray-300)" }} />
-                </div>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
+            gap: 16,
+          }}>
+            {images.map((img, i) => (
+              <div key={i} style={{
+                borderRadius: "var(--radius-xl)",
+                overflow: "hidden",
+                border: "1px solid var(--gray-100)",
+                transition: "all .3s",
+              }}>
+                <img src={img.src} alt={img.alt} style={{ width: "100%", height: 260, objectFit: "cover", display: "block" }} />
               </div>
             ))}
           </div>

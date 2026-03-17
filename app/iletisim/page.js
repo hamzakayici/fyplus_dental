@@ -1,342 +1,124 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import {
-  ChevronRight,
-  Phone,
-  Mail,
-  MapPin,
-  Clock,
-  Send,
-  ArrowRight,
-} from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Send, ArrowRight } from "lucide-react";
 
 export default function IletisimPage() {
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    service: "",
-    message: "",
-  });
-  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
+  const [status, setStatus] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSent(true);
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) {
+        setStatus("success");
+        setForm({ name: "", phone: "", email: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
     <>
-      <section className="page-hero">
+      <div className="page-hero">
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Ana Sayfa</Link>
-            <ChevronRight size={14} />
-            <span>İletişim</span>
+            <Link href="/">Ana Sayfa</Link> / <span>İletişim</span>
           </div>
-          <h1>İletişim ve Randevu</h1>
-          <p className="hero-subtitle">
-            Bahçeşehir FyPlus Dental Clinic&apos;e ulaşın veya online randevu
-            alın.
-          </p>
+          <h1>İletişim</h1>
+          <p className="hero-subtitle">Sorularınız ve randevu talepleriniz için bize ulaşın.</p>
         </div>
-      </section>
+      </div>
 
       <section className="section">
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "48px",
-          }}
-        >
-          <div>
-            <div className="section-label">İletişim Bilgileri</div>
-            <h2 className="section-title" style={{ marginBottom: "32px" }}>
-              Bize Ulaşın
-            </h2>
-
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "20px",
-                marginBottom: "32px",
-              }}
-            >
-              {[
-                {
-                  icon: MapPin,
-                  title: "Adres",
-                  text: "Bahçeşehir 1. Kısım Mah. Vali Recep Yazıcıoğlu Cad. No:50 BG\nBaşakşehir / İstanbul",
-                },
-                {
-                  icon: Phone,
-                  title: "Telefon",
-                  text: "+90 533 516 51 34\n+90 212 999 51 34",
-                  href: "tel:+905335165134",
-                },
-                {
-                  icon: Mail,
-                  title: "E-posta",
-                  text: "info@fyplus.com.tr",
-                  href: "mailto:info@fyplus.com.tr",
-                },
-                {
-                  icon: Clock,
-                  title: "Çalışma Saatleri",
-                  text: "Pzt-Cum: 09:00-19:00\nCumartesi: 10:00-16:00\nPazar: Kapalı",
-                },
-              ].map((c, i) => {
-                const Icon = c.icon;
-                return (
-                  <div
-                    key={i}
-                    className="card"
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: "16px",
-                      padding: "20px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "44px",
-                        height: "44px",
-                        borderRadius: "var(--radius-md)",
-                        background: "var(--gray-50)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "var(--blue)",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <Icon size={20} />
-                    </div>
-                    <div>
-                      <strong
-                        style={{
-                          display: "block",
-                          marginBottom: "4px",
-                          fontSize: "0.92rem",
-                        }}
-                      >
-                        {c.title}
-                      </strong>
-                      {c.href ? (
-                        <a
-                          href={c.href}
-                          style={{
-                            color: "var(--gray-600)",
-                            fontSize: "0.88rem",
-                          }}
-                        >
-                          {c.text}
-                        </a>
-                      ) : (
-                        <span
-                          style={{
-                            color: "var(--gray-600)",
-                            fontSize: "0.88rem",
-                            whiteSpace: "pre-line",
-                          }}
-                        >
-                          {c.text}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div
-              style={{
-                width: "100%",
-                height: "240px",
-                borderRadius: "var(--radius-lg)",
-                background: "var(--gray-100)",
-                overflow: "hidden",
-                border: "1px solid var(--gray-200)",
-              }}
-            >
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.5!2d28.69320361122794!3d41.073018446909984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDA0JzIyLjkiTiAyOMKwNDEnMzUuNSJF!5e0!3m2!1str!2str"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                title="FyPlus Dental Bahçeşehir Harita"
-              />
+        <div className="container contact-layout">
+          <div className="contact-info">
+            <span className="section-label">Bize Ulaşın</span>
+            <h2 className="section-title">İletişim Bilgilerimiz</h2>
+            <div className="contact-items">
+              <div className="contact-item">
+                <div className="icon-box"><MapPin size={20} strokeWidth={1.5} /></div>
+                <div>
+                  <h4>Adres</h4>
+                  <p>Bahçeşehir 1. Kısım Mah. Vali Recep Yazıcıoğlu Cad. No:50 BG, Başakşehir / İstanbul</p>
+                </div>
+              </div>
+              <div className="contact-item">
+                <div className="icon-box"><Phone size={20} strokeWidth={1.5} /></div>
+                <div>
+                  <h4>Telefon</h4>
+                  <p><a href="tel:+905335165134">0533 516 51 34</a></p>
+                  <p><a href="tel:+902129995134">0212 999 51 34</a></p>
+                </div>
+              </div>
+              <div className="contact-item">
+                <div className="icon-box"><Mail size={20} strokeWidth={1.5} /></div>
+                <div>
+                  <h4>E-posta</h4>
+                  <p><a href="mailto:info@fyplus.com.tr">info@fyplus.com.tr</a></p>
+                </div>
+              </div>
+              <div className="contact-item">
+                <div className="icon-box"><Clock size={20} strokeWidth={1.5} /></div>
+                <div>
+                  <h4>Çalışma Saatleri</h4>
+                  <p>Pazartesi – Cuma: 09:00 – 19:00</p>
+                  <p>Cumartesi: 10:00 – 16:00</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div>
-            <div className="section-label">Online Randevu</div>
-            <h2 className="section-title" style={{ marginBottom: "32px" }}>
-              Randevu Formu
-            </h2>
-
-            {sent ? (
-              <div
-                className="card"
-                style={{ textAlign: "center", padding: "48px" }}
-              >
-                <div
-                  style={{
-                    width: "64px",
-                    height: "64px",
-                    borderRadius: "50%",
-                    background: "var(--blue)",
-                    color: "var(--white)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: "0 auto 20px",
-                  }}
-                >
-                  <Send size={24} />
-                </div>
-                <h3 style={{ marginBottom: "8px" }}>Mesajınız Alındı</h3>
-                <p style={{ color: "var(--gray-500)", fontSize: "0.92rem" }}>
-                  En kısa sürede size dönüş yapacağız.
-                </p>
-              </div>
-            ) : (
-              <form
-                onSubmit={handleSubmit}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "16px",
-                }}
-              >
-                {[
-                  { name: "name", label: "Adınız Soyadınız", type: "text" },
-                  { name: "phone", label: "Telefon", type: "tel" },
-                  { name: "email", label: "E-posta", type: "email" },
-                ].map((f) => (
-                  <div key={f.name}>
-                    <label
-                      style={{
-                        display: "block",
-                        fontSize: "0.85rem",
-                        fontWeight: 600,
-                        marginBottom: "6px",
-                        color: "var(--navy)",
-                      }}
-                    >
-                      {f.label}
-                    </label>
-                    <input
-                      type={f.type}
-                      value={form[f.name]}
-                      onChange={(e) =>
-                        setForm({ ...form, [f.name]: e.target.value })
-                      }
-                      required
-                      style={{
-                        width: "100%",
-                        padding: "12px 16px",
-                        border: "1px solid var(--gray-200)",
-                        borderRadius: "var(--radius-sm)",
-                        fontSize: "0.9rem",
-                        fontFamily: "var(--font-body)",
-                        transition: "var(--transition)",
-                        outline: "none",
-                      }}
-                      onFocus={(e) =>
-                        (e.target.style.borderColor = "var(--blue)")
-                      }
-                      onBlur={(e) =>
-                        (e.target.style.borderColor = "var(--gray-200)")
-                      }
-                    />
-                  </div>
-                ))}
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "0.85rem",
-                      fontWeight: 600,
-                      marginBottom: "6px",
-                      color: "var(--navy)",
-                    }}
-                  >
-                    Hizmet Seçin
-                  </label>
-                  <select
-                    value={form.service}
-                    onChange={(e) =>
-                      setForm({ ...form, service: e.target.value })
-                    }
-                    style={{
-                      width: "100%",
-                      padding: "12px 16px",
-                      border: "1px solid var(--gray-200)",
-                      borderRadius: "var(--radius-sm)",
-                      fontSize: "0.9rem",
-                      fontFamily: "var(--font-body)",
-                      background: "var(--white)",
-                    }}
-                  >
-                    <option value="">Seçiniz</option>
-                    <option>İmplant Tedavisi</option>
-                    <option>Zirkonyum Kaplama</option>
-                    <option>Diş Beyazlatma</option>
-                    <option>Gülüş Tasarımı</option>
-                    <option>Ortodonti</option>
-                    <option>Kanal Tedavisi</option>
-                    <option>Diğer</option>
-                  </select>
-                </div>
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "0.85rem",
-                      fontWeight: 600,
-                      marginBottom: "6px",
-                      color: "var(--navy)",
-                    }}
-                  >
-                    Mesajınız
-                  </label>
-                  <textarea
-                    rows={4}
-                    value={form.message}
-                    onChange={(e) =>
-                      setForm({ ...form, message: e.target.value })
-                    }
-                    style={{
-                      width: "100%",
-                      padding: "12px 16px",
-                      border: "1px solid var(--gray-200)",
-                      borderRadius: "var(--radius-sm)",
-                      fontSize: "0.9rem",
-                      fontFamily: "var(--font-body)",
-                      resize: "vertical",
-                    }}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  style={{ width: "100%", justifyContent: "center" }}
-                >
-                  Randevu Talebi Gönder <Send size={16} />
-                </button>
-              </form>
-            )}
+          <div className="contact-form-wrap">
+            <h3 style={{ marginBottom: 24 }}>Randevu Formu</h3>
+            <form onSubmit={handleSubmit} className="contact-form">
+              <input type="text" placeholder="Adınız Soyadınız" required value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <input type="tel" placeholder="Telefon Numaranız" required value={form.phone}
+                onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+              <input type="email" placeholder="E-posta Adresiniz" value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })} />
+              <textarea placeholder="Mesajınız" rows={4} value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })} />
+              <button type="submit" className="btn btn-primary" disabled={status === "sending"} style={{ width: "100%", justifyContent: "center" }}>
+                {status === "sending" ? "Gönderiliyor..." : <><Send size={14} /> Gönder</>}
+              </button>
+              {status === "success" && <p style={{ color: "var(--blue)", fontWeight: 500, textAlign: "center" }}>Mesajınız başarıyla gönderildi!</p>}
+              {status === "error" && <p style={{ color: "var(--coral)", fontWeight: 500, textAlign: "center" }}>Bir hata oluştu, lütfen tekrar deneyin.</p>}
+            </form>
           </div>
         </div>
       </section>
+
+      <section style={{ width: "100%", height: 400 }}>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3008.4158!2d28.69320361122794!3d41.073018446909984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDA0JzIyLjkiTiAyOMKwNDEnMzUuNSJF!5e0!3m2!1str!2str!4v1"
+          width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" title="FyPlus Dental Konum" />
+      </section>
+
+      <style jsx>{`
+        .contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+        .contact-items{display:flex;flex-direction:column;gap:24px;margin-top:32px}
+        .contact-item{display:flex;gap:16px;align-items:flex-start}
+        .contact-item h4{font-size:.9rem;margin-bottom:4px}
+        .contact-item p{font-size:.86rem;color:var(--gray-500);margin:0}
+        .contact-item a{color:var(--gray-600);transition:color .2s}
+        .contact-item a:hover{color:var(--blue)}
+        .contact-form-wrap{background:var(--off-white);padding:40px;border-radius:var(--radius-2xl);border:1px solid var(--gray-100)}
+        .contact-form{display:flex;flex-direction:column;gap:14px}
+        .contact-form input,.contact-form textarea{width:100%;padding:14px 18px;border:1px solid var(--gray-100);border-radius:var(--radius-md);font-family:var(--font-body);font-size:.88rem;transition:border-color .2s;outline:none;background:#fff}
+        .contact-form input:focus,.contact-form textarea:focus{border-color:var(--blue)}
+        .contact-form textarea{resize:vertical}
+        @media(max-width:768px){.contact-layout{grid-template-columns:1fr;gap:32px}}
+      `}</style>
     </>
   );
 }

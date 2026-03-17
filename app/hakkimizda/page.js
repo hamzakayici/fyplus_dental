@@ -1,259 +1,40 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  ChevronRight,
-  Check,
-  Users,
-  Award,
-  Eye,
-  Heart,
-  Shield,
-  Clock,
-  ArrowRight,
-  Star,
-} from "lucide-react";
-
-const values = [
-  {
-    icon: Shield,
-    title: "Güven",
-    desc: "Şeffaf tedavi süreçleri ve yazılı garanti.",
-    accent: "blue",
-  },
-  {
-    icon: Award,
-    title: "Uzmanlık",
-    desc: "Alanında uzman hekim kadrosu.",
-    accent: "blue",
-  },
-  {
-    icon: Heart,
-    title: "Hasta Odaklılık",
-    desc: "Konfor ve memnuniyet önceliğimiz.",
-    accent: "coral",
-  },
-  {
-    icon: Eye,
-    title: "Teknoloji",
-    desc: "Son teknoloji dijital sistemler.",
-    accent: "blue",
-  },
-];
+import { CheckCircle2, ArrowRight } from "lucide-react";
 
 export default function HakkimizdaPage() {
   return (
     <>
-      <section className="page-hero">
+      <div className="page-hero">
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Ana Sayfa</Link>
-            <ChevronRight size={14} />
-            <span>Hakkımızda</span>
+            <Link href="/">Ana Sayfa</Link> / <span>Hakkımızda</span>
           </div>
           <h1>Hakkımızda</h1>
           <p className="hero-subtitle">
-            Bahçeşehir&apos;de premium diş sağlığı hizmeti sunan FyPlus Dental
-            Clinic&apos;i tanıyın.
+            Bahçeşehir&apos;de 15 yılı aşkın deneyimimizle premium diş sağlığı hizmeti sunuyoruz.
           </p>
         </div>
-      </section>
+      </div>
 
       <section className="section">
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "80px",
-            alignItems: "center",
-          }}
-        >
-          <div>
-            <div className="section-label">FyPlus Dental Clinic</div>
-            <h2 className="section-title">
-              Bahçeşehir&apos;in Güvenilir
-              <br />
-              Diş Kliniği
-            </h2>
-            <p
-              style={{
-                color: "var(--gray-600)",
-                lineHeight: 1.8,
-                marginBottom: "20px",
-                fontSize: "0.95rem",
-              }}
-            >
-              FyPlus Dental Clinic, Bahçeşehir&apos;de modern diş hekimliğinin
-              tüm branşlarında hizmet veren premium bir diş kliniğidir. Uzman
-              hekim kadromuz, son teknoloji ekipmanlarımız ve hasta odaklı
-              yaklaşımımızla Bahçeşehir, Başakşehir ve çevre bölgelere kaliteli
-              diş sağlığı hizmeti sunuyoruz.
+        <div className="container about-layout">
+          <div className="about-img">
+            <img src="/images/about-clinic.png" alt="FyPlus Dental Klinik" style={{ borderRadius: "var(--radius-2xl)", width: "100%" }} />
+          </div>
+          <div className="about-text">
+            <span className="section-label">Hikayemiz</span>
+            <h2 className="section-title">Modern Diş Hekimliğinin Bahçeşehir&apos;deki Adresi</h2>
+            <p className="section-desc">
+              FyPlus Dental Clinic, Bahçeşehir&apos;de kurulduğu 2010 yılından bu yana, hastalarına en yüksek kalitede diş sağlığı hizmeti sunma misyonuyla çalışmaktadır.
             </p>
-            <p
-              style={{
-                color: "var(--gray-600)",
-                lineHeight: 1.8,
-                fontSize: "0.95rem",
-              }}
-            >
-              Kliniğimizde dijital röntgen, 3D intraoral tarayıcı, CAD/CAM
-              üretim sistemi gibi son teknoloji cihazlar kullanılmaktadır.
-              Avrupa standartlarında sterilizasyon protokolleri uygulanmakta,
-              her hasta için kişiye özel tedavi planları hazırlanmaktadır.
+            <p className="section-desc" style={{ marginTop: 16 }}>
+              Son teknoloji dijital ekipmanlarımız, sterilizasyon standartlarımız ve alanında uzman hekim kadromuzla İstanbul&apos;un batı yakasının en güvenilir diş kliniklerinden biri olma hedefimize her geçen gün daha da yaklaşıyoruz.
             </p>
-          </div>
-          <div
-            style={{
-              position: "relative",
-              borderRadius: "var(--radius-2xl)",
-              overflow: "hidden",
-              aspectRatio: "4/3",
-              boxShadow: "var(--shadow-xl)",
-            }}
-          >
-            <Image
-              src="/images/hero-clinic.png"
-              alt="FyPlus Dental Clinic Bahçeşehir Premium Klinik"
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-        </div>
-      </section>
-
-      <section className="section" style={{ background: "var(--gray-25)" }}>
-        <div className="container">
-          <div style={{ textAlign: "center", marginBottom: "56px" }}>
-            <div className="section-label" style={{ justifyContent: "center" }}>
-              Değerlerimiz
-            </div>
-            <h2 className="section-title">Bizi Farklı Kılan Değerler</h2>
-          </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "24px",
-            }}
-          >
-            {values.map((v, i) => {
-              const Icon = v.icon;
-              return (
-                <div
-                  key={i}
-                  className="card"
-                  style={{ textAlign: "center", padding: "40px 24px" }}
-                >
-                  <div
-                    className={`icon-box icon-box-${v.accent}`}
-                    style={{ margin: "0 auto 20px" }}
-                  >
-                    <Icon size={24} />
-                  </div>
-                  <h3>{v.title}</h3>
-                  <p
-                    style={{
-                      color: "var(--gray-500)",
-                      fontSize: "0.88rem",
-                      marginTop: "8px",
-                    }}
-                  >
-                    {v.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "80px",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              position: "relative",
-              borderRadius: "var(--radius-2xl)",
-              overflow: "hidden",
-              aspectRatio: "4/3",
-              boxShadow: "var(--shadow-xl)",
-            }}
-          >
-            <Image
-              src="/images/about-clinic.png"
-              alt="FyPlus Dental Clinic Bahçeşehir Bekleme Salonu"
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-          <div>
-            <div className="section-label">Kliniğimiz</div>
-            <h2 className="section-title">
-              Konfor ve Teknoloji
-              <br />
-              Bir Arada
-            </h2>
-            <p
-              style={{
-                color: "var(--gray-600)",
-                lineHeight: 1.8,
-                fontSize: "0.95rem",
-                marginBottom: "24px",
-              }}
-            >
-              Kliniğimiz, hastalarımızın konforunu ön planda tutan modern bir
-              tasarıma sahiptir. Geniş bekleme alanı, özel tedavi odaları ve
-              çocuklara özel oyun alanı ile her yaş grubuna hizmet vermekteyiz.
-            </p>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: "16px",
-              }}
-            >
-              {[
-                { v: "15+", l: "Yıllık Deneyim" },
-                { v: "12.000+", l: "Mutlu Hasta" },
-                { v: "6", l: "Uzman Hekim" },
-                { v: "4.9", l: "Google Puan" },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  style={{
-                    padding: "20px",
-                    background: "var(--gray-25)",
-                    borderRadius: "var(--radius-lg)",
-                    border: "1px solid var(--gray-100)",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "var(--font-heading)",
-                      fontSize: "1.8rem",
-                      fontWeight: 800,
-                      color: "var(--blue)",
-                    }}
-                  >
-                    {s.v}
-                  </div>
-                  <div
-                    style={{
-                      color: "var(--gray-500)",
-                      fontSize: "0.82rem",
-                      marginTop: "4px",
-                    }}
-                  >
-                    {s.l}
-                  </div>
+            <div className="about-checks" style={{ marginTop: 24 }}>
+              {["15 yılı aşkın deneyim", "Son teknoloji dijital ekipmanlar", "Uzman hekim kadrosu", "Garantili tedavi hizmeti", "Steril ortam standardı", "Tüm branşlarda hizmet"].map((t, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: ".88rem", fontWeight: 500, color: "var(--gray-600)", padding: "4px 0" }}>
+                  <CheckCircle2 size={16} color="var(--blue)" /> {t}
                 </div>
               ))}
             </div>
@@ -261,28 +42,43 @@ export default function HakkimizdaPage() {
         </div>
       </section>
 
-      <section className="cta-section">
-        <div
-          className="container"
-          style={{ textAlign: "center", position: "relative", zIndex: 1 }}
-        >
-          <h2 style={{ color: "var(--white)", marginBottom: "16px" }}>
-            Randevu Almak İster Misiniz?
-          </h2>
-          <p
-            style={{
-              color: "var(--gray-400)",
-              maxWidth: "460px",
-              margin: "0 auto 32px",
-            }}
-          >
-            Ücretsiz muayene ve konsültasyon için hemen iletişime geçin.
+      <section className="section" style={{ background: "var(--off-white)" }}>
+        <div className="container">
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <span className="section-label" style={{ justifyContent: "center" }}>Kliniğimiz</span>
+            <h2 className="section-title">Modern ve Konforlu Ortam</h2>
+          </div>
+          <div className="clinic-images">
+            <img src="/images/real/lobby.png" alt="FyPlus Lobi" />
+            <img src="/images/real/treatment.png" alt="FyPlus Tedavi Odası" />
+            <img src="/images/real/exterior.png" alt="FyPlus Dış Görünüm" />
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container" style={{ textAlign: "center", maxWidth: 600 }}>
+          <h2 className="section-title">Sağlıklı Gülüşler İçin</h2>
+          <p className="section-desc" style={{ margin: "0 auto 28px" }}>
+            Ücretsiz muayene için hemen randevu alın.
           </p>
           <Link href="/iletisim" className="btn btn-primary">
-            Randevu Al <ArrowRight size={16} />
+            Randevu Al <ArrowRight size={14} />
           </Link>
         </div>
       </section>
+
+      <style jsx>{`
+        .about-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+        .about-checks{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+        .clinic-images{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+        .clinic-images img{width:100%;border-radius:var(--radius-xl);height:280px;object-fit:cover}
+        @media(max-width:768px){
+          .about-layout{grid-template-columns:1fr;gap:32px}
+          .about-checks{grid-template-columns:1fr}
+          .clinic-images{grid-template-columns:1fr}
+        }
+      `}</style>
     </>
   );
 }

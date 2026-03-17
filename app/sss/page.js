@@ -1,200 +1,58 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight, ChevronDown, ArrowRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
-const faqCategories = [
-  {
-    title: "Genel",
-    items: [
-      {
-        q: "FyPlus Dental Clinic nerede?",
-        a: "Kliniğimiz İstanbul Bahçeşehir 1. Kısım Mahallesi, Başakşehir ilçesinde yer almaktadır.",
-      },
-      {
-        q: "Randevu nasıl alabilirim?",
-        a: "Web sitemizden online randevu formu ile veya +90 212 000 00 00 numaralı telefonumuzu arayarak randevu alabilirsiniz.",
-      },
-      {
-        q: "Acil durumlarda hizmet veriyor musunuz?",
-        a: "Evet, Bahçeşehir kliniğimiz çalışma saatleri içinde acil diş tedavisi hizmeti sunmaktadır.",
-      },
-      {
-        q: "Sigorta kabul ediyor musunuz?",
-        a: "Anlaşmalı özel sigorta kuruluşları ile çalışmaktayız. Detaylı bilgi için iletişime geçiniz.",
-      },
-    ],
-  },
-  {
-    title: "İmplant Tedavisi",
-    items: [
-      {
-        q: "Bahçeşehir'de implant tedavisi acı verir mi?",
-        a: "Lokal anestezi altında yapıldığı için işlem sırasında ağrı hissedilmez.",
-      },
-      {
-        q: "İmplant ne kadar süre dayanır?",
-        a: "Doğru bakım ile implantlar ömür boyu kullanılabilir.",
-      },
-      {
-        q: "İmplant tedavisi ne kadar sürer?",
-        a: "Tedavi süreci hastanın durumuna göre 3-6 ay arasında değişir.",
-      },
-    ],
-  },
-  {
-    title: "Estetik Tedaviler",
-    items: [
-      {
-        q: "Zirkonyum kaplama ne kadar dayanır?",
-        a: "15-20 yıl ve üzeri dayanıklılık sunar.",
-      },
-      {
-        q: "Diş beyazlatma dişlere zarar verir mi?",
-        a: "Profesyonel kontrol altında yapılan beyazlatma dişlere zarar vermez.",
-      },
-      {
-        q: "Hollywood Smile nedir?",
-        a: "Dijital gülüş tasarımı ile kişiye özel mükemmel gülüş estetiği oluşturma tedavisidir.",
-      },
-    ],
-  },
-  {
-    title: "Ortodonti",
-    items: [
-      {
-        q: "Şeffaf plak tedavisi etkili mi?",
-        a: "Hafif ve orta düzey çapraşıklıklarda çok etkilidir.",
-      },
-      {
-        q: "Yetişkinler ortodonti tedavisi olabilir mi?",
-        a: "Evet, yaş sınırı yoktur. Şeffaf plak yetişkinlerde sıklıkla tercih edilir.",
-      },
-    ],
-  },
+const faqs = [
+  { q: "İmplant tedavisi ağrılı mıdır?", a: "Lokal anestezi altında yapıldığı için işlem sırasında ağrı hissedilmez. İşlem sonrası hafif rahatsızlık normal olup reçeteli ilaçlarla kontrol altına alınır." },
+  { q: "Zirkonyum kaplama ne kadar dayanır?", a: "Doğru bakım ile zirkonyum kaplamalar 15-20 yıl ve üzeri dayanabilir." },
+  { q: "Diş beyazlatma dişlere zarar verir mi?", a: "Profesyonel kontrol altında yapılan beyazlatma işlemi dişlere zarar vermez." },
+  { q: "Gülüş tasarımı doğal görünür mü?", a: "Dijital tasarım sayesinde yüz hatlarınıza uyumlu, tamamen doğal görünümlü sonuçlar elde edilir." },
+  { q: "Ortodonti tedavisi kaç yaşında yapılabilir?", a: "Ortodonti tedavisi her yaş grubuna uygulanabilir. Şeffaf plak tedavisi yetişkinler tarafından sıklıkla tercih edilmektedir." },
+  { q: "Kliniğe nasıl ulaşabilirim?", a: "Bahçeşehir 1. Kısım Mahallesi, Vali Recep Yazıcıoğlu Caddesi No:50 BG adresimize toplu taşıma veya özel araç ile kolayca ulaşabilirsiniz." },
+  { q: "Randevu almadan gelebilir miyim?", a: "Randevusuz hasta kabul edilmektedir ancak randevulu hastalara öncelik verilmektedir. Beklememek için önceden randevu almanızı öneririz." },
+  { q: "Ödeme seçenekleriniz nelerdir?", a: "Nakit, kredi kartı ve taksitli ödeme seçenekleri mevcuttur. Anlaşmalı bankalarla vade farksız taksit imkânı sunulmaktadır." },
 ];
 
 export default function SSSPage() {
-  const [openItems, setOpenItems] = useState({});
-  const toggle = (key) =>
-    setOpenItems((prev) => ({ ...prev, [key]: !prev[key] }));
+  const [openIndex, setOpenIndex] = useState(null);
 
   return (
     <>
-      <section className="page-hero">
+      <div className="page-hero">
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Ana Sayfa</Link>
-            <ChevronRight size={14} />
-            <span>SSS</span>
+            <Link href="/">Ana Sayfa</Link> / <span>Sık Sorulan Sorular</span>
           </div>
           <h1>Sık Sorulan Sorular</h1>
-          <p className="hero-subtitle">
-            Bahçeşehir FyPlus Dental Clinic hakkında merak edilenler.
-          </p>
+          <p className="hero-subtitle">Merak ettiğiniz soruların yanıtları.</p>
         </div>
-      </section>
+      </div>
 
       <section className="section">
-        <div className="container" style={{ maxWidth: "800px" }}>
-          {faqCategories.map((cat, ci) => (
-            <div key={ci} style={{ marginBottom: "40px" }}>
-              <h2
-                style={{
-                  fontSize: "1.2rem",
-                  marginBottom: "16px",
-                  paddingBottom: "12px",
-                  borderBottom: "1px solid var(--gray-200)",
-                }}
-              >
-                {cat.title}
-              </h2>
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: "8px" }}
-              >
-                {cat.items.map((item, ii) => {
-                  const key = `${ci}-${ii}`;
-                  const isOpen = openItems[key];
-                  return (
-                    <div
-                      key={ii}
-                      className="card"
-                      style={{
-                        padding: 0,
-                        overflow: "hidden",
-                        borderColor: isOpen ? "var(--blue)" : "var(--gray-200)",
-                      }}
-                    >
-                      <button
-                        onClick={() => toggle(key)}
-                        style={{
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          padding: "16px 20px",
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          fontFamily: "var(--font-body)",
-                          fontSize: "0.92rem",
-                          fontWeight: 600,
-                          color: "var(--navy)",
-                          textAlign: "left",
-                        }}
-                      >
-                        {item.q}
-                        <ChevronDown
-                          size={18}
-                          style={{
-                            color: "var(--blue)",
-                            transition: "var(--transition)",
-                            transform: isOpen ? "rotate(180deg)" : "none",
-                            flexShrink: 0,
-                          }}
-                        />
-                      </button>
-                      {isOpen && (
-                        <div
-                          style={{
-                            padding: "0 20px 16px",
-                            color: "var(--gray-600)",
-                            fontSize: "0.88rem",
-                            lineHeight: 1.7,
-                          }}
-                        >
-                          {item.a}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+        <div className="container" style={{ maxWidth: 760 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {faqs.map((faq, i) => (
+              <div key={i} className={`faq-item${openIndex === i ? " open" : ""}`} onClick={() => setOpenIndex(openIndex === i ? null : i)}>
+                <div className="faq-q">
+                  <span>{faq.q}</span>
+                  <ChevronDown size={18} className={`faq-chevron${openIndex === i ? " open" : ""}`} />
+                </div>
+                {openIndex === i && <p className="faq-a">{faq.a}</p>}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="cta-section">
-        <div className="container" style={{ textAlign: "center" }}>
-          <h2 style={{ color: "var(--white)", marginBottom: "16px" }}>
-            Sorunuz mu Var?
-          </h2>
-          <p
-            style={{
-              color: "var(--gray-400)",
-              maxWidth: "460px",
-              margin: "0 auto 32px",
-            }}
-          >
-            Bahçeşehir kliniğimize ulaşarak tüm sorularınızın yanıtını
-            alabilirsiniz.
-          </p>
-          <Link href="/iletisim" className="btn btn-primary">
-            İletişime Geçin <ArrowRight size={16} />
-          </Link>
-        </div>
-      </section>
+      <style jsx>{`
+        .faq-item{border:1px solid var(--gray-100);border-radius:var(--radius-md);overflow:hidden;cursor:pointer;transition:all .2s}
+        .faq-item.open{border-color:var(--blue);background:var(--blue-light)}
+        .faq-q{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;font-weight:600;font-size:.92rem;color:var(--navy)}
+        .faq-chevron{transition:transform .2s;opacity:.5}
+        .faq-chevron.open{transform:rotate(180deg);opacity:1}
+        .faq-a{padding:0 22px 18px;font-size:.88rem;color:var(--gray-500);line-height:1.8;margin:0}
+      `}</style>
     </>
   );
 }

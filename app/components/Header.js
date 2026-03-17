@@ -1,13 +1,23 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Phone, Menu, X, ChevronDown, ArrowRight, MapPin, Clock } from "lucide-react";
+import { usePathname } from "next/navigation";
+import {
+  Phone, Menu, X, ChevronDown, ArrowRight, MapPin, Clock,
+  Mail, Instagram, Facebook
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const navLinks = [
+  { label: "Ana Sayfa", href: "/" },
+  { label: "Hakkımızda", href: "/hakkimizda" },
+];
 
 const servicesLinks = [
   { label: "İmplant Tedavisi", href: "/hizmetler/implant-tedavisi", desc: "Kalıcı titanyum implantlar" },
-  { label: "Zirkonyum Kaplama", href: "/hizmetler/zirkonyum-kaplama", desc: "Metal-free estetik çözümler" },
+  { label: "Zirkonyum Kaplama", href: "/hizmetler/zirkonyum-kaplama", desc: "Metal-free estetik kaplamalar" },
   { label: "Diş Beyazlatma", href: "/hizmetler/dis-beyazlatma", desc: "8 tona kadar beyazlatma" },
-  { label: "Gülüş Tasarımı", href: "/hizmetler/gulus-tasarimi", desc: "Hollywood smile tasarımı" },
+  { label: "Gülüş Tasarımı", href: "/hizmetler/gulus-tasarimi", desc: "Hollywood Smile tasarımı" },
   { label: "Ortodonti", href: "/hizmetler/ortodonti", desc: "Şeffaf plak ve braketler" },
   { label: "Kanal Tedavisi", href: "/hizmetler/kanal-tedavisi", desc: "Ağrısız kök kanal tedavisi" },
 ];
@@ -16,15 +26,16 @@ const corporateLinks = [
   { label: "Doktorlarımız", href: "/doktorlarimiz" },
   { label: "Galeri", href: "/galeri" },
   { label: "Blog", href: "/blog" },
-  { label: "Sık Sorulan Sorular", href: "/sss" },
+  { label: "SSS", href: "/sss" },
 ];
 
 export default function Header() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileDropdown, setMobileDropdown] = useState(null);
-  const [activeDropdown, setActiveDropdown] = useState(null);
-  const dropdownTimeout = useRef(null);
+  const [activeMenu, setActiveMenu] = useState(null);
+  const [mobileAccordion, setMobileAccordion] = useState(null);
+  const menuTimeout = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -33,707 +44,805 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  const handleDropdownEnter = (name) => {
-    clearTimeout(dropdownTimeout.current);
-    setActiveDropdown(name);
-  };
+  useEffect(() => {
+    setMobileOpen(false);
+    setActiveMenu(null);
+  }, [pathname]);
 
-  const handleDropdownLeave = () => {
-    dropdownTimeout.current = setTimeout(() => {
-      setActiveDropdown(null);
-    }, 150);
-  };
+  const openMenu = (m) => { clearTimeout(menuTimeout.current); setActiveMenu(m); };
+  const closeMenu = () => { menuTimeout.current = setTimeout(() => setActiveMenu(null), 120); };
+  const isActive = (href) => pathname === href || (href !== "/" && pathname.startsWith(href));
 
-  const toggleMobileDropdown = (name) => {
-    setMobileDropdown(mobileDropdown === name ? null : name);
+  const dropdownVariants = {
+    hidden: { opacity: 0, y: 10, scale: 0.97 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 420, damping: 30 } },
+    exit: { opacity: 0, y: 8, scale: 0.97, transition: { duration: 0.1 } },
   };
 
   return (
     <>
-      {/* Top Info Bar */}
-      <div className={`top-bar ${scrolled ? "top-bar--hidden" : ""}`}>
-        <div className="container top-bar-inner">
-          <div className="top-bar-left">
-            <a href="tel:+905335165134" className="top-bar-item">
-              <Phone size={12} />
-              <span>0533 516 51 34</span>
+      {/* ═══ TOPBAR — Premium dark strip ═══ */}
+      <div className={`topbar${scrolled ? " topbar--hidden" : ""}`}>
+        <div className="container topbar__inner">
+          <div className="topbar__left">
+            <a href="tel:+905335165134" className="topbar__link">
+              <span className="topbar__icon"><Phone size={10} /></span>
+              0533 516 51 34
             </a>
-            <span className="top-bar-divider" />
-            <a href="tel:+902129995134" className="top-bar-item">
-              <Phone size={12} />
-              <span>0212 999 51 34</span>
+            <span className="topbar__dot" />
+            <a href="tel:+902129995134" className="topbar__link">
+              <span className="topbar__icon"><Phone size={10} /></span>
+              0212 999 51 34
+            </a>
+            <span className="topbar__dot" />
+            <a href="mailto:info@fyplus.com.tr" className="topbar__link">
+              <span className="topbar__icon"><Mail size={10} /></span>
+              info@fyplus.com.tr
             </a>
           </div>
-          <div className="top-bar-right">
-            <span className="top-bar-item">
-              <MapPin size={12} />
-              <span>Bahçeşehir, İstanbul</span>
-            </span>
-            <span className="top-bar-divider" />
-            <span className="top-bar-item">
-              <Clock size={12} />
-              <span>Pzt-Cum: 09:00-19:00</span>
-            </span>
+          <div className="topbar__right">
+            <div className="topbar__info">
+              <span className="topbar__icon"><MapPin size={10} /></span>
+              Bahçeşehir, İstanbul
+            </div>
+            <span className="topbar__dot" />
+            <div className="topbar__info">
+              <span className="topbar__icon"><Clock size={10} /></span>
+              Pzt–Cum 09:00–19:00
+            </div>
+            <span className="topbar__dot" />
+            <div className="topbar__socials">
+              <a href="https://instagram.com/fyplusdental" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram size={12} /></a>
+              <a href="https://facebook.com/fyplusdental" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><Facebook size={12} /></a>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Header */}
-      <header className={`header ${scrolled ? "header--scrolled" : ""}`}>
-        <div className="container header-inner">
-          <Link href="/" className="logo">
-            <img
-              src="/images/header_logo.svg"
-              alt="FyPlus Dental Clinic Bahçeşehir"
-              width={140}
-              height={40}
-            />
+      {/* ═══ MAIN HEADER ═══ */}
+      <header className={`hdr${scrolled ? " hdr--scrolled" : ""}`}>
+        <div className="container hdr__inner">
+          {/* LOGO */}
+          <Link href="/" className="hdr__logo">
+            <img src="/images/header_logo.svg" alt="FyPlus Dental" width={140} height={36} style={{ padding: "8px 0" }} />
           </Link>
 
-          <nav className="nav-desktop">
-            <Link href="/" className="nav-link">
-              Ana Sayfa
-            </Link>
-            <Link href="/hakkimizda" className="nav-link">
-              Hakkımızda
-            </Link>
+          {/* DESKTOP NAV */}
+          <nav className="hdr__nav" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            {navLinks.map((l) => {
+              const active = isActive(l.href);
+              return (
+                <Link key={l.href} href={l.href}
+                  onMouseEnter={() => openMenu(null)}
+                  style={{
+                    position: "relative",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    padding: "9px 18px",
+                    fontSize: "0.9rem",
+                    fontWeight: active ? 600 : 500,
+                    color: active ? "#2b7cad" : "#3d4654",
+                    borderRadius: 10,
+                    whiteSpace: "nowrap",
+                    transition: "all 0.2s",
+                    textDecoration: "none",
+                  }}>
+                  {l.label}
+                  {active && <span style={{
+                    position: "absolute", bottom: 2, left: "50%", transform: "translateX(-50%)",
+                    width: 18, height: 2.5, borderRadius: 2, background: "#2b7cad"
+                  }} />}
+                </Link>
+              );
+            })}
 
-            {/* Hizmetlerimiz Mega Menu */}
-            <div
-              className="nav-dropdown"
-              onMouseEnter={() => handleDropdownEnter("hizmetler")}
-              onMouseLeave={handleDropdownLeave}
-            >
-              <button className={`nav-link ${activeDropdown === "hizmetler" ? "nav-link--active" : ""}`} type="button" onClick={() => setActiveDropdown(activeDropdown === "hizmetler" ? null : "hizmetler")}>
-                Hizmetlerimiz <ChevronDown size={14} className={`nav-chevron ${activeDropdown === "hizmetler" ? "nav-chevron--open" : ""}`} />
+            {/* Hizmetlerimiz Mega */}
+            <div style={{ position: "relative" }} onMouseEnter={() => openMenu("services")} onMouseLeave={closeMenu}>
+              <button style={{
+                position: "relative",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 5,
+                padding: "9px 18px",
+                fontSize: "0.9rem",
+                fontWeight: activeMenu === "services" || pathname.startsWith("/hizmetler") ? 600 : 500,
+                color: activeMenu === "services" || pathname.startsWith("/hizmetler") ? "#2b7cad" : "#3d4654",
+                background: "none",
+                border: "none",
+                borderRadius: 10,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                fontFamily: "inherit",
+                transition: "all 0.2s",
+              }}>
+                Hizmetlerimiz
+                <ChevronDown size={13} style={{
+                  transition: "transform 0.25s",
+                  opacity: activeMenu === "services" ? 0.8 : 0.4,
+                  transform: activeMenu === "services" ? "rotate(180deg)" : "none",
+                }} />
+                {pathname.startsWith("/hizmetler") && <span style={{
+                  position: "absolute", bottom: 2, left: "50%", transform: "translateX(-50%)",
+                  width: 18, height: 2.5, borderRadius: 2, background: "#2b7cad"
+                }} />}
               </button>
-              <div className={`mega-panel ${activeDropdown === "hizmetler" ? "mega-panel--visible" : ""}`}>
-                <div className="mega-grid">
-                  {servicesLinks.map((s) => (
-                    <Link key={s.href} href={s.href} className="mega-item" onClick={() => setActiveDropdown(null)}>
-                      <div className="mega-item-dot" />
-                      <div>
-                        <strong>{s.label}</strong>
-                        <span>{s.desc}</span>
+              <AnimatePresence>
+                {activeMenu === "services" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0, transition: { type: "spring", stiffness: 420, damping: 30 } }}
+                    exit={{ opacity: 0, y: 8, transition: { duration: 0.1 } }}
+                    style={{
+                      position: "absolute",
+                      top: "calc(100% + 14px)",
+                      left: "50%",
+                      marginLeft: -260,
+                      width: 520,
+                      background: "#fff",
+                      border: "1px solid #eef1f5",
+                      borderRadius: 16,
+                      boxShadow: "0 0 0 1px rgba(0,0,0,0.02), 0 4px 8px rgba(10,22,40,0.03), 0 16px 48px rgba(10,22,40,0.08)",
+                      overflow: "hidden",
+                      zIndex: 60,
+                    }}>
+                    <div style={{ padding: 12 }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
+                        {servicesLinks.map((s) => (
+                          <Link key={s.href} href={s.href} onClick={() => setActiveMenu(null)}
+                            style={{
+                              display: "flex", flexDirection: "column", gap: 3,
+                              padding: "14px 16px", borderRadius: 12,
+                              transition: "all 0.15s", textDecoration: "none",
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.background = "#f5f7f9"; }}
+                            onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}>
+                            <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "#1a2030", letterSpacing: "-0.01em" }}>{s.label}</span>
+                            <span style={{ fontSize: "0.75rem", color: "#8891a0", lineHeight: 1.4 }}>{s.desc}</span>
+                          </Link>
+                        ))}
                       </div>
-                    </Link>
-                  ))}
-                </div>
-                <div className="mega-footer">
-                  <Link href="/hizmetler" className="mega-all" onClick={() => setActiveDropdown(null)}>
-                    Tüm Hizmetleri Görüntüle <ArrowRight size={14} />
-                  </Link>
-                </div>
-              </div>
+                    </div>
+                    <div style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      padding: "12px 20px", borderTop: "1px solid #f0f2f5", background: "#fafbfc",
+                    }}>
+                      <span style={{ fontSize: "0.72rem", color: "#8891a0" }}>Kliniğimizde sunduğumuz tüm tedavi hizmetleri</span>
+                      <Link href="/hizmetler" onClick={() => setActiveMenu(null)}
+                        style={{
+                          display: "inline-flex", alignItems: "center", gap: 5,
+                          fontSize: "0.78rem", fontWeight: 600, color: "#2b7cad",
+                          textDecoration: "none", transition: "gap 0.2s",
+                        }}>
+                        Tüm Hizmetler <ArrowRight size={13} />
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            {/* Kurumsal Dropdown */}
-            <div
-              className="nav-dropdown"
-              onMouseEnter={() => handleDropdownEnter("kurumsal")}
-              onMouseLeave={handleDropdownLeave}
-            >
-              <button className={`nav-link ${activeDropdown === "kurumsal" ? "nav-link--active" : ""}`} type="button" onClick={() => setActiveDropdown(activeDropdown === "kurumsal" ? null : "kurumsal")}>
-                Kurumsal <ChevronDown size={14} className={`nav-chevron ${activeDropdown === "kurumsal" ? "nav-chevron--open" : ""}`} />
+            {/* Kurumsal Drop */}
+            <div style={{ position: "relative" }} onMouseEnter={() => openMenu("corp")} onMouseLeave={closeMenu}>
+              <button style={{
+                position: "relative",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 5,
+                padding: "9px 18px",
+                fontSize: "0.9rem",
+                fontWeight: activeMenu === "corp" ? 600 : 500,
+                color: activeMenu === "corp" ? "#2b7cad" : "#3d4654",
+                background: "none",
+                border: "none",
+                borderRadius: 10,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                fontFamily: "inherit",
+                transition: "all 0.2s",
+              }}>
+                Kurumsal
+                <ChevronDown size={13} style={{
+                  transition: "transform 0.25s",
+                  opacity: activeMenu === "corp" ? 0.8 : 0.4,
+                  transform: activeMenu === "corp" ? "rotate(180deg)" : "none",
+                }} />
               </button>
-              <div className={`dropdown-panel ${activeDropdown === "kurumsal" ? "dropdown-panel--visible" : ""}`}>
-                {corporateLinks.map((c) => (
-                  <Link key={c.href} href={c.href} className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                    {c.label}
-                  </Link>
-                ))}
-              </div>
+              <AnimatePresence>
+                {activeMenu === "corp" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0, transition: { type: "spring", stiffness: 420, damping: 30 } }}
+                    exit={{ opacity: 0, y: 8, transition: { duration: 0.1 } }}
+                    style={{
+                      position: "absolute",
+                      top: "calc(100% + 14px)",
+                      left: "50%",
+                      marginLeft: -100,
+                      minWidth: 200,
+                      background: "#fff",
+                      border: "1px solid #eef1f5",
+                      borderRadius: 14,
+                      boxShadow: "0 0 0 1px rgba(0,0,0,0.02), 0 4px 8px rgba(10,22,40,0.03), 0 16px 48px rgba(10,22,40,0.08)",
+                      padding: 6,
+                      zIndex: 60,
+                    }}>
+                    {corporateLinks.map((c) => (
+                      <Link key={c.href} href={c.href} onClick={() => setActiveMenu(null)}
+                        style={{
+                          display: "block", padding: "10px 16px",
+                          fontSize: "0.85rem", fontWeight: 500, color: "#3d4654",
+                          borderRadius: 10, transition: "all 0.15s",
+                          textDecoration: "none",
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = "#f5f7f9"; e.currentTarget.style.color = "#2b7cad"; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#3d4654"; }}>
+                        {c.label}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            <Link href="/iletisim" className="nav-link">
+            <Link href="/iletisim"
+              onMouseEnter={() => openMenu(null)}
+              style={{
+                position: "relative",
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "9px 18px",
+                fontSize: "0.9rem",
+                fontWeight: isActive("/iletisim") ? 600 : 500,
+                color: isActive("/iletisim") ? "#2b7cad" : "#3d4654",
+                borderRadius: 10,
+                whiteSpace: "nowrap",
+                transition: "all 0.2s",
+                textDecoration: "none",
+              }}>
               İletişim
+              {isActive("/iletisim") && <span style={{
+                position: "absolute", bottom: 2, left: "50%", transform: "translateX(-50%)",
+                width: 18, height: 2.5, borderRadius: 2, background: "#2b7cad"
+              }} />}
             </Link>
           </nav>
 
-          <div className="header-actions">
-            <a
-              href="tel:+905335165134"
-              className="header-phone"
-            >
-              <Phone size={14} />
-              <span>0533 516 51 34</span>
-            </a>
-            <Link href="/iletisim" className="header-cta">
-              Randevu Al <ArrowRight size={14} />
+          {/* RIGHT */}
+          <div className="hdr__right">
+            <Link href="/iletisim" className="hdr__cta-btn">
+              Randevu Al <ArrowRight size={14} className="hdr__cta-arrow" />
             </Link>
-            <button
-              className="mobile-toggle"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Menü"
-            >
-              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+            <button className="hdr__burger" onClick={() => setMobileOpen(true)} aria-label="Menü">
+              <Menu size={22} />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu */}
-      <div className={`mobile-overlay ${mobileOpen ? "mobile-overlay--visible" : ""}`} onClick={() => setMobileOpen(false)}>
-        <div
-          className={`mobile-panel ${mobileOpen ? "mobile-panel--visible" : ""}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="mobile-panel-header">
-            <img
-              src="/images/header_logo.svg"
-              alt="FyPlus"
-              width={120}
-              height={34}
-            />
-            <button onClick={() => setMobileOpen(false)} aria-label="Kapat">
-              <X size={20} />
-            </button>
-          </div>
-
-          <nav className="mobile-nav">
-            <Link href="/" className="mobile-link" onClick={() => setMobileOpen(false)}>
-              Ana Sayfa
-            </Link>
-            <Link href="/hakkimizda" className="mobile-link" onClick={() => setMobileOpen(false)}>
-              Hakkımızda
-            </Link>
-
-            <div className="mobile-accordion">
-              <button
-                className="mobile-link mobile-accordion-trigger"
-                onClick={() => toggleMobileDropdown("hizmetler")}
-              >
-                <span>Hizmetlerimiz</span>
-                <ChevronDown
-                  size={16}
-                  className={`mobile-chevron ${mobileDropdown === "hizmetler" ? "mobile-chevron--open" : ""}`}
-                />
-              </button>
-              <div className={`mobile-subnav ${mobileDropdown === "hizmetler" ? "mobile-subnav--open" : ""}`}>
-                {servicesLinks.map((s) => (
-                  <Link key={s.href} href={s.href} onClick={() => setMobileOpen(false)}>
-                    {s.label}
-                  </Link>
-                ))}
-                <Link
-                  href="/hizmetler"
-                  onClick={() => setMobileOpen(false)}
-                  className="mobile-subnav-all"
-                >
-                  Tüm Hizmetler
-                </Link>
+      {/* ═══ MOBILE DRAWER ═══ */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div className="m-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={() => setMobileOpen(false)}>
+            <motion.aside className="m-drawer" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }} onClick={(e) => e.stopPropagation()}>
+              <div className="m-drawer__head">
+                <img src="/images/header_logo.svg" alt="FyPlus" style={{ height: 28 }} />
+                <button onClick={() => setMobileOpen(false)} className="m-drawer__x"><X size={18} /></button>
               </div>
-            </div>
-
-            <div className="mobile-accordion">
-              <button
-                className="mobile-link mobile-accordion-trigger"
-                onClick={() => toggleMobileDropdown("kurumsal")}
-              >
-                <span>Kurumsal</span>
-                <ChevronDown
-                  size={16}
-                  className={`mobile-chevron ${mobileDropdown === "kurumsal" ? "mobile-chevron--open" : ""}`}
-                />
-              </button>
-              <div className={`mobile-subnav ${mobileDropdown === "kurumsal" ? "mobile-subnav--open" : ""}`}>
-                {corporateLinks.map((c) => (
-                  <Link key={c.href} href={c.href} onClick={() => setMobileOpen(false)}>
-                    {c.label}
-                  </Link>
+              <div className="m-drawer__body">
+                {navLinks.map((l) => (
+                  <Link key={l.href} href={l.href} className={`m-link${isActive(l.href) ? " m-link--active" : ""}`}
+                    onClick={() => setMobileOpen(false)}>{l.label}</Link>
                 ))}
+
+                <button className="m-acc" onClick={() => setMobileAccordion(mobileAccordion === "s" ? null : "s")}>
+                  Hizmetlerimiz <ChevronDown size={16} className={mobileAccordion === "s" ? "open" : ""} />
+                </button>
+                <AnimatePresence>
+                  {mobileAccordion === "s" && (
+                    <motion.div className="m-sub" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                      {servicesLinks.map((s) => (
+                        <Link key={s.href} href={s.href} className="m-sublink" onClick={() => setMobileOpen(false)}>{s.label}</Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <button className="m-acc" onClick={() => setMobileAccordion(mobileAccordion === "c" ? null : "c")}>
+                  Kurumsal <ChevronDown size={16} className={mobileAccordion === "c" ? "open" : ""} />
+                </button>
+                <AnimatePresence>
+                  {mobileAccordion === "c" && (
+                    <motion.div className="m-sub" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                      {corporateLinks.map((c) => (
+                        <Link key={c.href} href={c.href} className="m-sublink" onClick={() => setMobileOpen(false)}>{c.label}</Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <Link href="/iletisim" className={`m-link${isActive("/iletisim") ? " m-link--active" : ""}`}
+                  onClick={() => setMobileOpen(false)}>İletişim</Link>
               </div>
-            </div>
-
-            <Link href="/iletisim" className="mobile-link" onClick={() => setMobileOpen(false)}>
-              İletişim
-            </Link>
-          </nav>
-
-          <div className="mobile-panel-footer">
-            <a href="tel:+905335165134" className="btn btn-outline" style={{ width: "100%", justifyContent: "center" }}>
-              <Phone size={16} /> 0533 516 51 34
-            </a>
-            <Link
-              href="/iletisim"
-              className="btn btn-primary"
-              style={{ width: "100%", justifyContent: "center" }}
-              onClick={() => setMobileOpen(false)}
-            >
-              Randevu Al
-            </Link>
-          </div>
-        </div>
-      </div>
+              <div className="m-drawer__foot">
+                <a href="tel:+905335165134" className="m-btn m-btn--ghost"><Phone size={15} /> 0533 516 51 34</a>
+                <Link href="/iletisim" className="m-btn m-btn--fill" onClick={() => setMobileOpen(false)}>Randevu Al <ArrowRight size={14} /></Link>
+              </div>
+            </motion.aside>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <style jsx>{`
-        /* ═══ TOP BAR ═══ */
-        .top-bar {
-          background: var(--navy);
-          color: rgba(255,255,255,0.75);
-          font-size: 0.76rem;
+        /* ═══════════════════════════════════════════
+           TOPBAR — Premium koyu navy strip
+           ═══════════════════════════════════════════ */
+        .topbar {
+          background: linear-gradient(135deg, #0a1628 0%, #0f1e36 100%);
           height: 36px;
           display: flex;
           align-items: center;
-          transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
-          overflow: hidden;
+          transition: margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          border-bottom: 1px solid rgba(255,255,255,0.04);
+          position: relative;
+          z-index: 110;
         }
-        .top-bar--hidden {
-          height: 0;
-          opacity: 0;
-          pointer-events: none;
-        }
-        .top-bar-inner {
+        .topbar--hidden { margin-top: -36px; }
+        .topbar__inner {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          gap: 40px;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 24px;
+          width: 100%;
         }
-        .top-bar-left,
-        .top-bar-right {
+        .topbar__left, .topbar__right {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+        .topbar__link, .topbar__info {
           display: flex;
           align-items: center;
           gap: 6px;
-        }
-        .top-bar-item {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          color: rgba(255,255,255,0.7);
-          transition: var(--transition);
+          font-size: 0.7rem;
+          font-weight: 500;
+          color: rgba(255,255,255,0.55);
+          text-decoration: none;
+          transition: color 0.2s;
           letter-spacing: 0.01em;
         }
-        .top-bar-item:hover {
-          color: var(--blue);
+        .topbar__link:hover { color: rgba(255,255,255,0.9); }
+        .topbar__icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 18px;
+          height: 18px;
+          border-radius: 4px;
+          background: rgba(255,255,255,0.06);
+          color: #3d9bd4;
+          flex-shrink: 0;
         }
-        .top-bar-divider {
-          width: 1px;
-          height: 12px;
+        .topbar__dot {
+          width: 3px;
+          height: 3px;
+          border-radius: 50%;
           background: rgba(255,255,255,0.15);
-          margin: 0 8px;
+        }
+        .topbar__socials {
+          display: flex;
+          gap: 4px;
+        }
+        .topbar__socials a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 22px;
+          height: 22px;
+          border-radius: 5px;
+          color: rgba(255,255,255,0.4);
+          transition: all 0.2s;
+        }
+        .topbar__socials a:hover {
+          color: #3d9bd4;
+          background: rgba(255,255,255,0.06);
         }
 
-        /* ═══ HEADER ═══ */
-        .header {
+        /* ═══════════════════════════════════════════
+           HEADER — Glassmorphism + floating feel
+           ═══════════════════════════════════════════ */
+        .hdr {
           position: sticky;
           top: 0;
-          left: 0;
-          right: 0;
           z-index: 100;
-          background: rgba(255, 255, 255, 0.98);
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
-          border-bottom: 1px solid transparent;
-          transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
-          height: 68px;
+          background: rgba(255,255,255,0.75);
+          backdrop-filter: blur(24px) saturate(200%);
+          -webkit-backdrop-filter: blur(24px) saturate(200%);
+          border-bottom: 1px solid rgba(0,0,0,0.04);
+          transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .header--scrolled {
-          border-bottom-color: rgba(0,0,0,0.04);
-          box-shadow: 0 1px 20px rgba(10, 22, 40, 0.06);
+        .hdr--scrolled {
+          background: rgba(255,255,255,0.92);
+          border-bottom-color: rgba(0,0,0,0.06);
+          box-shadow:
+            0 1px 0 rgba(0,0,0,0.02),
+            0 4px 16px rgba(10,22,40,0.04);
         }
-        .header-inner {
+        .hdr__inner {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          height: 68px;
+          height: 84px;
+          transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .logo img {
-          height: 34px;
-          width: auto;
-        }
+        .hdr--scrolled .hdr__inner { height: 72px; }
 
-        /* ═══ DESKTOP NAV ═══ */
-        .nav-desktop {
+        /* Logo */
+        .hdr__logo {
           display: flex;
           align-items: center;
-          gap: 0px;
         }
-        .nav-link {
-          padding: 8px 18px;
-          font-size: 0.84rem;
-          font-weight: 500;
-          color: var(--gray-600);
-          border-radius: var(--radius-sm);
-          transition: all 0.2s ease;
+        .hdr__logo img {
+          height: 40px;
+          width: 148px;
+          object-fit: contain;
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hdr--scrolled .hdr__logo img {
+          height: 36px;
+          width: 133px;
+        }
+
+        /* Nav links */
+        .hdr__nav {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .hdr__menu-wrap { position: relative; }
+        .hdr__link {
+          position: relative;
           display: inline-flex;
           align-items: center;
-          gap: 4px;
-          cursor: pointer;
+          gap: 5px;
+          padding: 9px 18px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          color: #3d4654;
           background: none;
           border: none;
-          font-family: var(--font-body);
-          position: relative;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: all 0.2s;
+          white-space: nowrap;
+          font-family: inherit;
           letter-spacing: -0.005em;
         }
-        .nav-link::after {
+        .hdr__link:hover {
+          color: #111827;
+          background: rgba(0,0,0,0.04);
+        }
+        .hdr__link--active {
+          color: #2b7cad;
+          font-weight: 600;
+        }
+        .hdr__link--active::after {
           content: "";
           position: absolute;
           bottom: 2px;
-          left: 18px;
-          right: 18px;
-          height: 1.5px;
-          background: var(--navy);
-          border-radius: 1px;
-          transform: scaleX(0);
-          transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+          left: 50%;
+          transform: translateX(-50%);
+          width: 18px;
+          height: 2.5px;
+          border-radius: 2px;
+          background: #2b7cad;
         }
-        .nav-link:hover {
-          color: var(--navy);
+        .hdr__link--trigger { cursor: pointer; }
+        .hdr__chevron {
+          transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          opacity: 0.4;
+          margin-left: 1px;
         }
-        .nav-link:hover::after {
-          transform: scaleX(1);
-        }
-        .nav-link--active {
-          color: var(--navy);
-        }
-        .nav-link--active::after {
-          transform: scaleX(1);
-        }
-        .nav-chevron {
-          transition: transform 0.25s ease;
-        }
-        .nav-chevron--open {
+        .hdr__chevron.open {
           transform: rotate(180deg);
+          opacity: 0.8;
         }
 
-        /* ═══ MEGA MENU (Hizmetler) ═══ */
-        .mega-panel {
+        /* ── Mega Menu ── */
+        .mega {
           position: absolute;
-          top: calc(100% + 12px);
+          top: calc(100% + 14px);
           left: 50%;
-          transform: translateX(-50%) translateY(8px);
+          transform: translateX(-50%) !important;
           width: 520px;
-          background: var(--white);
-          border: 1px solid rgba(0,0,0,0.06);
-          border-radius: var(--radius-xl);
-          box-shadow: 0 20px 60px rgba(10, 22, 40, 0.12), 0 1px 3px rgba(10, 22, 40, 0.04);
-          padding: 0;
-          opacity: 0;
-          visibility: hidden;
-          transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
-          pointer-events: none;
-          z-index: 200;
+          background: #ffffff;
+          border: 1px solid #eef1f5;
+          border-radius: 16px;
+          box-shadow:
+            0 0 0 1px rgba(0,0,0,0.02),
+            0 4px 8px rgba(10,22,40,0.03),
+            0 16px 48px rgba(10,22,40,0.08);
           overflow: hidden;
+          z-index: 60;
         }
-        .mega-panel--visible {
-          opacity: 1;
-          visibility: visible;
-          transform: translateX(-50%) translateY(0);
-          pointer-events: auto;
-        }
-        .mega-grid {
+        .mega__body { padding: 12px; }
+        .mega__grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 2px;
-          padding: 8px;
         }
-        .mega-item {
-          display: flex;
-          align-items: flex-start;
-          gap: 12px;
-          padding: 14px 16px;
-          border-radius: var(--radius-md);
-          transition: all 0.2s ease;
-          text-decoration: none;
-        }
-        .mega-item:hover {
-          background: var(--gray-50);
-        }
-        .mega-item-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: var(--blue);
-          flex-shrink: 0;
-          margin-top: 6px;
-          opacity: 0.6;
-          transition: var(--transition);
-        }
-        .mega-item:hover .mega-item-dot {
-          opacity: 1;
-          transform: scale(1.3);
-        }
-        .mega-item div {
+        .mega__item {
           display: flex;
           flex-direction: column;
+          gap: 3px;
+          padding: 14px 16px;
+          border-radius: 12px;
+          transition: all 0.15s;
         }
-        .mega-item strong {
-          display: block;
-          font-size: 0.86rem;
-          color: var(--navy);
+        .mega__item:hover {
+          background: #f5f7f9;
+        }
+        .mega__item-title {
+          font-size: 0.875rem;
           font-weight: 600;
-          margin-bottom: 2px;
+          color: #1a2030;
+          letter-spacing: -0.01em;
         }
-        .mega-item span {
-          font-size: 0.76rem;
-          color: var(--gray-400);
+        .mega__item:hover .mega__item-title { color: #2b7cad; }
+        .mega__item-desc {
+          font-size: 0.75rem;
+          color: #8891a0;
           line-height: 1.4;
         }
-        .mega-footer {
-          border-top: 1px solid var(--gray-100);
+        .mega__foot {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
           padding: 12px 20px;
-          background: var(--gray-50);
+          border-top: 1px solid #f0f2f5;
+          background: #fafbfc;
         }
-        .mega-all {
-          display: flex;
+        .mega__foot-text {
+          font-size: 0.72rem;
+          color: #8891a0;
+        }
+        .mega__foot-link {
+          display: inline-flex;
           align-items: center;
-          gap: 6px;
-          font-size: 0.82rem;
+          gap: 5px;
+          font-size: 0.78rem;
           font-weight: 600;
-          color: var(--coral);
-          transition: var(--transition);
+          color: #2b7cad;
+          transition: gap 0.2s;
         }
-        .mega-all:hover {
-          gap: 10px;
-        }
+        .mega__foot-link:hover { gap: 8px; }
 
-        /* ═══ SIMPLE DROPDOWN (Kurumsal) ═══ */
-        .dropdown-panel {
+        /* ── Dropdown ── */
+        .drop {
           position: absolute;
-          top: calc(100% + 12px);
+          top: calc(100% + 14px);
           left: 50%;
-          transform: translateX(-50%) translateY(8px);
+          transform: translateX(-50%) !important;
           min-width: 200px;
-          background: var(--white);
-          border: 1px solid rgba(0,0,0,0.06);
-          border-radius: var(--radius-lg);
-          box-shadow: 0 20px 60px rgba(10, 22, 40, 0.12), 0 1px 3px rgba(10, 22, 40, 0.04);
+          background: #ffffff;
+          border: 1px solid #eef1f5;
+          border-radius: 14px;
+          box-shadow:
+            0 0 0 1px rgba(0,0,0,0.02),
+            0 4px 8px rgba(10,22,40,0.03),
+            0 16px 48px rgba(10,22,40,0.08);
           padding: 6px;
-          opacity: 0;
-          visibility: hidden;
-          transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
-          pointer-events: none;
-          z-index: 200;
-          display: flex;
-          flex-direction: column;
+          z-index: 60;
         }
-        .dropdown-panel--visible {
-          opacity: 1;
-          visibility: visible;
-          transform: translateX(-50%) translateY(0);
-          pointer-events: auto;
-        }
-        .dropdown-item {
+        .drop__item {
           display: block;
-          padding: 10px 14px;
-          font-size: 0.84rem;
-          color: var(--gray-600);
-          border-radius: var(--radius-sm);
-          transition: var(--transition);
+          padding: 10px 16px;
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: #434c5a;
+          border-radius: 10px;
+          transition: all 0.15s;
         }
-        .dropdown-item:hover {
-          background: var(--gray-50);
-          color: var(--navy);
+        .drop__item:hover {
+          background: #f5f7f9;
+          color: #2b7cad;
         }
 
-        /* ═══ HEADER ACTIONS ═══ */
-        .header-actions {
+        /* ── Right actions ── */
+        .hdr__right {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
         }
-        .header-phone {
-          display: flex;
-          align-items: center;
-          gap: 7px;
-          padding: 7px 16px;
-          font-size: 0.82rem;
-          font-weight: 600;
-          color: var(--navy);
-          border: 1.5px solid var(--gray-150, #e5e7eb);
-          border-radius: var(--radius-full);
-          transition: var(--transition);
-          letter-spacing: -0.01em;
-        }
-        .header-phone:hover {
-          border-color: var(--navy);
-          background: var(--gray-50);
-        }
-        .header-cta {
-          display: flex;
+        .hdr__cta-btn {
+          display: inline-flex;
           align-items: center;
           gap: 6px;
-          padding: 9px 22px;
-          font-size: 0.82rem;
-          font-weight: 600;
-          color: var(--white);
-          background: var(--coral);
-          border-radius: var(--radius-full);
+          padding: 8px 12px;
+          font-size: 0.95rem;
+          font-weight: 500;
+          color: #434c5a;
+          background: transparent;
           transition: all 0.25s ease;
-          letter-spacing: -0.01em;
         }
-        .header-cta:hover {
-          background: var(--coral-dark, #c77b5e);
-          transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(200, 130, 100, 0.3);
+        .hdr__cta-arrow {
+          color: #5f6877;
+          transition: transform 0.25s ease;
         }
-        .mobile-toggle {
+        .hdr__cta-btn:hover {
+          color: #2b7cad;
+        }
+        .hdr__cta-btn:hover .hdr__cta-arrow {
+          transform: translateX(4px);
+          color: #2b7cad;
+        }
+        .hdr__burger {
           display: none;
+          padding: 8px;
+          color: #2d3543;
+          cursor: pointer;
           background: none;
           border: none;
-          cursor: pointer;
-          color: var(--navy);
-          padding: 8px;
+          border-radius: 10px;
+          transition: background 0.2s;
         }
+        .hdr__burger:hover { background: rgba(0,0,0,0.04); }
 
-        /* ═══ MOBILE OVERLAY ═══ */
-        .mobile-overlay {
+        /* ═══════════════════════════════════════════
+           MOBILE DRAWER
+           ═══════════════════════════════════════════ */
+        .m-overlay {
           position: fixed;
           inset: 0;
-          z-index: 300;
-          background: rgba(10, 22, 40, 0.5);
-          backdrop-filter: blur(4px);
-          opacity: 0;
-          visibility: hidden;
-          transition: all 0.3s ease;
+          background: rgba(10,22,40,0.3);
+          backdrop-filter: blur(6px);
+          z-index: 1000;
         }
-        .mobile-overlay--visible {
-          opacity: 1;
-          visibility: visible;
-        }
-        .mobile-panel {
+        .m-drawer {
           position: absolute;
           top: 0;
           right: 0;
           width: 340px;
-          max-width: 88vw;
+          max-width: 90vw;
           height: 100%;
-          background: var(--white);
+          background: #fff;
           display: flex;
           flex-direction: column;
-          transform: translateX(100%);
-          transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+          box-shadow: -8px 0 32px rgba(10,22,40,0.1);
         }
-        .mobile-panel--visible {
-          transform: translateX(0);
-        }
-        .mobile-panel-header {
+        .m-drawer__head {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 20px 24px;
-          border-bottom: 1px solid var(--gray-100);
+          padding: 22px 24px;
+          border-bottom: 1px solid #eef1f5;
         }
-        .mobile-panel-header button {
-          width: 36px;
-          height: 36px;
-          border-radius: var(--radius-sm);
+        .m-drawer__x {
+          width: 34px;
+          height: 34px;
+          border-radius: 10px;
+          background: #f5f7f9;
+          border: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: var(--gray-500);
-          transition: var(--transition);
-          background: none;
-          border: none;
+          color: #5f6877;
           cursor: pointer;
+          transition: all 0.2s;
         }
-        .mobile-panel-header button:hover {
-          background: var(--gray-50);
-          color: var(--navy);
-        }
-        .mobile-nav {
+        .m-drawer__x:hover { background: #eef1f5; color: #111; }
+        .m-drawer__body {
           flex: 1;
           overflow-y: auto;
-          padding: 16px;
+          padding: 16px 20px;
           display: flex;
           flex-direction: column;
           gap: 2px;
         }
-        .mobile-link {
-          padding: 14px 16px;
-          font-size: 0.92rem;
-          font-weight: 500;
-          color: var(--navy);
-          border-radius: var(--radius-sm);
-          transition: var(--transition);
-          text-align: left;
-          display: block;
-        }
-        .mobile-link:hover {
-          background: var(--gray-50);
-        }
-        .mobile-accordion-trigger {
-          display: flex !important;
+        .m-link, .m-acc {
+          display: flex;
           align-items: center;
           justify-content: space-between;
           width: 100%;
+          padding: 14px 16px;
+          font-size: 0.95rem;
+          font-weight: 500;
+          color: #434c5a;
           background: none;
           border: none;
+          border-radius: 12px;
           cursor: pointer;
-          font-family: var(--font-body);
+          transition: all 0.15s;
+          font-family: inherit;
+          text-align: left;
         }
-        .mobile-chevron {
-          transition: transform 0.25s ease;
-        }
-        .mobile-chevron--open {
-          transform: rotate(180deg);
-        }
-        .mobile-subnav {
+        .m-link:hover, .m-acc:hover { background: #f5f7f9; color: #111; }
+        .m-link--active { color: #2b7cad; background: rgba(43,124,173,0.05); }
+        .m-acc svg { transition: transform 0.25s; opacity: 0.4; }
+        .m-acc svg.open { transform: rotate(180deg); opacity: 0.7; }
+        .m-sub {
           display: flex;
           flex-direction: column;
-          padding-left: 16px;
           margin-left: 16px;
-          border-left: 2px solid var(--gray-100);
+          padding-left: 16px;
+          border-left: 2px solid #eef1f5;
           overflow: hidden;
-          max-height: 0;
-          transition: max-height 0.3s ease, margin-bottom 0.3s ease;
-          margin-bottom: 0;
         }
-        .mobile-subnav--open {
-          max-height: 400px;
-          margin-bottom: 8px;
-        }
-        .mobile-subnav a {
+        .m-sublink {
           padding: 10px 14px;
-          font-size: 0.86rem;
-          color: var(--gray-500);
-          transition: var(--transition);
-          border-radius: var(--radius-xs);
+          font-size: 0.88rem;
+          color: #8891a0;
+          border-radius: 8px;
+          transition: all 0.15s;
         }
-        .mobile-subnav a:hover {
-          color: var(--navy);
-          background: var(--gray-50);
-        }
-        .mobile-subnav-all {
-          color: var(--coral) !important;
-          font-weight: 600;
-        }
-        .mobile-panel-footer {
-          padding: 16px 24px 24px;
-          border-top: 1px solid var(--gray-100);
+        .m-sublink:hover { color: #2b7cad; background: rgba(43,124,173,0.04); }
+        .m-drawer__foot {
+          padding: 20px;
+          border-top: 1px solid #eef1f5;
           display: flex;
           flex-direction: column;
           gap: 10px;
         }
+        .m-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          padding: 14px;
+          border-radius: 50px;
+          font-weight: 600;
+          font-size: 0.88rem;
+          transition: all 0.2s;
+          font-family: inherit;
+        }
+        .m-btn--ghost {
+          border: 1px solid #eef1f5;
+          color: #2d3543;
+          background: #fff;
+        }
+        .m-btn--ghost:hover { background: #f5f7f9; }
+        .m-btn--fill {
+          background: linear-gradient(135deg, #d4634b, #c0513d);
+          color: #fff;
+          border: none;
+          box-shadow: 0 4px 16px rgba(212,99,75,0.2);
+        }
 
         /* ═══ RESPONSIVE ═══ */
-        @media (max-width: 1024px) {
-          .nav-desktop {
-            display: none;
+        @media (max-width: 1100px) {
+          .hdr__nav { display: none !important; }
+          .hdr__cta-btn { display: none; }
+          .hdr__burger { display: flex; }
+          
+          /* Topbar Swipeable on Mobile/Tablet */
+          .topbar__inner {
+            justify-content: flex-start;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 0 16px;
+            gap: 20px;
+            -ms-overflow-style: none; /* IE/Edge */
+            scrollbar-width: none; /* Firefox */
           }
-          .header-phone {
-            display: none;
-          }
-          .header-cta {
-            display: none;
-          }
-          .top-bar {
-            display: none;
-          }
-          .mobile-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
+          .topbar__inner::-webkit-scrollbar { display: none; } /* Chrome, Safari, Opera */
+          .topbar__left, .topbar__right { flex-shrink: 0; }
+        }
+        @media (max-width: 640px) {
+          .hdr__inner { height: 70px; padding: 0 16px; transition: height 0.4s; }
+          .hdr--scrolled .hdr__inner { height: 60px; }
+          
+          .hdr__logo img { width: 124px; height: 34px; transition: all 0.4s; }
+          .hdr--scrolled .hdr__logo img { width: 112px; height: 30px; }
+          
+          .m-drawer { width: 100%; max-width: 100vw; }
         }
       `}</style>
     </>
