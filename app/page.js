@@ -398,21 +398,32 @@ export default function HomePage() {
           <span className="section-label" style={{justifyContent:"center",color:'rgba(255,255,255,.5)',borderColor:'rgba(255,255,255,.1)'}}>Hasta Yorumları</span>
           <h2 className="section-title" style={{color:'#fff'}}>Hastalarımız Ne Diyor?</h2>
           <p className="section-desc" style={{margin:"0 auto",color:'rgba(255,255,255,.55)'}}>12.000&apos;den fazla mutlu hastamızın deneyimlerini okuyun.</p>
+          <div className="testimonials-badge">
+            <Star size={18} fill="#facc15" color="#facc15"/>
+            <span><strong>4.9 / 5</strong> — Google&apos;da 200+ yorum</span>
+          </div>
         </div>
         <div className="testimonials-grid">
           {testimonials.map((t,i)=>(
-            <div key={i} className="testimonial-card" style={{background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.08)',backdropFilter:'blur(12px)',borderRadius:'var(--radius-xl)'}}>
-              <div className="testimonial-card__header">
-                <div className="testimonial-card__avatar">{t.name.charAt(0)}</div>
-                <div><strong className="testimonial-card__name" style={{color:'#fff'}}>{t.name}</strong><span className="testimonial-card__treatment" style={{color:'rgba(255,255,255,.4)'}}>{t.treatment}</span></div>
-                <div className="testimonial-card__stars">{[...Array(t.rating)].map((_,j)=><Star key={j} size={14} fill="#d4634b" color="#d4634b"/>)}</div>
+            <div key={i} className="testimonial-card">
+              <div className="testimonial-card__accent"/>
+              <div className="testimonial-card__inner">
+                <Quote size={28} className="testimonial-card__big-quote"/>
+                <p className="testimonial-card__text">{t.text}</p>
+                <div className="testimonial-card__footer">
+                  <div className="testimonial-card__avatar">{t.name.charAt(0)}</div>
+                  <div className="testimonial-card__info">
+                    <strong className="testimonial-card__name">{t.name}</strong>
+                    <span className="testimonial-card__treatment">{t.treatment}</span>
+                  </div>
+                  <div className="testimonial-card__stars">{[...Array(t.rating)].map((_,j)=><Star key={j} size={13} fill="#facc15" color="#facc15"/>)}</div>
+                </div>
+                <span className="testimonial-card__date">{t.date}</span>
               </div>
-              <p className="testimonial-card__text" style={{color:'rgba(255,255,255,.6)'}}><Quote size={16} className="testimonial-card__quote" style={{color:'rgba(255,255,255,.15)'}}/>{t.text}</p>
-              <span className="testimonial-card__date" style={{color:'rgba(255,255,255,.3)'}}>{t.date}</span>
             </div>
           ))}
         </div>
-        <div style={{textAlign:"center",marginTop:40}}><a href="https://maps.app.goo.gl/FyPlusDental" target="_blank" rel="noopener noreferrer" className="btn btn-glass">Google Yorumlarını Gör <ArrowRight size={14}/></a></div>
+        <div style={{textAlign:"center",marginTop:48}}><a href="https://maps.app.goo.gl/FyPlusDental" target="_blank" rel="noopener noreferrer" className="btn btn-glass">Tüm Google Yorumlarını Gör <ArrowRight size={14}/></a></div>
       </div>
     </section>
 
@@ -575,16 +586,22 @@ export default function HomePage() {
       /* ═══ TESTIMONIALS ═══ */
       .testimonials-section{background:linear-gradient(135deg,#0a1628 0%,#0e1f38 50%,#132742 100%);position:relative;overflow:hidden}
       .testimonials-section__pattern{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.02) 1px,transparent 1px);background-size:24px 24px;pointer-events:none;will-change:transform}
-      .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-      .testimonial-card{padding:28px;display:flex;flex-direction:column;gap:16px;will-change:transform,opacity}
-      .testimonial-card__header{display:flex;align-items:center;gap:12px}
-      .testimonial-card__avatar{width:44px;height:44px;border-radius:var(--radius-full);background:linear-gradient(135deg,var(--blue),var(--coral));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;flex-shrink:0}
-      .testimonial-card__name{display:block;font-size:.92rem}
-      .testimonial-card__treatment{display:block;font-size:.75rem;font-weight:500}
-      .testimonial-card__stars{margin-left:auto;display:flex;gap:2px}
-      .testimonial-card__text{font-size:.88rem;line-height:1.8;position:relative;flex:1}
-      .testimonial-card__quote{margin-right:6px;vertical-align:text-top;flex-shrink:0}
-      .testimonial-card__date{font-size:.72rem;font-weight:500}
+      .testimonials-badge{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:10px 24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-full);color:rgba(255,255,255,.7);font-size:.85rem}
+      .testimonials-badge strong{color:#fff}
+      .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+      .testimonial-card{position:relative;border-radius:var(--radius-xl);overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(16px);transition:all .4s cubic-bezier(.4,0,.2,1);will-change:transform,opacity}
+      .testimonial-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12)}
+      .testimonial-card__accent{height:3px;background:linear-gradient(90deg,var(--blue),var(--coral))}
+      .testimonial-card__inner{padding:28px 28px 24px;display:flex;flex-direction:column;gap:16px}
+      .testimonial-card__big-quote{color:rgba(255,255,255,.08);flex-shrink:0}
+      .testimonial-card__text{font-size:.9rem;line-height:1.85;color:rgba(255,255,255,.65);flex:1}
+      .testimonial-card__footer{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)}
+      .testimonial-card__avatar{width:40px;height:40px;border-radius:var(--radius-full);background:linear-gradient(135deg,var(--blue),var(--coral));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0}
+      .testimonial-card__info{flex:1}
+      .testimonial-card__name{display:block;font-size:.88rem;color:#fff}
+      .testimonial-card__treatment{display:block;font-size:.72rem;font-weight:500;color:rgba(255,255,255,.4)}
+      .testimonial-card__stars{display:flex;gap:2px}
+      .testimonial-card__date{font-size:.7rem;font-weight:500;color:rgba(255,255,255,.25)}
 
       /* ═══ FAQ ═══ */
       .faq-list{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:10px}

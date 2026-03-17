@@ -40,7 +40,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      <style jsx>{`
+      <style jsx global>{`
         .blog-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));

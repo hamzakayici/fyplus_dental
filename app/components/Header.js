@@ -314,7 +314,7 @@ export default function Header() {
           {/* RIGHT */}
           <div className="hdr__right">
             <Link href="/iletisim" className="hdr__cta-btn">
-              Randevu Al <ArrowRight size={14} className="hdr__cta-arrow" />
+              Randevu Al <ArrowRight size={14} />
             </Link>
             <button className="hdr__burger" onClick={() => setMobileOpen(true)} aria-label="Menü">
               <Menu size={22} />
@@ -323,7 +323,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ═══ MOBILE DRAWER ═══ */}
+      {/* ═══ MOBILE DRAWER — Premium ═══ */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div className="m-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -335,6 +335,7 @@ export default function Header() {
                 <button onClick={() => setMobileOpen(false)} className="m-drawer__x"><X size={18} /></button>
               </div>
               <div className="m-drawer__body">
+                <span className="m-section-label">Menü</span>
                 {navLinks.map((l) => (
                   <Link key={l.href} href={l.href} className={`m-link${isActive(l.href) ? " m-link--active" : ""}`}
                     onClick={() => setMobileOpen(false)}>{l.label}</Link>
@@ -347,7 +348,10 @@ export default function Header() {
                   {mobileAccordion === "s" && (
                     <motion.div className="m-sub" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
                       {servicesLinks.map((s) => (
-                        <Link key={s.href} href={s.href} className="m-sublink" onClick={() => setMobileOpen(false)}>{s.label}</Link>
+                        <Link key={s.href} href={s.href} className="m-sublink" onClick={() => setMobileOpen(false)}>
+                          <span className="m-sublink__text">{s.label}</span>
+                          <span className="m-sublink__desc">{s.desc}</span>
+                        </Link>
                       ))}
                     </motion.div>
                   )}
@@ -378,7 +382,7 @@ export default function Header() {
         )}
       </AnimatePresence>
 
-      <style jsx>{`
+      <style jsx global>{`
         /* ═══════════════════════════════════════════
            TOPBAR — Premium koyu navy strip
            ═══════════════════════════════════════════ */
@@ -491,14 +495,14 @@ export default function Header() {
           align-items: center;
         }
         .hdr__logo img {
-          height: 40px;
-          width: 148px;
+          height: 48px;
+          width: 180px;
           object-fit: contain;
           transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .hdr--scrolled .hdr__logo img {
-          height: 36px;
-          width: 133px;
+          height: 40px;
+          width: 155px;
         }
 
         /* Nav links */
@@ -666,24 +670,32 @@ export default function Header() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          padding: 11px 24px;
-          font-size: 0.88rem;
-          font-weight: 600;
+          padding: 12px 28px;
+          font-size: 0.9rem;
+          font-weight: 700;
           color: #fff;
-          background: linear-gradient(135deg, #d4634b 0%, #b8503c 100%);
-          border-radius: 10px;
-          box-shadow: 0 4px 16px rgba(212,99,75,.25);
+          background: linear-gradient(135deg, #d4634b 0%, #c0503a 100%);
+          border-radius: 50px;
+          box-shadow: 0 4px 20px rgba(212,99,75,.35), 0 0 0 0 rgba(212,99,75,.4);
           transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-          letter-spacing: 0.01em;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          animation: ctaPulse 2.5s ease-in-out infinite;
+          position: relative;
+        }
+        @keyframes ctaPulse {
+          0%, 100% { box-shadow: 0 4px 20px rgba(212,99,75,.35), 0 0 0 0 rgba(212,99,75,.3); }
+          50% { box-shadow: 0 4px 20px rgba(212,99,75,.35), 0 0 0 8px rgba(212,99,75,0); }
         }
         .hdr__cta-arrow {
-          color: rgba(255,255,255,.8);
+          color: rgba(255,255,255,.9);
           transition: transform 0.25s ease;
         }
         .hdr__cta-btn:hover {
           color: #fff;
-          box-shadow: 0 6px 24px rgba(212,99,75,.35);
-          transform: translateY(-1px);
+          box-shadow: 0 8px 32px rgba(212,99,75,.45);
+          transform: translateY(-2px) scale(1.04);
+          animation: none;
         }
         .hdr__cta-btn:hover .hdr__cta-arrow {
           transform: translateX(4px);
@@ -707,21 +719,22 @@ export default function Header() {
         .m-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(10,22,40,0.3);
-          backdrop-filter: blur(6px);
+          background: rgba(10,22,40,0.45);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
           z-index: 1000;
         }
         .m-drawer {
           position: absolute;
           top: 0;
           right: 0;
-          width: 340px;
-          max-width: 90vw;
+          width: 360px;
+          max-width: 92vw;
           height: 100%;
           background: #fff;
           display: flex;
           flex-direction: column;
-          box-shadow: -8px 0 32px rgba(10,22,40,0.1);
+          box-shadow: -16px 0 48px rgba(10,22,40,0.15);
         }
         .m-drawer__head {
           display: flex;
@@ -731,9 +744,9 @@ export default function Header() {
           border-bottom: 1px solid #eef1f5;
         }
         .m-drawer__x {
-          width: 34px;
-          height: 34px;
-          border-radius: 10px;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
           background: #f5f7f9;
           border: none;
           display: flex;
@@ -743,58 +756,77 @@ export default function Header() {
           cursor: pointer;
           transition: all 0.2s;
         }
-        .m-drawer__x:hover { background: #eef1f5; color: #111; }
+        .m-drawer__x:hover { background: #eef1f5; color: #111; transform: rotate(90deg); }
         .m-drawer__body {
           flex: 1;
           overflow-y: auto;
-          padding: 16px 20px;
+          padding: 12px 16px 24px;
           display: flex;
           flex-direction: column;
           gap: 2px;
+        }
+        .m-section-label {
+          font-size: .68rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: .12em;
+          color: #b0b8c5;
+          padding: 12px 16px 6px;
         }
         .m-link, .m-acc {
           display: flex;
           align-items: center;
           justify-content: space-between;
           width: 100%;
-          padding: 14px 16px;
-          font-size: 0.95rem;
-          font-weight: 500;
-          color: #434c5a;
+          padding: 13px 16px;
+          font-size: 0.92rem;
+          font-weight: 600;
+          color: #2d3543;
           background: none;
           border: none;
           border-radius: 12px;
           cursor: pointer;
-          transition: all 0.15s;
+          transition: all 0.2s;
           font-family: inherit;
           text-align: left;
+          text-decoration: none;
         }
-        .m-link:hover, .m-acc:hover { background: #f5f7f9; color: #111; }
-        .m-link--active { color: #2b7cad; background: rgba(43,124,173,0.05); }
-        .m-acc svg { transition: transform 0.25s; opacity: 0.4; }
-        .m-acc svg.open { transform: rotate(180deg); opacity: 0.7; }
+        .m-link:hover, .m-acc:hover { background: #f5f7f9; color: #0a1628; }
+        .m-link--active { color: #2b7cad; background: rgba(43,124,173,0.06); font-weight: 700; }
+        .m-acc svg { transition: transform 0.3s cubic-bezier(.4,0,.2,1); opacity: 0.35; }
+        .m-acc svg.open { transform: rotate(180deg); opacity: 0.8; color: #2b7cad; }
         .m-sub {
           display: flex;
           flex-direction: column;
-          margin-left: 16px;
+          margin-left: 12px;
           padding-left: 16px;
-          border-left: 2px solid #eef1f5;
+          border-left: 2px solid rgba(43,124,173,0.12);
           overflow: hidden;
+          gap: 2px;
         }
         .m-sublink {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
           padding: 10px 14px;
-          font-size: 0.88rem;
-          color: #8891a0;
-          border-radius: 8px;
-          transition: all 0.15s;
+          font-size: 0.86rem;
+          color: #5f6877;
+          border-radius: 10px;
+          transition: all 0.2s;
+          text-decoration: none;
+          font-weight: 500;
         }
         .m-sublink:hover { color: #2b7cad; background: rgba(43,124,173,0.04); }
+        .m-sublink__text { font-weight: 600; color: #2d3543; }
+        .m-sublink:hover .m-sublink__text { color: #2b7cad; }
+        .m-sublink__desc { font-size: .74rem; color: #9aa3b0; line-height: 1.3; }
         .m-drawer__foot {
-          padding: 20px;
+          padding: 16px 20px 22px;
           border-top: 1px solid #eef1f5;
           display: flex;
           flex-direction: column;
           gap: 10px;
+          background: #fafbfc;
         }
         .m-btn {
           display: flex;
@@ -805,26 +837,34 @@ export default function Header() {
           border-radius: 50px;
           font-weight: 600;
           font-size: 0.88rem;
-          transition: all 0.2s;
+          transition: all 0.25s;
           font-family: inherit;
+          text-decoration: none;
         }
         .m-btn--ghost {
-          border: 1px solid #eef1f5;
+          border: 1px solid #e4e8ed;
           color: #2d3543;
           background: #fff;
         }
-        .m-btn--ghost:hover { background: #f5f7f9; }
+        .m-btn--ghost:hover { background: #f5f7f9; border-color: #d0d5de; }
         .m-btn--fill {
-          background: linear-gradient(135deg, #d4634b, #c0513d);
+          background: linear-gradient(135deg, #d4634b, #c0503a);
           color: #fff;
           border: none;
-          box-shadow: 0 4px 16px rgba(212,99,75,0.2);
+          box-shadow: 0 4px 20px rgba(212,99,75,0.25);
+          text-transform: uppercase;
+          letter-spacing: .02em;
+          font-weight: 700;
+        }
+        .m-btn--fill:hover {
+          box-shadow: 0 6px 28px rgba(212,99,75,0.35);
+          transform: translateY(-1px);
         }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1100px) {
           .hdr__nav { display: none !important; }
-          .hdr__cta-btn { display: none; }
+          .hdr__cta-btn { display: none !important; }
           .hdr__burger { display: flex; }
           
           /* Topbar Swipeable on Mobile/Tablet */
@@ -844,8 +884,8 @@ export default function Header() {
           .hdr__inner { height: 70px; padding: 0 16px; transition: height 0.4s; }
           .hdr--scrolled .hdr__inner { height: 60px; }
           
-          .hdr__logo img { width: 124px; height: 34px; transition: all 0.4s; }
-          .hdr--scrolled .hdr__logo img { width: 112px; height: 30px; }
+          .hdr__logo img { width: 150px; height: 40px; transition: all 0.4s; }
+          .hdr--scrolled .hdr__logo img { width: 135px; height: 36px; }
           
           .m-drawer { width: 100%; max-width: 100vw; }
         }
