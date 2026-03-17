@@ -495,14 +495,14 @@ export default function Header() {
           align-items: center;
         }
         .hdr__logo img {
-          height: 48px;
-          width: 180px;
+          height: 56px;
+          width: 220px;
           object-fit: contain;
           transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .hdr--scrolled .hdr__logo img {
-          height: 40px;
-          width: 155px;
+          height: 46px;
+          width: 180px;
         }
 
         /* Nav links */
@@ -884,8 +884,8 @@ export default function Header() {
           .hdr__inner { height: 70px; padding: 0 16px; transition: height 0.4s; }
           .hdr--scrolled .hdr__inner { height: 60px; }
           
-          .hdr__logo img { width: 150px; height: 40px; transition: all 0.4s; }
-          .hdr--scrolled .hdr__logo img { width: 135px; height: 36px; }
+          .hdr__logo img { width: 170px; height: 44px; transition: all 0.4s; }
+          .hdr--scrolled .hdr__logo img { width: 150px; height: 38px; }
           
           .m-drawer { width: 100%; max-width: 100vw; }
         }
