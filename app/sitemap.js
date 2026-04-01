@@ -23,12 +23,6 @@ export default function sitemap() {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/doktorlarimiz`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/galeri`,
       lastModified: new Date(),
       changeFrequency: "monthly",

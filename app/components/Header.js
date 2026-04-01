@@ -19,11 +19,16 @@ const servicesLinks = [
   { label: "Diş Beyazlatma", href: "/hizmetler/dis-beyazlatma", desc: "8 tona kadar beyazlatma" },
   { label: "Gülüş Tasarımı", href: "/hizmetler/gulus-tasarimi", desc: "Hollywood Smile tasarımı" },
   { label: "Ortodonti", href: "/hizmetler/ortodonti", desc: "Şeffaf plak ve braketler" },
+  { label: "Şeffaf Plak", href: "/hizmetler/seffaf-plak", desc: "Görünmez plaklar ile tedavi" },
   { label: "Kanal Tedavisi", href: "/hizmetler/kanal-tedavisi", desc: "Ağrısız kök kanal tedavisi" },
+  { label: "Diş Eti Tedavisi", href: "/hizmetler/dis-eti-tedavisi", desc: "Uzman periodontoloji" },
+  { label: "Pedodonti", href: "/hizmetler/pedodonti", desc: "Çocuklara özel diş tedavisi" },
+  { label: "Protez Diş", href: "/hizmetler/protez-dis", desc: "Hareketli ve sabit protezler" },
+  { label: "Estetik Diş Hekimliği", href: "/hizmetler/estetik-dis-hekimligi", desc: "Laminate veneer ve bonding" },
+  { label: "Dijital Diş Hekimliği", href: "/hizmetler/dijital-dis-hekimligi", desc: "3D tarayıcı ve CAD/CAM" },
 ];
 
 const corporateLinks = [
-  { label: "Doktorlarımız", href: "/doktorlarimiz" },
   { label: "Galeri", href: "/galeri" },
   { label: "Blog", href: "/blog" },
   { label: "SSS", href: "/sss" },
@@ -180,8 +185,8 @@ export default function Header() {
                       position: "absolute",
                       top: "calc(100% + 14px)",
                       left: "50%",
-                      marginLeft: -260,
-                      width: 520,
+                      marginLeft: -370,
+                      width: 740,
                       background: "#fff",
                       border: "1px solid #eef1f5",
                       borderRadius: 16,
@@ -190,7 +195,7 @@ export default function Header() {
                       zIndex: 60,
                     }}>
                     <div style={{ padding: 12 }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 2 }}>
                         {servicesLinks.map((s) => (
                           <Link key={s.href} href={s.href} onClick={() => setActiveMenu(null)}
                             style={{

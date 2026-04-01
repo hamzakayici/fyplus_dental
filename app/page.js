@@ -1,24 +1,73 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectFade, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/pagination";
 import {
   ArrowRight, Phone, ShieldCheck, Sparkles, Clock, Star,
   Smile, AlignLeft, HeartPulse, Award, Zap, Users, CheckCircle2,
   ClipboardList, Stethoscope, CalendarCheck,
-  MapPin, ChevronDown, ChevronUp, Quote
+  MapPin, ChevronDown, ChevronUp, Quote,
+  Play, Waypoints, Crown, Layers, Baby, Component, Gem, ScanLine, Syringe
 } from "lucide-react";
 
 if (typeof window !== "undefined") { gsap.registerPlugin(ScrollTrigger); }
 
+/* ═══ YouTube Video Config ═══ */
+const YOUTUBE_VIDEO_ID = "";
+const VIDEO_POSTER = "/images/hero-clinic-real.png";
+
+/* ═══ Hero Slides Data ═══ */
+const heroSlides = [
+  {
+    image: "/images/hero-dentist.jpg",
+    badge: "Bahçeşehir İleri Teknoloji İmplant Merkezi",
+    title: ["Sağlıklı ve Güzel", "Gülüşler", "Tasarlıyoruz"],
+    subtitle: "Son teknoloji ekipmanlarımız ve uzman hekim kadromuzla Bahçeşehir’de premium diş sağlığı hizmeti sunuyoruz.",
+    accentIndex: 1,
+  },
+  {
+    image: "/images/real/lobby.png",
+    badge: "Hollywood Smile | Dijital Gülüş Tasarımı",
+    title: ["Dijital", "Gülüş Tasarımı", "ile Hayalinizdeki Gülüş"],
+    subtitle: "Dijital simülasyon ile tedavi öncesi sonucu görün. Laminate veneer ve zirkonyum ile doğal, kusursuz gülüşler.",
+    accentIndex: 1,
+  },
+  {
+    image: "/images/gallery/galeri-5.jpeg",
+    badge: "Tomografi Destekli İmplant | 3D Tarayıcı",
+    title: ["Dijital Diş", "Hekimliği", "Teknolojisi"],
+    subtitle: "3D intraoral tarayıcı, dijital röntgen ve CAD/CAM sistemleri ile hassas, hızlı ve konforlu tedavi.",
+    accentIndex: 1,
+  },
+  {
+    image: VIDEO_POSTER,
+    badge: "Klinik Tanıtım Videosu",
+    title: ["Kliniğimizi", "Yakından", "Tanıyın"],
+    subtitle: "Modern teknoloji, uzman kadro ve konforlu tedavi ortamımızı keşfedin.",
+    accentIndex: 1,
+    isVideo: true,
+  },
+];
+
 const services = [
   { icon: ShieldCheck, title: "İmplant Tedavisi", desc: "Kalıcı titanyum implantlar ile doğal diş konforu.", href: "/hizmetler/implant-tedavisi" },
-  { icon: Star, title: "Zirkonyum Kaplama", desc: "Metal-free, doğal görünümlü estetik kaplamalar.", href: "/hizmetler/zirkonyum-kaplama" },
+  { icon: Crown, title: "Zirkonyum Kaplama", desc: "Metal-free, doğal görünümlü estetik kaplamalar.", href: "/hizmetler/zirkonyum-kaplama" },
   { icon: Sparkles, title: "Diş Beyazlatma", desc: "Tek seansta 8 tona kadar profesyonel beyazlatma.", href: "/hizmetler/dis-beyazlatma" },
   { icon: Smile, title: "Gülüş Tasarımı", desc: "Hollywood Smile ile hayalinizdeki gülüşe kavuşun.", href: "/hizmetler/gulus-tasarimi" },
   { icon: AlignLeft, title: "Ortodonti", desc: "Şeffaf plak ve braketlerle düzgün dişler.", href: "/hizmetler/ortodonti" },
-  { icon: HeartPulse, title: "Kanal Tedavisi", desc: "Modern tekniklerle ağrısız kök kanal tedavisi.", href: "/hizmetler/kanal-tedavisi" },
+  { icon: Layers, title: "Şeffaf Plak", desc: "Görünmez plaklar ile estetik ortodonti tedavisi.", href: "/hizmetler/seffaf-plak" },
+  { icon: Syringe, title: "Kanal Tedavisi", desc: "Modern tekniklerle ağrısız kök kanal tedavisi.", href: "/hizmetler/kanal-tedavisi" },
+  { icon: HeartPulse, title: "Diş Eti Tedavisi", desc: "Sağlıklı diş etleri için uzman periodontoloji.", href: "/hizmetler/dis-eti-tedavisi" },
+  { icon: Baby, title: "Pedodonti", desc: "Çocuklara özel, korkusuz diş tedavisi deneyimi.", href: "/hizmetler/pedodonti" },
+  { icon: Component, title: "Protez Diş", desc: "Hareketli ve sabit protez çözümleri.", href: "/hizmetler/protez-dis" },
+  { icon: Gem, title: "Estetik Diş Hekimliği", desc: "Gülüşünüzü yeniden tasarlayan estetik tedaviler.", href: "/hizmetler/estetik-dis-hekimligi" },
+  { icon: ScanLine, title: "Dijital Diş Hekimliği", desc: "3D tarayıcı ve CAD/CAM ile hassas tedavi.", href: "/hizmetler/dijital-dis-hekimligi" },
 ];
 const stats = [
   { value: 15, suffix: "+", label: "Yıl Tecrübe" },
@@ -28,9 +77,10 @@ const stats = [
 ];
 const features = [
   { icon: Award, title: "Uzman Kadro", desc: "Alanında uzman, deneyimli diş hekimleri ile güvenilir ve kalıcı tedavi sonuçları.", num: "01" },
-  { icon: Zap, title: "Son Teknoloji", desc: "3D ağız tarayıcı, dijital röntgen ve CAD/CAM ile hassas tedavi.", num: "02" },
+  { icon: Zap, title: "Son Teknoloji", desc: "Tomografi destekli implant, 3D ağız tarayıcı ve CAD/CAM ile hassas tedavi.", num: "02" },
   { icon: ShieldCheck, title: "Garantili Tedavi", desc: "Tüm tedavilerimiz yazılı garanti kapsamındadır.", num: "03" },
   { icon: Users, title: "Kişiye Özel Plan", desc: "Her hastaya özel, detaylı tedavi planı ve maliyet bilgisi.", num: "04" },
+  { icon: HeartPulse, title: "Konforlu Ortam", desc: "Steril, modern ve rahat bir klinik ortamında stressiz tedavi deneyimi.", num: "05" },
 ];
 const processSteps = [
   { icon: ClipboardList, num: "01", title: "Ücretsiz Muayene", desc: "Dijital röntgen ve 3D ağız taraması ile kapsamlı muayene." },
@@ -45,13 +95,28 @@ const homeFaqs = [
   { q: "Ortodonti tedavisi ne kadar sürer?", a: "Şeffaf plak tedavisi 6-18 ay sürebilir. Plaklar neredeyse görünmezdir." },
   { q: "Hangi ödeme yöntemleri kabul edilir?", a: "Nakit, kredi kartı, havale kabul ediyoruz. 12 aya kadar taksit imkânı sunuyoruz." },
 ];
-const testimonials = [
-  { name: "Ayşe K.", treatment: "İmplant Tedavisi", rating: 5, text: "FyPlus'ı tercih ettim ve çok memnun kaldım. Doktorlar ilgili, klinik tertemiz ve modern.", date: "Aralık 2025" },
+/* ═══ Fallback yorumlar (reviews.json yoksa kullanılır) ═══ */
+const fallbackTestimonials = [
+  { name: "Ayşe K.", treatment: "İmplant Tedavisi", rating: 5, text: "FyPlus'ı tercih ettim ve çok memnun kaldım. Klinik tertemiz ve modern.", date: "Aralık 2025" },
   { name: "Mehmet Y.", treatment: "Zirkonyum Kaplama", rating: 5, text: "Sonuç beklentilerimin üzerinde! Doğal görünümlü ve dayanıklı. En iyi diş kliniği.", date: "Kasım 2025" },
   { name: "Elif S.", treatment: "Gülüş Tasarımı", rating: 5, text: "Hollywood Smile yaptırdım ve gülüşüm tamamen değişti. Profesyonel yaklaşım!", date: "Ekim 2025" },
   { name: "Ali R.", treatment: "Diş Beyazlatma", rating: 5, text: "Tek seansta 6 ton beyazlama! İşlem ağrısız ve hızlıydı. Teknoloji etkileyici.", date: "Ocak 2026" },
   { name: "Zeynep D.", treatment: "Ortodonti", rating: 5, text: "Şeffaf plak tedavisi harika! Plaklar neredeyse görünmüyor.", date: "Şubat 2026" },
 ];
+
+/* ═══ Google Reviews — JSON dosyasından yükle ═══ */
+import reviewsData from "./data/reviews.json";
+
+const testimonials = (reviewsData?.reviews?.length > 0)
+  ? reviewsData.reviews.map((r) => ({
+      name: r.name,
+      treatment: "",
+      rating: r.rating,
+      text: r.text,
+      date: r.date,
+      profileImg: r.profileImg || "",
+    }))
+  : fallbackTestimonials;
 
 /* ═══ Number Counter Helper ═══ */
 function CountUp({ target, suffix = "", decimal = false }) {
@@ -86,7 +151,7 @@ export default function HomePage() {
   const statsRef = useRef(null);
   const servicesRef = useRef(null);
   const aboutRef = useRef(null);
-  const doctorRef = useRef(null);
+
   const featuresRef = useRef(null);
   const processRef = useRef(null);
   const testimonialsRef = useRef(null);
@@ -94,24 +159,25 @@ export default function HomePage() {
   const locationRef = useRef(null);
   const ctaRef = useRef(null);
   const [openFaq, setOpenFaq] = useState(null);
+  const [videoActive, setVideoActive] = useState(false);
+
+  /* ═══ YouTube Facade — Tıklanınca iframe yükle ═══ */
+  const activateVideo = () => {
+    if (!YOUTUBE_VIDEO_ID) return;
+    setVideoActive(true);
+  };
 
   useEffect(() => {
     const initAnimations = () => {
     const mm = ScrollTrigger.matchMedia({
       /* ═══ DESKTOP ═══ */
       "(min-width: 769px)": function () {
-        /* ACT 1 — HERO CINEMATIC (auto-play on load) */
-        const heroTl = gsap.timeline({ delay: 0.2 });
-        heroTl
-          .fromTo(".hero__badge", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0)
-          .fromTo(".hero__title-line", { opacity: 0, y: 60, clipPath: "inset(100% 0 0 0)" }, { opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)", duration: 0.9, stagger: 0.15, ease: "expo.out" }, 0.1)
-          .fromTo(".hero__subtitle", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 0.5)
-          .fromTo(".hero__actions", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.7)
-          .fromTo(".hero__visual", { opacity: 0, scale: 0.88, x: 60 }, { opacity: 1, scale: 1, x: 0, duration: 1, ease: "expo.out" }, 0.3)
-          .fromTo(".hero__float", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.12, ease: "power2.out" }, 0.8);
-
-        /* Hero parallax depth (scroll-driven) */
-        gsap.to(".hero__bg-layer", { y: 80, scrollTrigger: { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: 2 } });
+        /* ACT 1 — HERO SLIDER content anim (on each slide change, triggered via Swiper) */
+        /* Static parallax for hero bg images */
+        gsap.to(".hero", { scrollTrigger: { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: 2, onUpdate: (self) => {
+          const imgs = document.querySelectorAll(".hero-slide__bg-img");
+          imgs.forEach(img => { img.style.transform = `translateY(${self.progress * 60}px) scale(${1 + self.progress * 0.05})`; });
+        }}});
 
         /* ACT 2 — STATS (pinned counter reveal) */
         const statsTl = gsap.timeline({
@@ -138,15 +204,7 @@ export default function HomePage() {
         gsap.to(".about__image img", { y: -40, scrollTrigger: { trigger: aboutRef.current, start: "top bottom", end: "bottom top", scrub: 1.5 } });
 
         /* ACT 4b — DOCTOR (parallax + fade) */
-        gsap.fromTo(".doctor__content", { y: 60, opacity: 0 }, {
-          y: 0, opacity: 1, ease: "expo.out",
-          scrollTrigger: { trigger: doctorRef.current, start: "top 78%", toggleActions: "play none none none" }
-        });
-        gsap.fromTo(".doctor__image", { y: 40, opacity: 0, scale: 0.95 }, {
-          y: 0, opacity: 1, scale: 1, ease: "expo.out",
-          scrollTrigger: { trigger: doctorRef.current, start: "top 78%", toggleActions: "play none none none" }
-        });
-        gsap.to(".doctor-section__pattern", { y: -50, scrollTrigger: { trigger: doctorRef.current, start: "top bottom", end: "bottom top", scrub: 2 } });
+
 
         /* ACT 5 — FEATURES (scale + rotateX) */
         gsap.fromTo(".feat-card", { y: 60, opacity: 0, scale: 0.88, rotateX: 8 }, {
@@ -203,8 +261,11 @@ export default function HomePage() {
         gsap.fromTo(".hero__actions", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.4 });
         gsap.fromTo(".hero__visual", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 });
 
+        gsap.fromTo(".video-showcase__title", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, scrollTrigger: { trigger: videoSectionRef.current, start: "top 90%", toggleActions: "play none none none" } });
+        gsap.fromTo(".video-showcase__play-btn", { scale: 0 }, { scale: 1, duration: 0.5, delay: 0.2, ease: "back.out(1.7)", scrollTrigger: { trigger: videoSectionRef.current, start: "top 90%", toggleActions: "play none none none" } });
+
         const mobileSections = [".stats__card", ".svc-card", ".about__image", ".about__content",
-          ".doctor__content", ".doctor__image", ".feat-card", ".process-step",
+          ".feat-card", ".process-step",
           ".testimonial-card", ".faq-item", ".location-map", ".location-info"];
         mobileSections.forEach(sel => {
           gsap.fromTo(sel, { opacity: 0, y: 30 }, {
@@ -234,35 +295,89 @@ export default function HomePage() {
   }, []);
 
   return (<>
-    {/* ═══ ACT 1: CINEMATIC HERO (FULLSCREEN) ═══ */}
+    {/* ═══ ACT 1: HERO SLIDER ═══ */}
     <section className="hero" ref={heroRef}>
-      <div className="hero__bg-layer" />
-      <div className="hero__overlay" />
-      <div className="container hero__grid">
-        <div className="hero__content">
-          <div className="hero__badge"><CheckCircle2 size={14} /> Bahçeşehir&apos;in Güvenilir Diş Kliniği</div>
-          <h1 className="hero__title">
-            <span className="hero__title-line">Sağlıklı ve Güzel</span>
-            <span className="hero__title-line hero__accent">Gülüşler</span>
-            <span className="hero__title-line">Tasarlıyoruz</span>
-          </h1>
-          <p className="hero__subtitle">Son teknoloji ekipmanlarımız ve uzman hekim kadromuzla Bahçeşehir&apos;de premium diş sağlığı hizmeti sunuyoruz.</p>
-          <div className="hero__actions">
-            <Link href="/iletisim" className="btn btn-primary" style={{padding:'16px 36px',fontSize:'1rem'}}>Ücretsiz Muayene <ArrowRight size={18}/></Link>
-            <div className="hero__call"><span>Hızlı İletişim:</span><a href="tel:+905335165134">0533 516 51 34</a></div>
-          </div>
-        </div>
-        <div className="hero__visual">
-          <div className="hero__img-wrap"><img src="/images/hero-clinic.jpg" alt="FyPlus Dental Clinic" /></div>
-          <div className="hero__float hero__float--1"><div className="hero__float-icon hero__float-icon--coral"><Star fill="var(--coral)" color="var(--coral)" size={20}/></div><div><strong>4.9/5</strong><span>Google Puanı</span></div></div>
-          <div className="hero__float hero__float--2"><div className="hero__float-icon hero__float-icon--b"><ShieldCheck size={20}/></div><div><strong>Garantili</strong><span>Tedavi Hizmeti</span></div></div>
-        </div>
+      <Swiper
+        modules={[Autoplay, EffectFade, Pagination]}
+        effect="fade"
+        speed={1200}
+        autoplay={{ delay: 6000, disableOnInteraction: false }}
+        pagination={{ clickable: true, el: ".hero-pagination" }}
+        loop
+        className="hero-swiper"
+        onSlideChangeTransitionStart={(swiper) => {
+          const activeSlide = swiper.slides[swiper.activeIndex];
+          if (!activeSlide) return;
+          const els = activeSlide.querySelectorAll(".hero-slide__badge, .hero-slide__title-line, .hero-slide__subtitle, .hero-slide__actions, .hero-slide__play-wrap");
+          gsap.fromTo(els, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: "power3.out", delay: 0.15 });
+        }}
+      >
+        {heroSlides.map((slide, i) => (
+          <SwiperSlide key={i}>
+            <div className="hero-slide">
+              <div className="hero-slide__bg">
+                <img src={slide.image} alt={slide.badge} className="hero-slide__bg-img" />
+              </div>
+              <div className="hero-slide__overlay" />
+              <div className="container hero-slide__inner">
+                <div className="hero-slide__content">
+                  <div className="hero-slide__badge"><CheckCircle2 size={14} /> {slide.badge}</div>
+                  <h2 className="hero-slide__title">
+                    {slide.title.map((line, li) => (
+                      <span key={li} className={`hero-slide__title-line${li === slide.accentIndex ? " hero-slide__accent" : ""}`}>{line}</span>
+                    ))}
+                  </h2>
+                  <p className="hero-slide__subtitle">{slide.subtitle}</p>
+                  {slide.isVideo ? (
+                    <div className="hero-slide__play-wrap">
+                      <button
+                        className={`hero-slide__play-btn${!YOUTUBE_VIDEO_ID ? ' hero-slide__play-btn--disabled' : ''}`}
+                        onClick={activateVideo}
+                        aria-label="Videoyu Oynat"
+                        disabled={!YOUTUBE_VIDEO_ID}
+                      >
+                        <span className="hero-slide__play-glow" />
+                        <span className="hero-slide__play-icon"><Play size={28} fill="#fff" style={{marginLeft: 3}} /></span>
+                        <span className="hero-slide__play-label">{YOUTUBE_VIDEO_ID ? "Videoyu İzle" : "Video Yakında"}</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="hero-slide__actions">
+                      <Link href="/iletisim" className="btn btn-primary" style={{padding:'16px 36px',fontSize:'1.05rem'}}>Ücretsiz Muayene <ArrowRight size={18}/></Link>
+                      <a href="tel:+905335165134" className="hero__phone-btn"><Phone size={16}/>0533 516 51 34</a>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      <div className="hero-pagination" />
+      <div className="hero__floats">
+        <div className="hero__float hero__float--1"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/3840px-Google_%22G%22_logo.svg.png" alt="Google" style={{width:28,height:28}} /><div><strong>4.9/5</strong><span>Google Puanı</span></div></div>
+        <div className="hero__float hero__float--2"><div className="hero__float-icon"><ShieldCheck size={18}/></div><div><strong>Garantili</strong><span>Tedavi Hizmeti</span></div></div>
       </div>
       <button className="hero__scroll-indicator" onClick={() => statsRef.current?.scrollIntoView({behavior:'smooth'})} aria-label="Aşağı kaydır">
         <div className="hero__mouse"><span className="hero__wheel"/></div>
-        <span className="hero__scroll-text">AŞaĞI KAYDIR</span>
       </button>
     </section>
+
+    {/* Video Lightbox */}
+    {videoActive && (
+      <div className="video-lightbox" onClick={() => setVideoActive(false)}>
+        <button className="video-lightbox__close" onClick={() => setVideoActive(false)} aria-label="Kapat">✕</button>
+        <div className="video-lightbox__wrap" onClick={e => e.stopPropagation()}>
+          <iframe
+            src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+            title="FyPlus Dental Clinic Tanıtım Videosu"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            frameBorder="0"
+          />
+        </div>
+      </div>
+    )}
 
     {/* ═══ ACT 2: STATS WITH COUNTER ═══ */}
     <section className="stats-section" ref={statsRef}>
@@ -302,7 +417,7 @@ export default function HomePage() {
     {/* ═══ ACT 4a: ABOUT ═══ */}
     <section className="section" ref={aboutRef}>
       <div className="container about">
-        <div className="about__image"><img src="/images/about-clinic.png" alt="FyPlus Dental Klinik"/>
+        <div className="about__image"><img src="/images/real/lobby.png" alt="FyPlus Dental Klinik İç Mekan"/>
           <div className="about__exp"><span className="about__exp-num">15+</span><span className="about__exp-text">Yıl<br/>Tecrübe</span></div>
         </div>
         <div className="about__content">
@@ -320,19 +435,7 @@ export default function HomePage() {
       </div>
     </section>
 
-    {/* ═══ ACT 4b: DOCTOR ═══ */}
-    <section className="section doctor-section" ref={doctorRef}>
-      <div className="doctor-section__pattern"/>
-      <div className="container doctor">
-        <div className="doctor__content">
-          <span className="section-label" style={{color:'rgba(255,255,255,.5)',borderColor:'rgba(255,255,255,.1)'}}>Uzman Kadro</span>
-          <h2 className="section-title" style={{color:'#fff'}}>Deneyimli Hekim Kadromuz</h2>
-          <p className="section-desc" style={{color:'rgba(255,255,255,.6)'}}>FyPlus Dental Clinic&apos;te alanında uzman diş hekimlerimiz, her hastaya özel yaklaşımla en iyi tedavi sonuçlarını elde etmek için çalışmaktadır.</p>
-          <Link href="/doktorlarimiz" className="btn btn-glass" style={{marginTop:24}}>Doktorlarımızı Tanıyın <ArrowRight size={14}/></Link>
-        </div>
-        <div className="doctor__image"><img src="/images/doctor.png" alt="FyPlus Dental Doktor"/></div>
-      </div>
-    </section>
+
 
     {/* ═══ ACT 5: FEATURES (BENTO DARK) ═══ */}
     <section className="section feat-section" ref={featuresRef}>
@@ -404,26 +507,32 @@ export default function HomePage() {
           </div>
         </div>
         <div className="testimonials-grid">
-          {testimonials.map((t,i)=>(
+          {testimonials.slice(0, 6).map((t,i)=>{
+            const maskName = (name) => name.split(" ").map(w => w.charAt(0).toUpperCase() + "*".repeat(Math.max(w.length - 1, 1))).join(" ");
+            return (
             <div key={i} className="testimonial-card">
               <div className="testimonial-card__accent"/>
               <div className="testimonial-card__inner">
                 <Quote size={28} className="testimonial-card__big-quote"/>
                 <p className="testimonial-card__text">{t.text}</p>
                 <div className="testimonial-card__footer">
-                  <div className="testimonial-card__avatar">{t.name.charAt(0)}</div>
+                  {t.profileImg ? (
+                    <img className="testimonial-card__avatar-img" src={t.profileImg} alt={maskName(t.name)} referrerPolicy="no-referrer" />
+                  ) : (
+                    <div className="testimonial-card__avatar">{t.name.charAt(0).toUpperCase()}</div>
+                  )}
                   <div className="testimonial-card__info">
-                    <strong className="testimonial-card__name">{t.name}</strong>
-                    <span className="testimonial-card__treatment">{t.treatment}</span>
+                    <strong className="testimonial-card__name">{maskName(t.name)}</strong>
+                    <span className="testimonial-card__treatment">{t.date}</span>
                   </div>
                   <div className="testimonial-card__stars">{[...Array(t.rating)].map((_,j)=><Star key={j} size={13} fill="#facc15" color="#facc15"/>)}</div>
                 </div>
-                <span className="testimonial-card__date">{t.date}</span>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
-        <div style={{textAlign:"center",marginTop:48}}><a href="https://maps.app.goo.gl/FyPlusDental" target="_blank" rel="noopener noreferrer" className="btn btn-glass">Tüm Google Yorumlarını Gör <ArrowRight size={14}/></a></div>
+        <div style={{textAlign:"center",marginTop:48}}><a href="https://share.google/30sNsV8B8WiV5Gcxq" target="_blank" rel="noopener noreferrer" className="btn btn-glass">Tüm Google Yorumlarını Gör <ArrowRight size={14}/></a></div>
       </div>
     </section>
 
@@ -480,38 +589,63 @@ export default function HomePage() {
     </section>
 
     <style jsx>{`
-      /* ═══ HERO FULLSCREEN ═══ */
-      .hero{position:relative;height:100svh;min-height:600px;display:flex;align-items:center;background:radial-gradient(circle at top right,#f0f7fb 0%,#fff 80%);overflow:hidden;padding:0;will-change:transform;margin-top:-121px;padding-top:121px}
-      .hero__bg-layer{position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(43,124,173,.06),transparent 60%);will-change:transform;pointer-events:none}
-      .hero__overlay{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(43,124,173,.03),transparent 50%);pointer-events:none}
-      .hero__grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center;height:100%}
-      .hero__content{will-change:transform}
-      .hero__badge{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--blue-light);color:var(--blue-dark);border-radius:var(--radius-full);font-size:.85rem;font-weight:600;margin-bottom:28px;will-change:transform,opacity}
-      .hero__title{color:var(--navy);font-size:clamp(2.4rem,4.5vw,4rem);font-weight:800;line-height:1.1;margin-bottom:24px;letter-spacing:-.03em}
-      .hero__title-line{display:block;will-change:transform,opacity,clip-path}
-      .hero__accent{color:var(--blue)}
-      .hero__subtitle{color:var(--gray-500);font-size:1.1rem;line-height:1.8;max-width:520px;margin-bottom:44px;will-change:transform,opacity}
-      .hero__actions{display:flex;align-items:center;gap:32px;flex-wrap:wrap;will-change:transform,opacity}
-      .hero__call{display:flex;flex-direction:column}
-      .hero__call span{font-size:.8rem;color:var(--gray-400);font-weight:500}
-      .hero__call a{font-family:var(--font-heading);font-weight:700;color:var(--navy);font-size:1.25rem;line-height:1.2}
-      .hero__visual{position:relative;margin-left:20px;will-change:transform,opacity}
-      .hero__img-wrap{position:relative;z-index:2;border-radius:40px;overflow:hidden;box-shadow:var(--shadow-xl);aspect-ratio:4/5;max-height:65vh}
-      .hero__img-wrap img{width:100%;height:100%;object-fit:cover}
-      .hero__float{position:absolute;z-index:3;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:16px 24px;border-radius:var(--radius-lg);box-shadow:0 12px 32px rgba(10,22,40,.08);display:flex;align-items:center;gap:16px;border:1px solid #fff;will-change:transform,opacity}
-      .hero__float--1{bottom:50px;left:-50px}
-      .hero__float--2{top:60px;right:-40px}
-      .hero__float-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-      .hero__float-icon--coral{background:var(--coral-light);color:var(--coral)}
-      .hero__float-icon--b{background:var(--blue-light);color:var(--blue)}
-      .hero__float strong{display:block;font-size:1.15rem;font-family:var(--font-heading);color:var(--navy);line-height:1.2}
-      .hero__float span{font-size:.75rem;color:var(--gray-500);font-weight:500}
-      .hero__scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;z-index:4;cursor:pointer;background:none;border:none;padding:12px;transition:opacity .3s}
+      /* ═══ HERO SLIDER ═══ */
+      .hero{position:relative;height:100svh;min-height:650px;overflow:hidden;margin-top:-121px}
+      .hero-swiper{width:100%;height:100%}
+      .hero-swiper .swiper-slide{overflow:hidden}
+      .hero-slide{position:relative;width:100%;height:100svh;min-height:650px}
+      .hero-slide__bg{position:absolute;inset:0;z-index:0}
+      .hero-slide__bg-img{width:100%;height:100%;object-fit:cover;object-position:center;will-change:transform;transition:transform 8s linear}
+      .swiper-slide-active .hero-slide__bg-img{transform:scale(1.08)}
+      .hero-slide__overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,22,40,.88) 0%,rgba(10,22,40,.7) 38%,rgba(10,22,40,.3) 68%,rgba(10,22,40,.15) 100%)}
+      .hero-slide__inner{position:relative;z-index:2;display:flex;align-items:center;height:100%;padding-top:121px}
+      .hero-slide__content{max-width:600px;will-change:transform}
+      .hero-slide__badge{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:rgba(255,255,255,.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-full);font-size:.8rem;font-weight:600;margin-bottom:28px;letter-spacing:.02em}
+      .hero-slide__title{color:#fff;font-size:clamp(2.4rem,5vw,4.2rem);font-weight:800;line-height:1.08;margin-bottom:24px;letter-spacing:-.03em;text-shadow:0 4px 40px rgba(0,0,0,.2)}
+      .hero-slide__title-line{display:block}
+      .hero-slide__accent{background:linear-gradient(135deg,#60bfff,#3d9bd4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+      .hero-slide__subtitle{color:rgba(255,255,255,.7);font-size:1.12rem;line-height:1.8;max-width:480px;margin-bottom:40px;text-shadow:0 2px 20px rgba(0,0,0,.1)}
+      .hero-slide__actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+      .hero__phone-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 32px;background:rgba(255,255,255,.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1.5px solid rgba(255,255,255,.2);border-radius:var(--radius-full);color:#fff;font-size:1rem;font-weight:700;font-family:var(--font-heading);transition:all .3s ease;text-decoration:none;letter-spacing:.01em}
+      .hero__phone-btn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.35);transform:translateY(-2px)}
+      /* Float cards */
+      .hero__floats{position:absolute;right:60px;bottom:140px;display:flex;flex-direction:column;gap:14px;z-index:10}
+      .hero__float{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:16px 22px;border-radius:var(--radius-lg);box-shadow:0 16px 48px rgba(0,0,0,.12);display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,.6)}
+      .hero__float--1{animation:heroFloat1 4s ease-in-out infinite}
+      .hero__float--2{animation:heroFloat2 5s ease-in-out infinite}
+      @keyframes heroFloat1{0%,100%{transform:translateY(0px)}50%{transform:translateY(-12px)}}
+      @keyframes heroFloat2{0%,100%{transform:translateY(0px) translateX(0px)}50%{transform:translateY(-10px) translateX(-6px)}}
+      .hero__float-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--blue-light);color:var(--blue)}
+      .hero__float strong{display:block;font-size:1.05rem;font-family:var(--font-heading);color:var(--navy);line-height:1.2}
+      .hero__float span{font-size:.72rem;color:var(--gray-500);font-weight:500}
+      /* Pagination */
+      .hero-pagination{position:absolute!important;bottom:40px!important;left:24px!important;right:auto!important;width:auto!important;z-index:10!important;display:flex;gap:6px}
+      .hero-pagination .swiper-pagination-bullet{width:32px;height:4px;border-radius:3px;background:rgba(255,255,255,.3);opacity:1;transition:all .4s ease}
+      .hero-pagination .swiper-pagination-bullet-active{width:48px;background:#fff}
+      /* Scroll indicator */
+      .hero__scroll-indicator{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;z-index:10;cursor:pointer;background:none;border:none;padding:12px;transition:opacity .3s}
       .hero__scroll-indicator:hover{opacity:.7}
-      .hero__mouse{width:26px;height:40px;border:1.5px solid rgba(43,124,173,.35);border-radius:100px;position:relative;display:flex;justify-content:center;background:rgba(255,255,255,.4);backdrop-filter:blur(4px)}
-      .hero__wheel{width:3px;height:8px;background:var(--blue);border-radius:2px;position:absolute;top:7px;animation:scrollWheel 2s cubic-bezier(.15,.41,.69,.94) infinite}
-      .hero__scroll-text{font-size:.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.15em}
+      .hero__mouse{width:26px;height:40px;border:1.5px solid rgba(255,255,255,.35);border-radius:100px;position:relative;display:flex;justify-content:center;background:rgba(255,255,255,.08);backdrop-filter:blur(4px)}
+      .hero__wheel{width:3px;height:8px;background:rgba(255,255,255,.7);border-radius:2px;position:absolute;top:7px;animation:scrollWheel 2s cubic-bezier(.15,.41,.69,.94) infinite}
       @keyframes scrollWheel{0%{opacity:0;transform:translateY(-4px)}20%{opacity:1;transform:translateY(0)}60%{opacity:1;transform:translateY(12px)}100%{opacity:0;transform:translateY(16px)}}
+      /* Video play button in slide */
+      .hero-slide__play-wrap{display:flex;align-items:center;gap:20px}
+      .hero-slide__play-btn{position:relative;display:flex;align-items:center;gap:16px;background:none;border:none;cursor:pointer;transition:transform .4s var(--ease-spring)}
+      .hero-slide__play-btn:hover{transform:scale(1.05)}
+      .hero-slide__play-btn--disabled{cursor:default;opacity:.6}
+      .hero-slide__play-btn--disabled:hover{transform:none}
+      .hero-slide__play-glow{position:absolute;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(43,124,173,.3),transparent 70%);animation:playGlowPulse 3s ease-in-out infinite;pointer-events:none;top:50%;left:30px;transform:translate(-50%,-50%)}
+      .hero-slide__play-icon{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;color:#fff;transition:all .35s ease;box-shadow:0 8px 40px rgba(0,0,0,.2)}
+      .hero-slide__play-btn:hover .hero-slide__play-icon{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
+      .hero-slide__play-label{font-size:.85rem;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.08em;text-transform:uppercase}
+      @keyframes playGlowPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}50%{transform:translate(-50%,-50%) scale(1.3);opacity:.2}}
+      /* Video Lightbox */
+      .video-lightbox{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.9);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;animation:fadeIn .3s ease}
+      .video-lightbox__close{position:absolute;top:24px;right:28px;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:1.4rem;width:48px;height:48px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+      .video-lightbox__close:hover{background:rgba(255,255,255,.2)}
+      .video-lightbox__wrap{width:90vw;max-width:1100px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+      .video-lightbox__wrap iframe{width:100%;height:100%;border:none}
+      @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
       /* ═══ STATS COUNTER ═══ */
       .stats-section{background:var(--white);border-bottom:1px solid var(--gray-100);padding:48px 0;position:relative;z-index:5}
@@ -545,11 +679,7 @@ export default function HomePage() {
       .about__check svg{color:var(--blue);flex-shrink:0}
 
       /* ═══ DOCTOR ═══ */
-      .doctor-section{background:linear-gradient(135deg,#0a1628 0%,#132742 100%);position:relative;overflow:hidden}
-      .doctor-section__pattern{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;will-change:transform}
-      .doctor{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:2}
-      .doctor__image{border-radius:var(--radius-2xl);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.3);will-change:transform,opacity}
-      .doctor__image img{width:100%;height:auto}
+
 
       /* ═══ FEATURES (BENTO DARK) ═══ */
       .feat-section{background:linear-gradient(160deg,#0a1628 0%,#0e1f38 40%,#162d50 100%);position:relative;overflow:hidden}
@@ -597,6 +727,7 @@ export default function HomePage() {
       .testimonial-card__text{font-size:.9rem;line-height:1.85;color:rgba(255,255,255,.65);flex:1}
       .testimonial-card__footer{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)}
       .testimonial-card__avatar{width:40px;height:40px;border-radius:var(--radius-full);background:linear-gradient(135deg,var(--blue),var(--coral));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0}
+      .testimonial-card__avatar-img{width:40px;height:40px;border-radius:var(--radius-full);object-fit:cover;flex-shrink:0;border:2px solid rgba(255,255,255,.12)}
       .testimonial-card__info{flex:1}
       .testimonial-card__name{display:block;font-size:.88rem;color:#fff}
       .testimonial-card__treatment{display:block;font-size:.72rem;font-weight:500;color:rgba(255,255,255,.4)}
@@ -634,20 +765,13 @@ export default function HomePage() {
 
       /* ═══ RESPONSIVE ═══ */
       @media(max-width:1024px){
-        .hero{height:auto;min-height:100vh;padding:100px 0 80px}
-        .hero__grid{grid-template-columns:1fr;gap:40px;text-align:center;height:auto}
-        .hero__content{margin:0 auto;display:flex;flex-direction:column;align-items:center}
-        .hero__actions{justify-content:center}
-        .hero__visual{margin-left:0;max-width:500px;margin:0 auto}
-        .hero__img-wrap{aspect-ratio:1/1;max-height:none}
-        .hero__float--1{left:10px;bottom:10px}
-        .hero__float--2{right:10px;top:10px}
-        .hero__scroll-indicator{bottom:24px}
+        .hero-slide__title{font-size:clamp(2rem,4vw,3.2rem)}
+        .hero__floats{right:24px;bottom:100px}
         .stats__card{padding-left:10px}
         .svc-grid{grid-template-columns:repeat(2,1fr)}
         .feat-bento{grid-template-columns:1fr 1fr;gap:16px}
         .feat-card--hero{grid-row:auto;grid-column:1/-1}
-        .about,.doctor{grid-template-columns:1fr;gap:40px}
+        .about{grid-template-columns:1fr;gap:40px}
         .features-header,.process-header{flex-direction:column;align-items:flex-start}
         .process-timeline{padding-left:30px}
         .testimonials-grid{grid-template-columns:repeat(2,1fr)}
@@ -655,20 +779,20 @@ export default function HomePage() {
       }
       @media(max-width:768px){
         .section{padding:80px 0}
-        .hero{padding:120px 0 50px}
-        .hero__title{font-size:2.8rem}
+        .hero-slide__title{font-size:2.4rem}
+        .hero__floats{display:none}
+        .hero-pagination{bottom:24px!important;left:50%!important;transform:translateX(-50%)}
         .stats-section{padding:24px 0}
         .stats__value{font-size:1.8rem}
         .section-title{font-size:2rem}
       }
       @media(max-width:640px){
         .section{padding:60px 0}
-        .hero{padding:110px 0 40px;min-height:auto}
-        .hero__title{font-size:2.2rem}
-        .hero__subtitle{font-size:1rem}
-        .hero__actions{flex-direction:column;width:100%;gap:20px}
-        .hero__actions .btn{width:100%;justify-content:center}
-        .hero__float{display:none}
+        .hero-slide__title{font-size:2rem}
+        .hero-slide__subtitle{font-size:.95rem}
+        .hero-slide__actions{flex-direction:column;width:100%;gap:14px}
+        .hero-slide__actions .btn,.hero__phone-btn{width:100%;justify-content:center;text-align:center}
+        .hero__scroll-indicator{display:none}
         .stats__grid{grid-template-columns:repeat(2,1fr);gap:24px}
         .stats__card{border-right:none;padding-left:0;align-items:center;text-align:center}
         .svc-grid{grid-template-columns:1fr}

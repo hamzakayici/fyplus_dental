@@ -3,25 +3,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { X, ZoomIn } from "lucide-react";
 
-const categories = ["Tümü", "Klinik", "Tedavi", "Ekip", "Teknoloji"];
-
 const images = [
-  { src: "/images/gallery/lobby.png", alt: "FyPlus Dental Lobi & Resepsiyon", category: "Klinik" },
-  { src: "/images/gallery/treatment-room.png", alt: "Modern Tedavi Odası", category: "Tedavi" },
-  { src: "/images/gallery/exterior.png", alt: "Klinik Dış Görünüm", category: "Klinik" },
-  { src: "/images/gallery/smile-result.png", alt: "Gülüş Tasarımı Sonucu", category: "Tedavi" },
-  { src: "/images/gallery/dental-tech.png", alt: "3D Tarayıcı & CAD/CAM Teknoloji", category: "Teknoloji" },
-  { src: "/images/gallery/dental-team.png", alt: "Uzman Hekim Kadromuz", category: "Ekip" },
-  { src: "/images/hero-clinic.jpg", alt: "Klinik Genel Görünüm", category: "Klinik" },
-  { src: "/images/about-clinic.png", alt: "Bekleme Salonu", category: "Klinik" },
-  { src: "/images/treatment.png", alt: "Tedavi Süreci", category: "Tedavi" },
+  { src: "/images/gallery/galeri-1.jpeg", alt: "FyPlus Dental Klinik İç Mekan" },
+  { src: "/images/gallery/galeri-2.jpeg", alt: "FyPlus Dental Tedavi Odası" },
+  { src: "/images/gallery/galeri-3.jpeg", alt: "FyPlus Dental Klinik Görünüm" },
+  { src: "/images/gallery/galeri-4.jpeg", alt: "FyPlus Dental Klinik Detay" },
+  { src: "/images/gallery/galeri-5.jpeg", alt: "FyPlus Dental Modern Ortam" },
 ];
 
 export default function GaleriPage() {
-  const [active, setActive] = useState("Tümü");
   const [lightbox, setLightbox] = useState(null);
-
-  const filtered = active === "Tümü" ? images : images.filter(i => i.category === active);
 
   return (
     <>
@@ -31,28 +22,15 @@ export default function GaleriPage() {
             <Link href="/">Ana Sayfa</Link> / <span>Galeri</span>
           </div>
           <h1>Galeri</h1>
-          <p className="hero-subtitle">Kliniğimizden kareler, tedavi öncesi-sonrası görseller ve ekip fotoğrafları.</p>
+          <p className="hero-subtitle">Kliniğimizden kareler ve tedavi ortamlarımız.</p>
         </div>
       </div>
 
       <section className="section">
         <div className="container">
-          {/* Kategori Filtre */}
-          <div className="gallery-filters">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                className={`gallery-filter${active === cat ? " gallery-filter--active" : ""}`}
-                onClick={() => setActive(cat)}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
           {/* Masonry Grid */}
           <div className="gallery-grid">
-            {filtered.map((img, i) => (
+            {images.map((img, i) => (
               <div
                 key={i}
                 className="gallery-item"
@@ -61,7 +39,6 @@ export default function GaleriPage() {
                 <img src={img.src} alt={img.alt} loading="lazy" />
                 <div className="gallery-item__overlay">
                   <ZoomIn size={24} />
-                  <span>{img.alt}</span>
                 </div>
               </div>
             ))}

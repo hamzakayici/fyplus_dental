@@ -119,6 +119,13 @@ ul, ol { list-style: none; }
   color: var(--white);
   box-shadow: 0 4px 16px rgba(212, 99, 75, 0.2);
 }
+.btn-primary svg {
+  animation: arrowNudge 1.5s ease-in-out infinite;
+}
+@keyframes arrowNudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
 .btn-primary:hover {
   background: var(--coral-dark);
   transform: translateY(-2px);
