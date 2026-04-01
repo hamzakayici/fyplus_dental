@@ -18,40 +18,35 @@ import {
 
 if (typeof window !== "undefined") { gsap.registerPlugin(ScrollTrigger); }
 
-/* ═══ YouTube Video Config ═══ */
-const YOUTUBE_VIDEO_ID = "";
+/* ═══ Video Config ═══ */
+const VIDEO_SRC = "/videos/hero-video.mp4";
 const VIDEO_POSTER = "/images/hero-clinic-real.png";
 
 /* ═══ Hero Slides Data ═══ */
 const heroSlides = [
   {
-    image: "/images/hero-dentist.jpg",
     badge: "Bahçeşehir İleri Teknoloji İmplant Merkezi",
     title: ["Sağlıklı ve Güzel", "Gülüşler", "Tasarlıyoruz"],
     subtitle: "Son teknoloji ekipmanlarımız ve uzman hekim kadromuzla Bahçeşehir’de premium diş sağlığı hizmeti sunuyoruz.",
     accentIndex: 1,
   },
   {
-    image: "/images/real/lobby.png",
     badge: "Hollywood Smile | Dijital Gülüş Tasarımı",
     title: ["Dijital", "Gülüş Tasarımı", "ile Hayalinizdeki Gülüş"],
     subtitle: "Dijital simülasyon ile tedavi öncesi sonucu görün. Laminate veneer ve zirkonyum ile doğal, kusursuz gülüşler.",
     accentIndex: 1,
   },
   {
-    image: "/images/gallery/galeri-5.jpeg",
     badge: "Tomografi Destekli İmplant | 3D Tarayıcı",
     title: ["Dijital Diş", "Hekimliği", "Teknolojisi"],
     subtitle: "3D intraoral tarayıcı, dijital röntgen ve CAD/CAM sistemleri ile hassas, hızlı ve konforlu tedavi.",
     accentIndex: 1,
   },
   {
-    image: VIDEO_POSTER,
-    badge: "Klinik Tanıtım Videosu",
-    title: ["Kliniğimizi", "Yakından", "Tanıyın"],
+    badge: "Premium Klinik Deneyimi",
+    title: ["Güvenli ve", "Rahat", "Ortam"],
     subtitle: "Modern teknoloji, uzman kadro ve konforlu tedavi ortamımızı keşfedin.",
     accentIndex: 1,
-    isVideo: true,
   },
 ];
 
@@ -159,13 +154,6 @@ export default function HomePage() {
   const locationRef = useRef(null);
   const ctaRef = useRef(null);
   const [openFaq, setOpenFaq] = useState(null);
-  const [videoActive, setVideoActive] = useState(false);
-
-  /* ═══ YouTube Facade — Tıklanınca iframe yükle ═══ */
-  const activateVideo = () => {
-    if (!YOUTUBE_VIDEO_ID) return;
-    setVideoActive(true);
-  };
 
   useEffect(() => {
     const initAnimations = () => {
@@ -173,11 +161,6 @@ export default function HomePage() {
       /* ═══ DESKTOP ═══ */
       "(min-width: 769px)": function () {
         /* ACT 1 — HERO SLIDER content anim (on each slide change, triggered via Swiper) */
-        /* Static parallax for hero bg images */
-        gsap.to(".hero", { scrollTrigger: { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: 2, onUpdate: (self) => {
-          const imgs = document.querySelectorAll(".hero-slide__bg-img");
-          imgs.forEach(img => { img.style.transform = `translateY(${self.progress * 60}px) scale(${1 + self.progress * 0.05})`; });
-        }}});
 
         /* ACT 2 — STATS (pinned counter reveal) */
         const statsTl = gsap.timeline({
@@ -255,14 +238,6 @@ export default function HomePage() {
 
       /* ═══ MOBILE (no pinning, simple fades) ═══ */
       "(max-width: 768px)": function () {
-        gsap.fromTo(".hero__badge", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 });
-        gsap.fromTo(".hero__title-line", { opacity: 0, y: 30 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.7 });
-        gsap.fromTo(".hero__subtitle", { opacity: 0 }, { opacity: 1, duration: 0.6, delay: 0.3 });
-        gsap.fromTo(".hero__actions", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.4 });
-        gsap.fromTo(".hero__visual", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 });
-
-        gsap.fromTo(".video-showcase__title", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, scrollTrigger: { trigger: videoSectionRef.current, start: "top 90%", toggleActions: "play none none none" } });
-        gsap.fromTo(".video-showcase__play-btn", { scale: 0 }, { scale: 1, duration: 0.5, delay: 0.2, ease: "back.out(1.7)", scrollTrigger: { trigger: videoSectionRef.current, start: "top 90%", toggleActions: "play none none none" } });
 
         const mobileSections = [".stats__card", ".svc-card", ".about__image", ".about__content",
           ".feat-card", ".process-step",
@@ -297,10 +272,21 @@ export default function HomePage() {
   return (<>
     {/* ═══ ACT 1: HERO SLIDER ═══ */}
     <section className="hero" ref={heroRef}>
+      <video
+        className="hero__video-bg"
+        src={VIDEO_SRC}
+        poster={VIDEO_POSTER}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+      <div className="hero__video-overlay" />
       <Swiper
         modules={[Autoplay, EffectFade, Pagination]}
         effect="fade"
-        speed={1200}
+        fadeEffect={{ crossFade: true }}
+        speed={1500}
         autoplay={{ delay: 6000, disableOnInteraction: false }}
         pagination={{ clickable: true, el: ".hero-pagination" }}
         loop
@@ -308,45 +294,26 @@ export default function HomePage() {
         onSlideChangeTransitionStart={(swiper) => {
           const activeSlide = swiper.slides[swiper.activeIndex];
           if (!activeSlide) return;
-          const els = activeSlide.querySelectorAll(".hero-slide__badge, .hero-slide__title-line, .hero-slide__subtitle, .hero-slide__actions, .hero-slide__play-wrap");
-          gsap.fromTo(els, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: "power3.out", delay: 0.15 });
+          const els = activeSlide.querySelectorAll(".hero-slide__badge, .hero-slide__title-line, .hero-slide__subtitle, .hero-slide__actions");
+          gsap.fromTo(els, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.85, stagger: 0.15, ease: "power4.out", delay: 0.1 });
         }}
       >
         {heroSlides.map((slide, i) => (
           <SwiperSlide key={i}>
             <div className="hero-slide">
-              <div className="hero-slide__bg">
-                <img src={slide.image} alt={slide.badge} className="hero-slide__bg-img" />
-              </div>
-              <div className="hero-slide__overlay" />
               <div className="container hero-slide__inner">
                 <div className="hero-slide__content">
-                  <div className="hero-slide__badge"><CheckCircle2 size={14} /> {slide.badge}</div>
+                  <div className="hero-slide__badge"><CheckCircle2 size={14} strokeWidth={2.5} /> {slide.badge}</div>
                   <h2 className="hero-slide__title">
                     {slide.title.map((line, li) => (
                       <span key={li} className={`hero-slide__title-line${li === slide.accentIndex ? " hero-slide__accent" : ""}`}>{line}</span>
                     ))}
                   </h2>
                   <p className="hero-slide__subtitle">{slide.subtitle}</p>
-                  {slide.isVideo ? (
-                    <div className="hero-slide__play-wrap">
-                      <button
-                        className={`hero-slide__play-btn${!YOUTUBE_VIDEO_ID ? ' hero-slide__play-btn--disabled' : ''}`}
-                        onClick={activateVideo}
-                        aria-label="Videoyu Oynat"
-                        disabled={!YOUTUBE_VIDEO_ID}
-                      >
-                        <span className="hero-slide__play-glow" />
-                        <span className="hero-slide__play-icon"><Play size={28} fill="#fff" style={{marginLeft: 3}} /></span>
-                        <span className="hero-slide__play-label">{YOUTUBE_VIDEO_ID ? "Videoyu İzle" : "Video Yakında"}</span>
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="hero-slide__actions">
-                      <Link href="/iletisim" className="btn btn-primary" style={{padding:'16px 36px',fontSize:'1.05rem'}}>Ücretsiz Muayene <ArrowRight size={18}/></Link>
-                      <a href="tel:+905335165134" className="hero__phone-btn"><Phone size={16}/>0533 516 51 34</a>
-                    </div>
-                  )}
+                  <div className="hero-slide__actions">
+                    <Link href="/iletisim" className="btn btn-primary btn-primary--glow">Ücretsiz Muayene <ArrowRight size={18}/></Link>
+                    <a href="tel:+905335165134" className="hero__phone-btn"><Phone size={16}/>0533 516 51 34</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -354,30 +321,18 @@ export default function HomePage() {
         ))}
       </Swiper>
       <div className="hero-pagination" />
-      <div className="hero__floats">
-        <div className="hero__float hero__float--1"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/3840px-Google_%22G%22_logo.svg.png" alt="Google" style={{width:28,height:28}} /><div><strong>4.9/5</strong><span>Google Puanı</span></div></div>
-        <div className="hero__float hero__float--2"><div className="hero__float-icon"><ShieldCheck size={18}/></div><div><strong>Garantili</strong><span>Tedavi Hizmeti</span></div></div>
+      <div className="hero__floats-wrapper">
+        <div className="container" style={{ position: "relative", height: "100%" }}>
+          <div className="hero__floats">
+            <div className="hero__float hero__float--1"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/3840px-Google_%22G%22_logo.svg.png" alt="Google" style={{width:28,height:28}} /><div><strong>4.9/5</strong><span>Google Puanı</span></div></div>
+            <div className="hero__float hero__float--2"><div className="hero__float-icon"><ShieldCheck size={18}/></div><div><strong>Garantili</strong><span>Tedavi Hizmeti</span></div></div>
+          </div>
+        </div>
       </div>
       <button className="hero__scroll-indicator" onClick={() => statsRef.current?.scrollIntoView({behavior:'smooth'})} aria-label="Aşağı kaydır">
         <div className="hero__mouse"><span className="hero__wheel"/></div>
       </button>
     </section>
-
-    {/* Video Lightbox */}
-    {videoActive && (
-      <div className="video-lightbox" onClick={() => setVideoActive(false)}>
-        <button className="video-lightbox__close" onClick={() => setVideoActive(false)} aria-label="Kapat">✕</button>
-        <div className="video-lightbox__wrap" onClick={e => e.stopPropagation()}>
-          <iframe
-            src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-            title="FyPlus Dental Clinic Tanıtım Videosu"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            frameBorder="0"
-          />
-        </div>
-      </div>
-    )}
 
     {/* ═══ ACT 2: STATS WITH COUNTER ═══ */}
     <section className="stats-section" ref={statsRef}>
@@ -590,26 +545,30 @@ export default function HomePage() {
 
     <style jsx>{`
       /* ═══ HERO SLIDER ═══ */
-      .hero{position:relative;height:100svh;min-height:650px;overflow:hidden;margin-top:-121px}
-      .hero-swiper{width:100%;height:100%}
-      .hero-swiper .swiper-slide{overflow:hidden}
-      .hero-slide{position:relative;width:100%;height:100svh;min-height:650px}
-      .hero-slide__bg{position:absolute;inset:0;z-index:0}
-      .hero-slide__bg-img{width:100%;height:100%;object-fit:cover;object-position:center;will-change:transform;transition:transform 8s linear}
-      .swiper-slide-active .hero-slide__bg-img{transform:scale(1.08)}
-      .hero-slide__overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,22,40,.88) 0%,rgba(10,22,40,.7) 38%,rgba(10,22,40,.3) 68%,rgba(10,22,40,.15) 100%)}
-      .hero-slide__inner{position:relative;z-index:2;display:flex;align-items:center;height:100%;padding-top:121px}
-      .hero-slide__content{max-width:600px;will-change:transform}
-      .hero-slide__badge{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:rgba(255,255,255,.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-full);font-size:.8rem;font-weight:600;margin-bottom:28px;letter-spacing:.02em}
-      .hero-slide__title{color:#fff;font-size:clamp(2.4rem,5vw,4.2rem);font-weight:800;line-height:1.08;margin-bottom:24px;letter-spacing:-.03em;text-shadow:0 4px 40px rgba(0,0,0,.2)}
+      .hero{position:relative;width:100%;min-height:100svh;overflow:hidden;margin-top:-121px;background:#0a1628;display:block}
+      .hero__video-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}
+      .hero__video-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,22,40,0.95) 0%,rgba(10,22,40,0.7) 50%,transparent 100%);pointer-events:none}
+      
+      .hero-swiper{width:100%;min-height:100svh;z-index:2;display:block}
+      .hero-slide{position:relative;width:100%;min-height:100svh;display:flex;align-items:center}
+      .hero-slide__inner{position:relative;z-index:2;width:100%;padding-top:160px;padding-bottom:120px;display:flex;flex-direction:column;justify-content:center}
+      .hero-slide__content{max-width:680px;will-change:transform}
+      .hero-slide__badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:rgba(255,255,255,.05);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-full);font-size:.82rem;font-weight:600;margin-bottom:28px;letter-spacing:.03em;box-shadow:inset 0 0 20px rgba(255,255,255,0.02)}
+      .hero-slide__title{color:#fff;font-size:clamp(2.6rem,5.5vw,4.4rem);font-weight:800;line-height:1.1;margin-bottom:24px;letter-spacing:-.03em;text-shadow:0 8px 30px rgba(0,0,0,.3)}
       .hero-slide__title-line{display:block}
-      .hero-slide__accent{background:linear-gradient(135deg,#60bfff,#3d9bd4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-      .hero-slide__subtitle{color:rgba(255,255,255,.7);font-size:1.12rem;line-height:1.8;max-width:480px;margin-bottom:40px;text-shadow:0 2px 20px rgba(0,0,0,.1)}
+      .hero-slide__accent{background:linear-gradient(135deg,#7acaff,#3d9bd4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+      .hero-slide__subtitle{color:rgba(255,255,255,.75);font-size:1.15rem;line-height:1.75;max-width:500px;margin-bottom:44px;text-shadow:0 4px 20px rgba(0,0,0,.2)}
+      
       .hero-slide__actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-      .hero__phone-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 32px;background:rgba(255,255,255,.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1.5px solid rgba(255,255,255,.2);border-radius:var(--radius-full);color:#fff;font-size:1rem;font-weight:700;font-family:var(--font-heading);transition:all .3s ease;text-decoration:none;letter-spacing:.01em}
-      .hero__phone-btn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.35);transform:translateY(-2px)}
+      .btn-primary--glow{box-shadow:0 12px 30px rgba(43,124,173,.35);padding:18px 36px!important;font-size:1.05rem!important;border-radius:var(--radius-full);white-space:nowrap}
+      .btn-primary--glow:hover{box-shadow:0 16px 40px rgba(43,124,173,.5)}
+      
+      .hero__phone-btn{display:inline-flex;align-items:center;gap:12px;padding:16px 32px;background:rgba(255,255,255,.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius-full);color:#fff;font-size:1.05rem;font-weight:700;font-family:var(--font-heading);transition:all .4s ease;text-decoration:none;letter-spacing:.02em;box-shadow:0 8px 30px rgba(0,0,0,.1);white-space:nowrap}
+      .hero__phone-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);transform:translateY(-3px)}
+      
       /* Float cards */
-      .hero__floats{position:absolute;right:60px;bottom:140px;display:flex;flex-direction:column;gap:14px;z-index:10}
+      .hero__floats-wrapper{position:absolute;inset:0;z-index:10;pointer-events:none}
+      .hero__floats{position:absolute;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;pointer-events:auto}
       .hero__float{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:16px 22px;border-radius:var(--radius-lg);box-shadow:0 16px 48px rgba(0,0,0,.12);display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,.6)}
       .hero__float--1{animation:heroFloat1 4s ease-in-out infinite}
       .hero__float--2{animation:heroFloat2 5s ease-in-out infinite}
@@ -618,34 +577,18 @@ export default function HomePage() {
       .hero__float-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--blue-light);color:var(--blue)}
       .hero__float strong{display:block;font-size:1.05rem;font-family:var(--font-heading);color:var(--navy);line-height:1.2}
       .hero__float span{font-size:.72rem;color:var(--gray-500);font-weight:500}
+      
       /* Pagination */
       .hero-pagination{position:absolute!important;bottom:40px!important;left:24px!important;right:auto!important;width:auto!important;z-index:10!important;display:flex;gap:6px}
-      .hero-pagination .swiper-pagination-bullet{width:32px;height:4px;border-radius:3px;background:rgba(255,255,255,.3);opacity:1;transition:all .4s ease}
-      .hero-pagination .swiper-pagination-bullet-active{width:48px;background:#fff}
+      .hero-pagination .swiper-pagination-bullet{width:32px;height:4px;border-radius:3px;background:rgba(255,255,255,.3);opacity:1;transition:all .4s ease;cursor:pointer}
+      .hero-pagination .swiper-pagination-bullet-active{width:56px;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.5)}
+      
       /* Scroll indicator */
       .hero__scroll-indicator{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;z-index:10;cursor:pointer;background:none;border:none;padding:12px;transition:opacity .3s}
       .hero__scroll-indicator:hover{opacity:.7}
       .hero__mouse{width:26px;height:40px;border:1.5px solid rgba(255,255,255,.35);border-radius:100px;position:relative;display:flex;justify-content:center;background:rgba(255,255,255,.08);backdrop-filter:blur(4px)}
       .hero__wheel{width:3px;height:8px;background:rgba(255,255,255,.7);border-radius:2px;position:absolute;top:7px;animation:scrollWheel 2s cubic-bezier(.15,.41,.69,.94) infinite}
       @keyframes scrollWheel{0%{opacity:0;transform:translateY(-4px)}20%{opacity:1;transform:translateY(0)}60%{opacity:1;transform:translateY(12px)}100%{opacity:0;transform:translateY(16px)}}
-      /* Video play button in slide */
-      .hero-slide__play-wrap{display:flex;align-items:center;gap:20px}
-      .hero-slide__play-btn{position:relative;display:flex;align-items:center;gap:16px;background:none;border:none;cursor:pointer;transition:transform .4s var(--ease-spring)}
-      .hero-slide__play-btn:hover{transform:scale(1.05)}
-      .hero-slide__play-btn--disabled{cursor:default;opacity:.6}
-      .hero-slide__play-btn--disabled:hover{transform:none}
-      .hero-slide__play-glow{position:absolute;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(43,124,173,.3),transparent 70%);animation:playGlowPulse 3s ease-in-out infinite;pointer-events:none;top:50%;left:30px;transform:translate(-50%,-50%)}
-      .hero-slide__play-icon{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;color:#fff;transition:all .35s ease;box-shadow:0 8px 40px rgba(0,0,0,.2)}
-      .hero-slide__play-btn:hover .hero-slide__play-icon{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
-      .hero-slide__play-label{font-size:.85rem;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.08em;text-transform:uppercase}
-      @keyframes playGlowPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}50%{transform:translate(-50%,-50%) scale(1.3);opacity:.2}}
-      /* Video Lightbox */
-      .video-lightbox{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.9);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;animation:fadeIn .3s ease}
-      .video-lightbox__close{position:absolute;top:24px;right:28px;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:1.4rem;width:48px;height:48px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
-      .video-lightbox__close:hover{background:rgba(255,255,255,.2)}
-      .video-lightbox__wrap{width:90vw;max-width:1100px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5)}
-      .video-lightbox__wrap iframe{width:100%;height:100%;border:none}
-      @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
       /* ═══ STATS COUNTER ═══ */
       .stats-section{background:var(--white);border-bottom:1px solid var(--gray-100);padding:48px 0;position:relative;z-index:5}
@@ -765,8 +708,10 @@ export default function HomePage() {
 
       /* ═══ RESPONSIVE ═══ */
       @media(max-width:1024px){
+        .hero-slide__inner{padding-top:140px;padding-bottom:100px}
         .hero-slide__title{font-size:clamp(2rem,4vw,3.2rem)}
-        .hero__floats{right:24px;bottom:100px}
+        .hero-slide__subtitle{font-size:1.05rem;margin-bottom:32px}
+        .hero__video-overlay{background:linear-gradient(90deg,rgba(10,22,40,0.95) 0%,rgba(10,22,40,0.7) 60%,rgba(10,22,40,0.4) 100%)}
         .stats__card{padding-left:10px}
         .svc-grid{grid-template-columns:repeat(2,1fr)}
         .feat-bento{grid-template-columns:1fr 1fr;gap:16px}
@@ -778,6 +723,11 @@ export default function HomePage() {
         .location-grid{grid-template-columns:1fr}
       }
       @media(max-width:768px){
+        .hero__video-overlay{background:linear-gradient(180deg,rgba(10,22,40,0.7) 0%,rgba(10,22,40,0.95) 50%,rgba(10,22,40,0.98) 100%)}
+        .hero-slide__inner{padding-top:120px;padding-bottom:80px;text-align:center}
+        .hero-slide__content{margin:0 auto;align-items:center;display:flex;flex-direction:column}
+        .hero-slide__subtitle{font-size:1rem}
+        .hero-slide__actions{justify-content:center;width:100%}
         .section{padding:80px 0}
         .hero-slide__title{font-size:2.4rem}
         .hero__floats{display:none}
@@ -788,10 +738,10 @@ export default function HomePage() {
       }
       @media(max-width:640px){
         .section{padding:60px 0}
-        .hero-slide__title{font-size:2rem}
-        .hero-slide__subtitle{font-size:.95rem}
-        .hero-slide__actions{flex-direction:column;width:100%;gap:14px}
-        .hero-slide__actions .btn,.hero__phone-btn{width:100%;justify-content:center;text-align:center}
+        .hero-slide__title{font-size:2.1rem;line-height:1.15}
+        .hero-slide__subtitle{font-size:.95rem;margin-bottom:28px}
+        .hero-slide__actions{flex-direction:column;width:100%;gap:12px}
+        .btn-primary--glow,.hero__phone-btn{width:100%;justify-content:center;text-align:center;padding:16px!important}
         .hero__scroll-indicator{display:none}
         .stats__grid{grid-template-columns:repeat(2,1fr);gap:24px}
         .stats__card{border-right:none;padding-left:0;align-items:center;text-align:center}

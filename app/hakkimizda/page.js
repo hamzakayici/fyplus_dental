@@ -20,7 +20,7 @@ export default function HakkimizdaPage() {
       <section className="section">
         <div className="container about-layout">
           <div className="about-img">
-            <img src="/images/about-clinic.png" alt="FyPlus Dental Klinik" style={{ borderRadius: "var(--radius-2xl)", width: "100%" }} />
+            <img src="/images/real/lobby.png" alt="FyPlus Dental Klinik İç Mekan" style={{ borderRadius: "var(--radius-2xl)", width: "100%" }} />
           </div>
           <div className="about-text">
             <span className="section-label">Hikayemiz</span>
@@ -49,9 +49,9 @@ export default function HakkimizdaPage() {
             <h2 className="section-title">Modern ve Konforlu Ortam</h2>
           </div>
           <div className="clinic-images">
-            <img src="/images/real/lobby.png" alt="FyPlus Lobi" />
-            <img src="/images/real/treatment.png" alt="FyPlus Tedavi Odası" />
-            <img src="/images/real/exterior.png" alt="FyPlus Dış Görünüm" />
+            <img src="/images/gallery/galeri-1.jpeg" alt="FyPlus Lobi" />
+            <img src="/images/gallery/galeri-2.jpeg" alt="FyPlus Tedavi Odası" />
+            <img src="/images/gallery/galeri-3.jpeg" alt="FyPlus Dış Görünüm" />
           </div>
         </div>
       </section>

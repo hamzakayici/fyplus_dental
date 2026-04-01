@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Preloader from "./components/Preloader";
 import SmoothScroll from "./components/SmoothScroll";
+import Script from "next/script";
 
 export const metadata = {
   metadataBase: new URL("https://fyplus.com.tr"),
@@ -64,8 +65,7 @@ export const metadata = {
     languages: { "tr-TR": "https://fyplus.com.tr" },
   },
   verification: {
-    // Google Search Console doğrulama kodu buraya eklenecek
-    // google: "google-site-verification-code",
+    google: "HJZi-df3-72tS8OnODr2XOBas7HHW7wMIS2GieIgyUY",
   },
   category: "dental clinic",
 };
@@ -245,6 +245,16 @@ export default function RootLayout({ children }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       </head>
       <body className="is-loading">
+        {/* Google tag (gtag.js) */}
+        <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-94S969WZYY" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-94S969WZYY');
+          `}
+        </Script>
         <Preloader />
         <SmoothScroll>
           <Header />
