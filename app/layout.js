@@ -252,7 +252,11 @@ export default function RootLayout({ children }) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
+            
+            // Google Analytics
             gtag('config', 'G-94S969WZYY');
+            // Google Ads
+            gtag('config', 'AW-18089988583');
           `}
         </Script>
         <Preloader />
