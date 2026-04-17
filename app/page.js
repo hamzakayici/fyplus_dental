@@ -20,7 +20,7 @@ if (typeof window !== "undefined") { gsap.registerPlugin(ScrollTrigger); }
 
 /* ═══ Video Config ═══ */
 const VIDEO_SRC = "/videos/hero-video.mp4";
-const VIDEO_POSTER = "/images/hero-clinic-real.png";
+const VIDEO_POSTER = "/images/hero-clinic-real.jpg";
 
 /* ═══ Hero Slides Data ═══ */
 const heroSlides = [
